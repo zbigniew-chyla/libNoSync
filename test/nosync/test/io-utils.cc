@@ -9,7 +9,7 @@ namespace nosync
 namespace test
 {
 
-int read_nointr(int fd, void *buf, size_t count)
+long read_nointr(int fd, void *buf, size_t count)
 {
     ssize_t read_retval;
     do {
@@ -20,7 +20,7 @@ int read_nointr(int fd, void *buf, size_t count)
 }
 
 
-int write_nointr(int fd, const void *buf, size_t count)
+long write_nointr(int fd, const void *buf, size_t count)
 {
     ssize_t write_retval;
     do {

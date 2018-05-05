@@ -110,7 +110,7 @@ string get_unix_socket_name(int sock_fd)
 }
 
 
-int read_nointr(int fd, void *buf, size_t count)
+ssize_t read_nointr(int fd, void *buf, size_t count)
 {
     ssize_t read_retval;
     do {
@@ -121,7 +121,7 @@ int read_nointr(int fd, void *buf, size_t count)
 }
 
 
-int write_nointr(int fd, const void *buf, size_t count)
+ssize_t write_nointr(int fd, const void *buf, size_t count)
 {
     ssize_t write_retval;
     do {
@@ -180,12 +180,14 @@ TEST(NosyncSocketConnectionsFdAcceptor, CheckSingleAccept)
     ASSERT_EQ(errno, EAGAIN);
 
     const auto sock_data = make_array('\xA9', '\xC1');
-    int write_retval = write_nointr(*client_sock_fd, sock_data.data(), sock_data.size());
-    ASSERT_EQ(write_retval, sock_data.size());
+    auto write_retval = write_nointr(*client_sock_fd, sock_data.data(), sock_data.size());
+    ASSERT_GT(write_retval, 0);
+    ASSERT_EQ(static_cast<size_t>(write_retval), sock_data.size());
 
     array<char, 2> data_read_buf;
-    int data_read_retval = read_nointr(*saved_conn_fds.back(), data_read_buf.data(), data_read_buf.size());
-    ASSERT_EQ(data_read_retval, data_read_buf.size());
+    auto data_read_retval = read_nointr(*saved_conn_fds.back(), data_read_buf.data(), data_read_buf.size());
+    ASSERT_GT(data_read_retval, 0);
+    ASSERT_EQ(static_cast<size_t>(data_read_retval), data_read_buf.size());
     ASSERT_EQ(sock_data, data_read_buf);
 
     client_sock_fd = owned_fd();
