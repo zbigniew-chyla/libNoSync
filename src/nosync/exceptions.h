@@ -16,11 +16,6 @@ namespace nosync
 void print_exception_info(const std::exception_ptr &eptr, std::ostream &output, const std::string &line_prefix = {});
 void print_current_exception_info(std::ostream &output, const std::string &line_prefix = {});
 
-template<typename T>
-T *get_nonnull_or_throw(T *ptr, const std::string &msg_for_null);
-
 }
-
-#include <nosync/exceptions-impl.h>
 
 #endif /* NOSYNC__EXCEPTIONS_H */
