@@ -28,14 +28,6 @@ using testing::Eq;
 using testing::Invoke;
 
 
-namespace
-{
-
-constexpr auto very_long_timeout = 1h;
-
-}
-
-
 TEST(NosyncSequentialBytesReader, SimpleRead)
 {
     auto mock_evloop = make_shared<event_loop_mock>();

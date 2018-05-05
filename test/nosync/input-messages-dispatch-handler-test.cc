@@ -82,13 +82,13 @@ TEST(NosyncInputMessagesDispatchHandler, MultipleRequests)
                 input_msgs.pop_front();
                 evloop->invoke_at(
                     evloop->get_etime() + 1ns,
-                    [&input_msgs, res_handler = move(res_handler), msg = move(msg)]() {
+                    [res_handler = move(res_handler), msg = move(msg)]() {
                         res_handler(make_ok_result(msg));
                     });
             } else {
                 evloop->invoke_at(
                     evloop->get_etime() + timeout,
-                    [&input_msgs, res_handler = move(res_handler)]() {
+                    [res_handler = move(res_handler)]() {
                         res_handler(make_timeout_raw_error_result().as_result<string>());
                     });
             }

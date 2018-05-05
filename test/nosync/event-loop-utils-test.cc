@@ -23,18 +23,6 @@ using testing::Invoke;
 using testing::ReturnPointee;
 
 
-namespace
-{
-
-constexpr auto test_start_time = ch::time_point<eclock>(ch::seconds(123456));
-constexpr auto test_time_points = make_array(
-    test_start_time + 0s,
-    test_start_time + 2s,
-    test_start_time + 10s);
-
-}
-
-
 TEST(NosyncEventLoopUtils, TestInvokeLater)
 {
     auto mock_evloop = make_shared<event_loop_mock>();

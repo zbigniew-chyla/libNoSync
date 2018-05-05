@@ -38,7 +38,6 @@ using testing::Return;
 TEST(NosyncPrioritizingRequestHandler, DirectForwarding)
 {
     const auto current_time = ch::time_point<eclock>(123s);
-    constexpr auto test_timeout = 3ns;
 
     auto mock_evloop = make_shared<event_loop_mock>();
     EXPECT_CALL(*mock_evloop, get_etime()).WillRepeatedly(Return(current_time));
