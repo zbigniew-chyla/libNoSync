@@ -111,6 +111,12 @@ unique_ptr<activity_handle> manual_fd_watcher::add_watch(
 }
 
 
+manual_fd_watcher::manual_fd_watcher()
+    : quit_request_pending(false)
+{
+}
+
+
 vector<tuple<int, fd_watch_mode>> manual_fd_watcher::get_watches_fd_info() const
 {
     if (!watches) {
