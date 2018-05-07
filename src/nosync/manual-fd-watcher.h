@@ -22,6 +22,7 @@ public:
     static std::shared_ptr<manual_fd_watcher> create();
 
     manual_fd_watcher();
+    ~manual_fd_watcher() override;
 
     std::vector<std::tuple<int, fd_watch_mode>> get_watches_fd_info() const;
     bool notify_watches(int fd, fd_watch_mode mode);

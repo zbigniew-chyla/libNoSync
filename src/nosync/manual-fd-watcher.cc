@@ -117,6 +117,19 @@ manual_fd_watcher::manual_fd_watcher()
 }
 
 
+manual_fd_watcher::~manual_fd_watcher()
+{
+    if (watches) {
+        while (!watches->empty()) {
+            auto erase_iter = watches->begin();
+            auto erase_watch = move(erase_iter->second);
+            watches->erase(erase_iter);
+            erase_watch = nullptr;
+        }
+    }
+}
+
+
 vector<tuple<int, fd_watch_mode>> manual_fd_watcher::get_watches_fd_info() const
 {
     if (!watches) {

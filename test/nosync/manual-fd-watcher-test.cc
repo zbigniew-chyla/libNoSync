@@ -1,23 +1,64 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
 #include <experimental/array>
+#include <functional>
 #include <gtest/gtest.h>
 #include <memory>
 #include <nosync/manual-fd-watcher.h>
 #include <set>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 using nosync::fd_watch_mode;
 using nosync::activity_handle;
 using nosync::manual_fd_watcher;
 using std::experimental::make_array;
+using std::function;
 using std::get;
+using std::make_shared;
 using std::make_tuple;
+using std::move;
 using std::set;
+using std::shared_ptr;
 using std::tuple;
 using std::unique_ptr;
 using std::vector;
+
+
+namespace
+{
+
+class destroy_notifier
+{
+public:
+    explicit destroy_notifier(function<void()> &&notify_func);
+    ~destroy_notifier();
+
+    destroy_notifier(const destroy_notifier &notify_func) = default;
+    destroy_notifier(destroy_notifier &&notify_func) = default;
+    destroy_notifier &operator=(const destroy_notifier &notify_func) = default;
+    destroy_notifier &operator=(destroy_notifier &&notify_func) = default;
+
+private:
+    shared_ptr<function<void()>> notify_func;
+};
+
+
+destroy_notifier::destroy_notifier(function<void()> &&notify_func)
+    : notify_func(make_shared<function<void()>>(move(notify_func)))
+{
+}
+
+
+destroy_notifier::~destroy_notifier()
+{
+    if (notify_func) {
+        (*notify_func)();
+    }
+}
+
+}
 
 
 TEST(NosyncManualFdWatcher, TestInitial)
@@ -272,4 +313,45 @@ TEST(NosyncManualFdWatcher, TestAddDuringNotify)
     watcher->notify_watches(fd, mode);
     ASSERT_EQ(counter_a, 2U);
     ASSERT_EQ(counter_b, 1U);
+}
+
+
+TEST(NosyncManualFdWatcher, TestUseHandleDuringDestroy)
+{
+    constexpr auto mode = fd_watch_mode::input;
+
+    unique_ptr<activity_handle> a_handle;
+    unique_ptr<activity_handle> b_handle;
+
+    auto watcher = manual_fd_watcher::create();
+
+    auto a_watch_destroy_checker = [&]() {
+        ASSERT_TRUE(a_handle);
+        ASSERT_FALSE(a_handle->is_enabled());
+    };
+    auto b_watch_destroy_checker = [&]() {
+        ASSERT_TRUE(b_handle);
+        ASSERT_FALSE(b_handle->is_enabled());
+    };
+
+    a_handle = watcher->add_watch(
+        101, mode,
+        [checker = destroy_notifier(move(a_watch_destroy_checker))]() {
+        });
+    b_handle = watcher->add_watch(
+        100, mode,
+        [checker = destroy_notifier(move(b_watch_destroy_checker))]() {
+        });
+
+    ASSERT_TRUE(a_handle);
+    ASSERT_TRUE(a_handle->is_enabled());
+    ASSERT_TRUE(b_handle);
+    ASSERT_TRUE(b_handle->is_enabled());
+
+    watcher.reset();
+
+    ASSERT_TRUE(a_handle);
+    ASSERT_FALSE(a_handle->is_enabled());
+    ASSERT_TRUE(b_handle);
+    ASSERT_FALSE(b_handle->is_enabled());
 }
