@@ -108,7 +108,7 @@ void subprocess_reaper::collect_terminated_children()
     while (true) {
         int wstatus;
         auto waitpid_res = ::waitpid(-1, &wstatus, WNOHANG);
-        if (waitpid_res < 0) {
+        if (waitpid_res <= 0) {
             break;
         }
 
