@@ -22,7 +22,7 @@ namespace
 constexpr auto max_local_buffer_size = 8192U;
 
 
-result<string> read_some_bytes_from_fd(int fd, size_t max_size, char *tmp_buffer)
+result<string> read_some_bytes_using_tmp_buffer(int fd, size_t max_size, char *tmp_buffer)
 {
     ssize_t read_res;
     do {
@@ -42,7 +42,7 @@ result<string> read_some_bytes_from_fd(int fd, size_t max_size, char *tmp_buffer
 
 result<string> read_some_bytes_from_fd(int fd, size_t max_size)
 {
-    return read_some_bytes_from_fd(
+    return read_some_bytes_using_tmp_buffer(
         fd, max_size,
         max_size <= max_local_buffer_size
             ? array<char, max_local_buffer_size>().data()
