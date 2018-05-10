@@ -1,11 +1,9 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <array>
 #include <cerrno>
-#include <cstddef>
 #include <memory>
 #include <nosync/fd-utils.h>
 #include <nosync/result-utils.h>
-#include <system_error>
 #include <unistd.h>
 
 using std::array;
