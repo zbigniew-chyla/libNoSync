@@ -92,8 +92,7 @@ void size_limited_bytes_reader::read_some_bytes(
 
         read_ongoing = true;
     } else {
-        pending_requests.push_request(
-            make_copy(max_size), time_point_sat_add(evloop.get_etime(), timeout), move(res_handler));
+        pending_requests.push_request(make_copy(max_size), timeout, move(res_handler));
     }
 }
 

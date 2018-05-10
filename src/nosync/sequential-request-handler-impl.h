@@ -56,8 +56,7 @@ void sequential_request_handler<Req, Res>::handle_request(Req &&request, std::ch
             });
         request_ongoing = true;
     } else {
-        pending_requests.push_request(
-            std::move(request), time_point_sat_add(evloop.get_etime(), timeout), std::move(res_handler));
+        pending_requests.push_request(std::move(request), timeout, std::move(res_handler));
     }
 }
 

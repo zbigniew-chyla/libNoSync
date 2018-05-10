@@ -43,8 +43,7 @@ template<typename Res>
 void grouping_null_request_handler<Res>::handle_request(std::nullptr_t &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler)
 {
     if (request_ongoing) {
-        pending_requests.push_request(
-            std::move(request), time_point_sat_add(evloop.get_etime(), timeout), std::move(res_handler));
+        pending_requests.push_request(std::move(request), timeout, std::move(res_handler));
         return;
     }
 

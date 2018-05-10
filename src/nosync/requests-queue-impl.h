@@ -7,6 +7,7 @@
 #include <nosync/event-loop-utils.h>
 #include <nosync/raw-error-result.h>
 #include <nosync/result-utils.h>
+#include <nosync/time-utils.h>
 #include <stdexcept>
 #include <system_error>
 #include <utility>
@@ -63,6 +64,15 @@ void requests_queue<Req, Res>::push_request(
 {
     requests.emplace_back(std::move(request), timeout_end, std::move(res_handler));
     reschedule_timeout_task();
+}
+
+
+template<typename Req, typename Res>
+void requests_queue<Req, Res>::push_request(
+    Req &&request, std::chrono::nanoseconds timeout,
+    result_handler<Res> &&res_handler)
+{
+    push_request(std::move(request), time_point_sat_add(evloop.get_etime(), timeout), std::move(res_handler));
 }
 
 

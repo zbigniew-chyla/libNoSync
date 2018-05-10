@@ -85,10 +85,7 @@ void requests_prioritizer<Req, Res, N>::handle_request(
             });
         request_handling_ongoing = true;
     } else {
-        queues[queue_index]->push_request(
-            std::move(request),
-            time_point_sat_add(evloop.get_etime(), timeout),
-            std::move(res_handler));
+        queues[queue_index]->push_request(std::move(request), timeout, std::move(res_handler));
     }
 }
 

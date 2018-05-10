@@ -99,8 +99,7 @@ void input_messages_dispatch_handler::handle_request(
             move(msg_id), time_point_sat_add(evloop.get_etime(), timeout), move(res_handler));
         read_next_message_if_needed();
     } else {
-        new_pending_requests.push_request(
-            move(msg_id), time_point_sat_add(evloop.get_etime(), timeout), move(res_handler));
+        new_pending_requests.push_request(move(msg_id), timeout, move(res_handler));
     }
 }
 

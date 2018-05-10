@@ -41,6 +41,10 @@ public:
         Req &&request, std::chrono::time_point<eclock> timeout_end,
         result_handler<Res> &&res_handler);
 
+    void push_request(
+        Req &&request, std::chrono::nanoseconds timeout,
+        result_handler<Res> &&res_handler);
+
     bool has_requests() const;
 
     std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> pull_next_request();
