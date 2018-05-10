@@ -119,6 +119,51 @@ bool requests_queue<Req, Res>::pull_next_request_to_consumer(const F &req_consum
 
 
 template<typename Req, typename Res>
+template<typename RequestPredicate, typename Consumer>
+bool requests_queue<Req, Res>::pull_next_matching_request_to_consumer(
+    const RequestPredicate &predicate, const Consumer &req_consumer)
+{
+    auto found_req_iter = std::find_if(
+        requests.begin(), requests.end(),
+        [&](const auto &req) {
+            return predicate(std::get<Req>(req));
+        });
+
+    bool request_found = found_req_iter != requests.end();
+
+    if (request_found) {
+        auto req = std::move(*found_req_iter);
+
+        requests.erase(found_req_iter);
+        reschedule_timeout_task();
+
+        req_consumer(
+            std::move(std::get<Req>(req)),
+            std::max(std::get<std::chrono::time_point<eclock>>(req) - evloop.get_etime(), std::chrono::nanoseconds(0)),
+            std::move(std::get<result_handler<Res>>(req)));
+    }
+
+    return request_found;
+}
+
+
+template<typename Req, typename Res>
+template<typename Func>
+void requests_queue<Req, Res>::for_each_request(const Func &func) const
+{
+    const auto etime = evloop.get_etime();
+    std::for_each(
+        requests.begin(), requests.end(),
+        [&](const auto &req) {
+            func(
+                std::get<Req>(req),
+                std::max(std::get<std::chrono::time_point<eclock>>(req) - etime, std::chrono::nanoseconds(0)),
+                std::get<result_handler<Res>>(req));
+        });
+}
+
+
+template<typename Req, typename Res>
 void requests_queue<Req, Res>::handle_pending_timeouts()
 {
     namespace ch = std::chrono;

@@ -52,6 +52,13 @@ public:
     template<typename F>
     bool pull_next_request_to_consumer(const F &req_consumer);
 
+    template<typename RequestPredicate, typename Consumer>
+    bool pull_next_matching_request_to_consumer(
+        const RequestPredicate &predicate, const Consumer &req_consumer);
+
+    template<typename Func>
+    void for_each_request(const Func &func) const;
+
 private:
     void handle_pending_timeouts();
     void disable_timeout_task_if_present();
