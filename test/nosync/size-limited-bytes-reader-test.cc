@@ -147,7 +147,16 @@ TEST(NosyncSizeLimitedBytesReader, ConcurrentReads)
     EXPECT_CALL(*mock_evloop, get_etime()).WillRepeatedly(Return(current_time));
 
     auto mock_timeout_task_handle = make_unique<activity_handle_mock>();
-    EXPECT_CALL(*mock_timeout_task_handle, disable()).Times(1);
+    auto mock_timeout_task_handle_enabled = true;
+    EXPECT_CALL(*mock_timeout_task_handle, disable()).WillOnce(Invoke(
+        [&mock_timeout_task_handle_enabled]() {
+            ASSERT_TRUE(mock_timeout_task_handle_enabled);
+            mock_timeout_task_handle_enabled = false;
+        }));
+    EXPECT_CALL(*mock_timeout_task_handle, is_enabled()).WillOnce(Invoke(
+        [&mock_timeout_task_handle_enabled]() {
+            return mock_timeout_task_handle_enabled;
+        }));
 
     EXPECT_CALL(*mock_evloop, invoke_at_impl(Eq(current_time + read_timeout), _)).WillOnce(Invoke(
         [&mock_timeout_task_handle](auto, auto) {

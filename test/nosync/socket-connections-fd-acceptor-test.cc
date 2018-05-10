@@ -148,6 +148,10 @@ TEST(NosyncSocketConnectionsFdAcceptor, CheckSingleAccept)
         [&saved_sock_watch_notify_func]() {
             saved_sock_watch_notify_func = nullptr;
         }));
+    EXPECT_CALL(*mock_sock_watch_handle, is_enabled()).WillOnce(Invoke(
+        [&saved_sock_watch_notify_func]() {
+            return saved_sock_watch_notify_func != nullptr;
+        }));
 
     auto mock_watcher = make_shared<fd_watcher_mock>();
     EXPECT_CALL(*mock_watcher, add_watch_impl(Eq(listen_sock_fd_no), Eq(fd_watch_mode::input), _)).WillOnce(Invoke(
@@ -214,6 +218,10 @@ TEST(NosyncSocketConnectionsFdAcceptor, CheckDestroyHandler)
         [&saved_sock_watch_notify_func]() {
             saved_sock_watch_notify_func = nullptr;
         }));
+    EXPECT_CALL(*mock_sock_watch_handle, is_enabled()).WillOnce(Invoke(
+        [&saved_sock_watch_notify_func]() {
+            return saved_sock_watch_notify_func != nullptr;
+        }));
 
     auto mock_watcher = make_shared<fd_watcher_mock>();
     EXPECT_CALL(*mock_watcher, add_watch_impl(Eq(listen_sock_fd_no), Eq(fd_watch_mode::input), _)).WillOnce(Invoke(
@@ -250,6 +258,10 @@ TEST(NosyncSocketConnectionsFdAcceptor, CheckAcceptFailure)
     EXPECT_CALL(*mock_sock_watch_handle, disable()).WillOnce(Invoke(
         [&saved_sock_watch_notify_func]() {
             saved_sock_watch_notify_func = nullptr;
+        }));
+    EXPECT_CALL(*mock_sock_watch_handle, is_enabled()).WillOnce(Invoke(
+        [&saved_sock_watch_notify_func]() {
+            return saved_sock_watch_notify_func != nullptr;
         }));
 
     auto mock_watcher = make_shared<fd_watcher_mock>();

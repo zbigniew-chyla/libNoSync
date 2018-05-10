@@ -44,6 +44,7 @@ using std::vector;
 using testing::_;
 using testing::Eq;
 using testing::Invoke;
+using testing::Return;
 using testing::ReturnPointee;
 
 
@@ -96,8 +97,13 @@ TEST(NosyncFdBytesReader, TestTimeoutNew)
         [&saved_sock_watch_notify_func]() {
             saved_sock_watch_notify_func = nullptr;
         }));
+    EXPECT_CALL(*mock_sock_watch_handle, is_enabled()).WillRepeatedly(Invoke(
+        [&saved_sock_watch_notify_func]() {
+            return saved_sock_watch_notify_func != nullptr;
+        }));
 
     auto mock_timeout_task_handle = make_unique<activity_handle_mock>();
+    EXPECT_CALL(*mock_timeout_task_handle, is_enabled()).WillRepeatedly(Return(false));
     auto mock_evloop = make_shared<fd_watching_event_loop_mock>();
     EXPECT_CALL(*mock_evloop, add_watch_impl(Eq(*pipe_fds[0]), Eq(fd_watch_mode::input), _)).WillOnce(Invoke(
         [&](auto, auto, auto notify_func) {

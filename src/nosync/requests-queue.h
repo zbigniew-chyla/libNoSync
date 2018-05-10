@@ -7,6 +7,7 @@
 #include <deque>
 #include <experimental/optional>
 #include <functional>
+#include <nosync/activity-owner.h>
 #include <nosync/eclock.h>
 #include <nosync/event-loop.h>
 #include <nosync/result-handler.h>
@@ -51,7 +52,7 @@ private:
 
     event_loop &evloop;
     std::deque<std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>>> requests;
-    std::experimental::optional<std::tuple<std::chrono::time_point<eclock>, std::unique_ptr<activity_handle>>> scheduled_timeout_task;
+    std::experimental::optional<std::tuple<std::chrono::time_point<eclock>, activity_owner>> scheduled_timeout_task;
 };
 
 }

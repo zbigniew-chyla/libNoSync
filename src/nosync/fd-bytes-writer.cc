@@ -1,4 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#include <nosync/activity-owner.h>
 #include <nosync/fd-bytes-writer.h>
 #include <nosync/fd-utils.h>
 #include <nosync/raw-error-result.h>
@@ -12,7 +13,6 @@ using std::move;
 using std::shared_ptr;
 using std::size_t;
 using std::string;
-using std::unique_ptr;
 
 
 namespace nosync
@@ -35,7 +35,7 @@ private:
     string data;
     size_t data_offset;
     result_handler<void> res_handler;
-    unique_ptr<activity_handle> write_watch_handle;
+    activity_owner write_watch_owner;
 };
 
 
@@ -56,7 +56,7 @@ void async_write_job::start(fd_watcher &watcher, shared_fd &&fd, string &&data, 
 {
     auto fd_num = *fd;
     auto job = make_shared<async_write_job>(move(fd), move(data), move(res_handler));
-    job->write_watch_handle = watcher.add_watch(
+    job->write_watch_owner = watcher.add_watch(
         fd_num, fd_watch_mode::output,
         [job]() {
             job->handle_write_chunk();
@@ -77,15 +77,11 @@ void async_write_job::handle_write_chunk()
     if (write_result.is_ok()) {
         data_offset += write_result.get_value();
         if (data_offset >= data.size()) {
-            if (write_watch_handle->is_enabled()) {
-                write_watch_handle->disable();
-            }
+            write_watch_owner.reset();
             res_handler(make_ok_result());
         }
     } else {
-        if (write_watch_handle->is_enabled()) {
-            write_watch_handle->disable();
-        }
+        write_watch_owner.reset();
         res_handler(raw_error_result(write_result));
     }
 }

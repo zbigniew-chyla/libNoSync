@@ -42,10 +42,6 @@ requests_queue<Req, Res>::requests_queue(event_loop &evloop)
 template<typename Req, typename Res>
 requests_queue<Req, Res>::~requests_queue()
 {
-    if (scheduled_timeout_task) {
-        std::get<std::unique_ptr<activity_handle>>(*scheduled_timeout_task)->disable();
-    }
-
     if (!requests.empty()) {
         invoke_later(
             evloop,
@@ -127,12 +123,9 @@ void requests_queue<Req, Res>::handle_pending_timeouts()
 template<typename Req, typename Res>
 void requests_queue<Req, Res>::disable_timeout_task_if_present()
 {
-    if (!scheduled_timeout_task) {
-        return;
+    if (scheduled_timeout_task) {
+        scheduled_timeout_task = std::experimental::nullopt;
     }
-
-    std::get<std::unique_ptr<activity_handle>>(*scheduled_timeout_task)->disable();
-    scheduled_timeout_task = std::experimental::nullopt;
 }
 
 
