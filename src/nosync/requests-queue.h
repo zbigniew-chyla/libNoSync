@@ -49,6 +49,9 @@ public:
 
     std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> pull_next_request();
 
+    template<typename F>
+    bool pull_next_request_to_consumer(const F &req_consumer);
+
 private:
     void handle_pending_timeouts();
     void disable_timeout_task_if_present();

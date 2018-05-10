@@ -100,6 +100,25 @@ std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> requests_q
 
 
 template<typename Req, typename Res>
+template<typename F>
+bool requests_queue<Req, Res>::pull_next_request_to_consumer(const F &req_consumer)
+{
+    if (requests.empty()) {
+        return false;
+    }
+
+    auto req = pull_next_request();
+
+    req_consumer(
+        std::move(std::get<Req>(req)),
+        std::max(std::get<std::chrono::time_point<eclock>>(req) - evloop.get_etime(), std::chrono::nanoseconds(0)),
+        std::move(std::get<result_handler<Res>>(req)));
+
+    return true;
+}
+
+
+template<typename Req, typename Res>
 void requests_queue<Req, Res>::handle_pending_timeouts()
 {
     namespace ch = std::chrono;

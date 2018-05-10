@@ -107,8 +107,6 @@ requests_queue<Req, Res> *requests_prioritizer<Req, Res, N>::try_find_first_pend
 template<typename Req, typename Res, std::size_t N>
 void requests_prioritizer<Req, Res, N>::forward_first_pending_request_if_present()
 {
-    namespace ch = std::chrono;
-    using std::get;
     using std::move;
 
     auto queue = try_find_first_pending_request_queue();
@@ -116,15 +114,17 @@ void requests_prioritizer<Req, Res, N>::forward_first_pending_request_if_present
         return;
     }
 
-    auto req_data = queue->pull_next_request();
-    auto time_left = std::max(get<ch::time_point<eclock>>(req_data) - evloop.get_etime(), ch::nanoseconds(0));
+    auto prio_ptr = shared_from_this();
 
-    base_req_handler->handle_request(
-        move(get<Req>(req_data)), time_left,
-        [prio_ptr = shared_from_this(), res_handler = move(get<result_handler<Res>>(req_data))](auto resp) {
-            prio_ptr->request_handling_ongoing = false;
-            res_handler(move(resp));
-            prio_ptr->forward_first_pending_request_if_present();
+    queue->pull_next_request_to_consumer(
+        [&](auto &&req, auto timeout, auto &&res_handler) {
+            base_req_handler->handle_request(
+                move(req), timeout,
+                [prio_ptr = move(prio_ptr), res_handler = move(res_handler)](auto resp) {
+                    prio_ptr->request_handling_ongoing = false;
+                    res_handler(move(resp));
+                    prio_ptr->forward_first_pending_request_if_present();
+                });
         });
 
     request_handling_ongoing = true;

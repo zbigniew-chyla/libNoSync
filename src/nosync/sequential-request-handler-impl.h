@@ -68,12 +68,10 @@ void sequential_request_handler<Req, Res>::handle_next_pending_request_if_needed
         return;
     }
 
-    auto req_pack = pending_requests.pull_next_request();
-
-    handle_request(
-        std::move(std::get<0>(req_pack)),
-        std::max(std::get<1>(req_pack) - evloop.get_etime(), std::chrono::nanoseconds(0)),
-        std::move(std::get<2>(req_pack)));
+    pending_requests.pull_next_request_to_consumer(
+        [&](auto &&req, auto timeout, auto &&res_handler) {
+            handle_request(move(req), timeout, move(res_handler));
+        });
 }
 
 
