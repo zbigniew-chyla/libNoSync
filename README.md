@@ -13,6 +13,8 @@ messages, exposed to the "core" part using generic interfaces (which can be
 easily decorated or mocked).
 
 
-Author: Zbigniew Chyla (zbigniew.chyla@nokia.com)
+Author: Zbigniew Chyla (zbigniew.chyla@gmail.com)
 
 Copyright (C) Nokia 2017,2018
+
+Copyright (C) Zbigniew Chyla 2018
