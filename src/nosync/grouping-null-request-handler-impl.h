@@ -7,7 +7,6 @@
 #include <nosync/result-handler.h>
 #include <nosync/time-utils.h>
 #include <utility>
-#include <vector>
 
 
 namespace nosync
@@ -51,13 +50,16 @@ void grouping_null_request_handler<Res>::handle_request(std::nullptr_t &&request
 
     base_req_handler->handle_request(
         std::move(request), timeout,
-        [req_handler_wptr = weak_from_that(this), res_handler = std::move(res_handler)](auto res) mutable {
-            std::vector<std::tuple<std::nullptr_t, std::chrono::time_point<eclock>, result_handler<Res>>> grouped_reqs;
+        [&evloop = evloop, req_handler_wptr = weak_from_that(this), res_handler = std::move(res_handler)](auto res) mutable {
+            requests_queue<std::nullptr_t, Res> grouped_reqs(evloop);
 
             auto req_handler_ptr = req_handler_wptr.lock();
             if (req_handler_ptr) {
                 while (req_handler_ptr->pending_requests.has_requests()) {
-                    grouped_reqs.push_back(req_handler_ptr->pending_requests.pull_next_request());
+                    req_handler_ptr->pending_requests.pull_next_request_to_consumer(
+                        [&](auto &&req, auto timeout, auto &&res_handler) {
+                            grouped_reqs.push_request(std::move(req), timeout, std::move(res_handler));
+                        });
                 }
                 req_handler_ptr->request_ongoing = false;
             }
@@ -65,10 +67,11 @@ void grouping_null_request_handler<Res>::handle_request(std::nullptr_t &&request
             res_handler(res);
             res_handler = nullptr;
 
-            for (auto &req : grouped_reqs) {
-                auto &pending_res_handler = std::get<result_handler<Res>>(req);
-                pending_res_handler(res);
-                pending_res_handler = nullptr;
+            while (grouped_reqs.has_requests()) {
+                grouped_reqs.pull_next_request_to_consumer(
+                    [&](auto &&, auto, auto &&res_handler) {
+                        res_handler(res);
+                    });
             }
         });
 }
