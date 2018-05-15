@@ -38,7 +38,6 @@ using testing::Return;
 TEST(NosyncPrioritizingRequestHandler, DirectForwarding)
 {
     const auto current_time = ch::time_point<eclock>(123s);
-    constexpr auto test_timeout = 3ns;
 
     auto mock_evloop = make_shared<event_loop_mock>();
     EXPECT_CALL(*mock_evloop, get_etime()).WillRepeatedly(Return(current_time));
@@ -82,7 +81,16 @@ TEST(NosyncPrioritizingRequestHandler, DelayedLowPrio)
     EXPECT_CALL(*mock_evloop, invoke_at_impl(Eq(current_time + test_timeout), _)).Times(2).WillRepeatedly(Invoke(
         [](auto, auto) {
             auto mock_timeout_task_handle = make_unique<activity_handle_mock>();
-            EXPECT_CALL(*mock_timeout_task_handle, disable()).Times(1);
+            auto mock_timeout_task_handle_enabled = make_shared<bool>(true);
+            EXPECT_CALL(*mock_timeout_task_handle, disable()).WillOnce(Invoke(
+                [mock_timeout_task_handle_enabled]() {
+                    ASSERT_TRUE(*mock_timeout_task_handle_enabled);
+                    *mock_timeout_task_handle_enabled = false;
+                }));
+            EXPECT_CALL(*mock_timeout_task_handle, is_enabled()).WillRepeatedly(Invoke(
+                [mock_timeout_task_handle_enabled]() {
+                    return *mock_timeout_task_handle_enabled;
+                }));
             return move(mock_timeout_task_handle);
         }));
 

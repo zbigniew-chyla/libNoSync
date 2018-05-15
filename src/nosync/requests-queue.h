@@ -7,6 +7,7 @@
 #include <deque>
 #include <experimental/optional>
 #include <functional>
+#include <nosync/activity-owner.h>
 #include <nosync/eclock.h>
 #include <nosync/event-loop.h>
 #include <nosync/result-handler.h>
@@ -40,9 +41,23 @@ public:
         Req &&request, std::chrono::time_point<eclock> timeout_end,
         result_handler<Res> &&res_handler);
 
+    void push_request(
+        Req &&request, std::chrono::nanoseconds timeout,
+        result_handler<Res> &&res_handler);
+
     bool has_requests() const;
 
     std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> pull_next_request();
+
+    template<typename F>
+    bool pull_next_request_to_consumer(const F &req_consumer);
+
+    template<typename RequestPredicate, typename Consumer>
+    bool pull_next_matching_request_to_consumer(
+        const RequestPredicate &predicate, const Consumer &req_consumer);
+
+    template<typename Func>
+    void for_each_request(const Func &func) const;
 
 private:
     void handle_pending_timeouts();
@@ -51,7 +66,7 @@ private:
 
     event_loop &evloop;
     std::deque<std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>>> requests;
-    std::experimental::optional<std::tuple<std::chrono::time_point<eclock>, std::unique_ptr<activity_handle>>> scheduled_timeout_task;
+    std::experimental::optional<std::tuple<std::chrono::time_point<eclock>, activity_owner>> scheduled_timeout_task;
 };
 
 }

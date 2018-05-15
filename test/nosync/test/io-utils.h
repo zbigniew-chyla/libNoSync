@@ -10,8 +10,8 @@ namespace nosync
 namespace test
 {
 
-int read_nointr(int fd, void *buf, std::size_t count);
-int write_nointr(int fd, const void *buf, std::size_t count);
+long read_nointr(int fd, void *buf, std::size_t count);
+long write_nointr(int fd, const void *buf, std::size_t count);
 
 }
 }

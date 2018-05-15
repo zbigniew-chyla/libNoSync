@@ -64,7 +64,7 @@ TEST(NosyncThreadPoolExecutor, NullTask)
 
 TEST(NosyncThreadPoolExecutor, ThreadIds)
 {
-    constexpr auto tasks_count = 4;
+    constexpr auto tasks_count = 4U;
 
     const auto main_thread_id = std::this_thread::get_id();
 

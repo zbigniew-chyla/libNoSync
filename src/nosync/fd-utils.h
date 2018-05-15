@@ -12,6 +12,14 @@ namespace nosync
 {
 
 /*!
+Wrapper around POSIX read() that returns the number of read bytes as result<>.
+
+The function automatically handles EINTR from system call (by retrying it).
+*/
+result<std::size_t> read_some_bytes_from_fd(int fd, char *buffer, std::size_t buffer_size);
+
+
+/*!
 Wrapper around POSIX read() that returns data as result<>.
 
 The function automatically handles EINTR from system call (by retrying it).

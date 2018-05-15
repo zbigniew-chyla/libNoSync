@@ -95,7 +95,7 @@ TEST(NosyncBytesReadUtils, NosyncReadAllPendingDataAndThenWithNoPending)
     vector<string> data_chunks;
     bool got_continue_call = false;
 
-    EXPECT_CALL(*mock_reader, read_some_bytes_impl(Gt(0), 0ns, _)).WillOnce(SaveArg<2>(&saved_read_result_handler));
+    EXPECT_CALL(*mock_reader, read_some_bytes_impl(Gt(0U), 0ns, _)).WillOnce(SaveArg<2>(&saved_read_result_handler));
     read_all_pending_bytes(
         mock_reader,
         [&](auto data) {
@@ -126,7 +126,7 @@ TEST(NosyncBytesReadUtils, NosyncReadAllPendingDataAndThenWithPending)
     vector<string> data_chunks;
     bool got_continue_call = false;
 
-    EXPECT_CALL(*mock_reader, read_some_bytes_impl(Gt(0), 0ns, _)).WillRepeatedly(SaveArg<2>(&saved_read_result_handler));
+    EXPECT_CALL(*mock_reader, read_some_bytes_impl(Gt(0U), 0ns, _)).WillRepeatedly(SaveArg<2>(&saved_read_result_handler));
     read_all_pending_bytes(
         mock_reader,
         [&](auto data) {

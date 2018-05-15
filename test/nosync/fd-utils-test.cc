@@ -39,7 +39,9 @@ TEST(NosyncFdUtils, ReadSomeBytesFromFdOk)
 {
     array<int, 2> pipe_fds;
     ASSERT_EQ(::pipe(pipe_fds.data()), 0);
-    ASSERT_EQ(write_nointr(pipe_fds[1], test_bytes.data(), test_bytes.size()), test_bytes.size());
+    auto write_retval = write_nointr(pipe_fds[1], test_bytes.data(), test_bytes.size());
+    ASSERT_GT(write_retval, 0);
+    ASSERT_EQ(static_cast<size_t>(write_retval), test_bytes.size());
 
     auto read_res = read_some_bytes_from_fd(pipe_fds[0], test_bytes.size() + 1);
     ASSERT_TRUE(read_res.is_ok());
@@ -57,7 +59,9 @@ TEST(NosyncFdUtils, WriteSomeBytesToFdOk)
     ASSERT_EQ(write_res.get_value(), test_bytes.size());
 
     string read_buf(test_bytes.size(), '\xFF');
-    ASSERT_EQ(read_nointr(pipe_fds[0], &read_buf[0], read_buf.size()), test_bytes.size());
+    auto read_retval = read_nointr(pipe_fds[0], &read_buf[0], read_buf.size());
+    ASSERT_GT(read_retval, 0);
+    ASSERT_EQ(static_cast<size_t>(read_retval), test_bytes.size());
     ASSERT_EQ(read_buf, test_bytes);
 }
 

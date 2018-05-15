@@ -56,8 +56,7 @@ void sequential_request_handler<Req, Res>::handle_request(Req &&request, std::ch
             });
         request_ongoing = true;
     } else {
-        pending_requests.push_request(
-            std::move(request), time_point_sat_add(evloop.get_etime(), timeout), std::move(res_handler));
+        pending_requests.push_request(std::move(request), timeout, std::move(res_handler));
     }
 }
 
@@ -69,12 +68,10 @@ void sequential_request_handler<Req, Res>::handle_next_pending_request_if_needed
         return;
     }
 
-    auto req_pack = pending_requests.pull_next_request();
-
-    handle_request(
-        std::move(std::get<0>(req_pack)),
-        std::max(std::get<1>(req_pack) - evloop.get_etime(), std::chrono::nanoseconds(0)),
-        std::move(std::get<2>(req_pack)));
+    pending_requests.pull_next_request_to_consumer(
+        [&](auto &&req, auto timeout, auto &&res_handler) {
+            handle_request(move(req), timeout, move(res_handler));
+        });
 }
 
 

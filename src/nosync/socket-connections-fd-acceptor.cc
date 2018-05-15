@@ -1,4 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#include <nosync/activity-owner.h>
 #include <nosync/result-utils.h>
 #include <nosync/socket-connections-fd-acceptor.h>
 #include <sys/socket.h>
@@ -10,7 +11,6 @@ using std::function;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;
-using std::unique_ptr;
 
 
 namespace nosync
@@ -24,11 +24,10 @@ class socket_connections_fd_acceptor : public interface_type
 public:
     socket_connections_fd_acceptor(
         fd_watcher &watcher, owned_fd &&listen_sock_fd, result_handler<shared_fd> &&conn_handler);
-    ~socket_connections_fd_acceptor() override;
 
 private:
     owned_fd listen_sock_fd;
-    unique_ptr<activity_handle> listen_sock_watch_handle;
+    activity_owner listen_sock_watch_owner;
 };
 
 
@@ -36,7 +35,7 @@ socket_connections_fd_acceptor::socket_connections_fd_acceptor(
     fd_watcher &watcher, owned_fd &&listen_sock_fd, result_handler<shared_fd> &&conn_handler)
     : listen_sock_fd(move(listen_sock_fd))
 {
-    listen_sock_watch_handle = watcher.add_watch(
+    listen_sock_watch_owner = watcher.add_watch(
         *this->listen_sock_fd, fd_watch_mode::input,
         [fd = *this->listen_sock_fd, conn_handler = move(conn_handler)]() {
             int accept_retval = ::accept4(fd, nullptr, nullptr, SOCK_NONBLOCK | SOCK_CLOEXEC);
@@ -45,12 +44,6 @@ socket_connections_fd_acceptor::socket_connections_fd_acceptor(
                     ? make_ok_result(shared_fd(accept_retval))
                     : make_raw_error_result_from_errno());
         });
-}
-
-
-socket_connections_fd_acceptor::~socket_connections_fd_acceptor()
-{
-    listen_sock_watch_handle->disable();
 }
 
 }

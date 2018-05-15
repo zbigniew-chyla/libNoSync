@@ -210,7 +210,7 @@ TEST(NosyncLinesReader, Timeout)
     auto evloop = manual_event_loop::create();
 
     auto mock_reader = make_shared<bytes_reader_mock>();
-    EXPECT_CALL(*mock_reader, read_some_bytes_impl(Ge(1), _, _)).WillRepeatedly(Invoke(
+    EXPECT_CALL(*mock_reader, read_some_bytes_impl(Ge(1U), _, _)).WillRepeatedly(Invoke(
         [&evloop](auto, auto timeout, auto result_handler) {
             if (timeout >= 10ns) {
                 evloop->invoke_at(

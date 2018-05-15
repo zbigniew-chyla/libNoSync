@@ -18,7 +18,6 @@ using namespace std::chrono_literals;
 using namespace std::string_literals;
 using std::errc;
 using std::enable_shared_from_this;
-using std::get;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;
@@ -44,7 +43,6 @@ public:
 private:
     void handle_next_pending_request();
 
-    event_loop &evloop;
     shared_ptr<bytes_reader> base_reader;
     requests_queue<size_t, string> pending_requests;
     size_t remaining_size_limit;
@@ -54,7 +52,7 @@ private:
 
 size_limited_bytes_reader::size_limited_bytes_reader(
     event_loop &evloop, size_t total_size_limit, shared_ptr<bytes_reader> &&base_reader)
-    : evloop(evloop), base_reader(move(base_reader)), pending_requests(evloop), remaining_size_limit(total_size_limit),
+    : base_reader(move(base_reader)), pending_requests(evloop), remaining_size_limit(total_size_limit),
     read_ongoing(false)
 {
 }
@@ -92,8 +90,7 @@ void size_limited_bytes_reader::read_some_bytes(
 
         read_ongoing = true;
     } else {
-        pending_requests.push_request(
-            make_copy(max_size), time_point_sat_add(evloop.get_etime(), timeout), move(res_handler));
+        pending_requests.push_request(make_copy(max_size), timeout, move(res_handler));
     }
 }
 
@@ -104,11 +101,10 @@ void size_limited_bytes_reader::handle_next_pending_request()
         return;
     }
 
-    auto req = pending_requests.pull_next_request();
-
-    read_some_bytes(
-        get<size_t>(req), std::max(get<ch::time_point<eclock>>(req) - evloop.get_etime(), 0ns),
-        move(get<result_handler<string>>(req)));
+    pending_requests.pull_next_request_to_consumer(
+        [&](auto req, auto timeout, auto res_handler) {
+            read_some_bytes(move(req), timeout, move(res_handler));
+        });
 }
 
 }

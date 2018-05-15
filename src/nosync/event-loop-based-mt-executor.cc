@@ -1,12 +1,12 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <memory>
 #include <mutex>
+#include <nosync/activity-owner.h>
 #include <nosync/event-loop-based-mt-executor.h>
 #include <nosync/event-loop-utils.h>
 #include <nosync/fd-utils.h>
 #include <nosync/io-utils.h>
 #include <queue>
-#include <stdexcept>
 #include <utility>
 
 using std::enable_shared_from_this;
@@ -17,9 +17,7 @@ using std::make_shared;
 using std::move;
 using std::mutex;
 using std::queue;
-using std::runtime_error;
 using std::shared_ptr;
-using std::unique_ptr;
 
 
 namespace nosync
@@ -87,7 +85,7 @@ private:
     fd_watching_event_loop &evloop;
     shared_ptr<synchronized_queue<function<void()>>> tasks_queue;
     owned_fd in_notify_fd;
-    unique_ptr<activity_handle> in_notify_activity_handle;
+    activity_owner in_notify_watch_owner;
 };
 
 
@@ -95,18 +93,14 @@ queued_tasks_dispatcher::queued_tasks_dispatcher(
     fd_watching_event_loop &evloop, shared_ptr<synchronized_queue<function<void()>>> tasks_queue,
     owned_fd &&in_notify_fd)
     : evloop(evloop), tasks_queue(move(tasks_queue)), in_notify_fd(move(in_notify_fd)),
-    in_notify_activity_handle()
+    in_notify_watch_owner()
 {
 }
 
 
 void queued_tasks_dispatcher::start()
 {
-    if (in_notify_activity_handle) {
-        throw runtime_error("tasks dispatcher already started");
-    }
-
-    in_notify_activity_handle = evloop.add_watch(
+    in_notify_watch_owner = evloop.add_watch(
         *in_notify_fd, fd_watch_mode::input,
         [dispatcher_ptr = shared_from_this()]() {
             dispatcher_ptr->handle_in_notify();
@@ -127,7 +121,7 @@ void queued_tasks_dispatcher::handle_in_notify()
     }
 
     if (!notify_read_res.is_ok() || notify_read_res.get_value().empty()) {
-        in_notify_activity_handle->disable();
+        in_notify_watch_owner.reset();
     }
 }
 

@@ -7,6 +7,7 @@
 #include <nosync/event-loop-utils.h>
 #include <nosync/raw-error-result.h>
 #include <nosync/result-utils.h>
+#include <nosync/time-utils.h>
 #include <stdexcept>
 #include <system_error>
 #include <utility>
@@ -42,10 +43,6 @@ requests_queue<Req, Res>::requests_queue(event_loop &evloop)
 template<typename Req, typename Res>
 requests_queue<Req, Res>::~requests_queue()
 {
-    if (scheduled_timeout_task) {
-        std::get<std::unique_ptr<activity_handle>>(*scheduled_timeout_task)->disable();
-    }
-
     if (!requests.empty()) {
         invoke_later(
             evloop,
@@ -71,6 +68,15 @@ void requests_queue<Req, Res>::push_request(
 
 
 template<typename Req, typename Res>
+void requests_queue<Req, Res>::push_request(
+    Req &&request, std::chrono::nanoseconds timeout,
+    result_handler<Res> &&res_handler)
+{
+    push_request(std::move(request), time_point_sat_add(evloop.get_etime(), timeout), std::move(res_handler));
+}
+
+
+template<typename Req, typename Res>
 bool requests_queue<Req, Res>::has_requests() const
 {
     return !requests.empty();
@@ -90,6 +96,70 @@ std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> requests_q
     reschedule_timeout_task();
 
     return next_request;
+}
+
+
+template<typename Req, typename Res>
+template<typename F>
+bool requests_queue<Req, Res>::pull_next_request_to_consumer(const F &req_consumer)
+{
+    if (requests.empty()) {
+        return false;
+    }
+
+    auto req = pull_next_request();
+
+    req_consumer(
+        std::move(std::get<Req>(req)),
+        std::max(std::get<std::chrono::time_point<eclock>>(req) - evloop.get_etime(), std::chrono::nanoseconds(0)),
+        std::move(std::get<result_handler<Res>>(req)));
+
+    return true;
+}
+
+
+template<typename Req, typename Res>
+template<typename RequestPredicate, typename Consumer>
+bool requests_queue<Req, Res>::pull_next_matching_request_to_consumer(
+    const RequestPredicate &predicate, const Consumer &req_consumer)
+{
+    auto found_req_iter = std::find_if(
+        requests.begin(), requests.end(),
+        [&](const auto &req) {
+            return predicate(std::get<Req>(req));
+        });
+
+    bool request_found = found_req_iter != requests.end();
+
+    if (request_found) {
+        auto req = std::move(*found_req_iter);
+
+        requests.erase(found_req_iter);
+        reschedule_timeout_task();
+
+        req_consumer(
+            std::move(std::get<Req>(req)),
+            std::max(std::get<std::chrono::time_point<eclock>>(req) - evloop.get_etime(), std::chrono::nanoseconds(0)),
+            std::move(std::get<result_handler<Res>>(req)));
+    }
+
+    return request_found;
+}
+
+
+template<typename Req, typename Res>
+template<typename Func>
+void requests_queue<Req, Res>::for_each_request(const Func &func) const
+{
+    const auto etime = evloop.get_etime();
+    std::for_each(
+        requests.begin(), requests.end(),
+        [&](const auto &req) {
+            func(
+                std::get<Req>(req),
+                std::max(std::get<std::chrono::time_point<eclock>>(req) - etime, std::chrono::nanoseconds(0)),
+                std::get<result_handler<Res>>(req));
+        });
 }
 
 
@@ -127,12 +197,9 @@ void requests_queue<Req, Res>::handle_pending_timeouts()
 template<typename Req, typename Res>
 void requests_queue<Req, Res>::disable_timeout_task_if_present()
 {
-    if (!scheduled_timeout_task) {
-        return;
+    if (scheduled_timeout_task) {
+        scheduled_timeout_task = std::experimental::nullopt;
     }
-
-    std::get<std::unique_ptr<activity_handle>>(*scheduled_timeout_task)->disable();
-    scheduled_timeout_task = std::experimental::nullopt;
 }
 
 

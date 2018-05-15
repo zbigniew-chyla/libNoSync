@@ -25,6 +25,7 @@ public:
     static std::shared_ptr<manual_event_loop> create(std::chrono::time_point<eclock> init_time = {});
 
     manual_event_loop(std::chrono::time_point<eclock> init_time);
+    ~manual_event_loop() override;
 
     std::experimental::optional<std::chrono::time_point<eclock>> get_earliest_task_time() const;
     bool process_time_passage(std::chrono::nanoseconds time_delta);

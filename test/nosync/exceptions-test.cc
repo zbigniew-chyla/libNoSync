@@ -10,7 +10,6 @@
 #include <string>
 
 using namespace std::string_literals;
-using nosync::get_nonnull_or_throw;
 using nosync::print_current_exception_info;
 using nosync::print_exception_info;
 using nosync::throw_system_error_from_errno;
@@ -142,23 +141,4 @@ TEST(NosyncExceptions, PrintCurrentExceptionInfoNestedNull) {
     }
 
     ASSERT_TRUE(regex_match(ostr.str(), regex("TEST-PREFIX:.*\n")));
-}
-
-
-TEST(NosyncExceptions, GetNonnullOrThrowWithNotNull) {
-    auto *test_pointer = "abc";
-    ASSERT_EQ(get_nonnull_or_throw(test_pointer, "unused message"s), test_pointer);
-}
-
-
-TEST(NosyncExceptions, GetNonnullOrThrowWithNull) {
-    const auto missing_data_message = "missing data"s;
-    try {
-        get_nonnull_or_throw(static_cast<const char *>(nullptr), missing_data_message);
-        FAIL();
-    } catch (runtime_error &e) {
-        auto *error_msg = e.what();
-        ASSERT_NE(error_msg, nullptr);
-        ASSERT_NE(string(error_msg).find(missing_data_message), string::npos);
-    }
 }

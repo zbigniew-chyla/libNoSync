@@ -1,5 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <nosync/async-funcs-proxy.h>
+#include <nosync/activity-owner.h>
 #include <nosync/eclock.h>
 #include <nosync/periodic-tick-generator.h>
 #include <utility>
@@ -26,7 +26,7 @@ private:
     ch::nanoseconds interval;
     function<void()> tick_func;
     ch::time_point<eclock> last_tick_time;
-    async_funcs_proxy asyncs_proxy;
+    activity_owner tick_task_owner;
 };
 
 
@@ -39,14 +39,13 @@ periodic_tick_generator::periodic_tick_generator(event_loop &evloop, ch::nanosec
 
 void periodic_tick_generator::schedule_next_tick()
 {
-    evloop.invoke_at(
+    tick_task_owner = evloop.invoke_at(
         last_tick_time + interval,
-        asyncs_proxy.wrap(
-            [this]() {
-                last_tick_time += interval;
-                tick_func();
-                schedule_next_tick();
-            }));
+        [this]() {
+            last_tick_time += interval;
+            tick_func();
+            schedule_next_tick();
+        });
 }
 
 

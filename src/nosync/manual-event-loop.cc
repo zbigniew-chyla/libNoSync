@@ -67,6 +67,17 @@ manual_event_loop::manual_event_loop(ch::time_point<eclock> init_time)
 }
 
 
+manual_event_loop::~manual_event_loop()
+{
+    while (!pending_tasks.empty()) {
+        auto erase_iter = pending_tasks.begin();
+        auto erase_task = move(erase_iter->second);
+        pending_tasks.erase(erase_iter);
+        erase_task = nullptr;
+    }
+}
+
+
 optional<ch::time_point<eclock>> manual_event_loop::get_earliest_task_time() const
 {
     if (pending_tasks.empty()) {
