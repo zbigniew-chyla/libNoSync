@@ -5,6 +5,7 @@
 #include <nosync/activity-owner.h>
 #include <nosync/exceptions.h>
 #include <nosync/fd-utils.h>
+#include <nosync/result-utils.h>
 #include <nosync/shared-fd.h>
 #include <nosync/signalfd-watcher.h>
 #include <sys/signalfd.h>
@@ -22,19 +23,17 @@ namespace nosync
 namespace
 {
 
-shared_fd create_signalfd_for_signal(int signal_num)
+result<shared_fd> create_signalfd_for_signal(int signal_num)
 {
     sigset_t sigset;
     if (sigemptyset(&sigset) < 0 || sigaddset(&sigset, signal_num) < 0) {
-        throw_system_error_from_errno();
+        return make_raw_error_result_from_errno();
     }
 
-    int signal_fd = ::signalfd(-1, &sigset, SFD_NONBLOCK | SFD_CLOEXEC);
-    if (signal_fd < 0) {
-        throw_system_error_from_errno();
-    }
-
-    return shared_fd(signal_fd);
+    int signalfd_retval = ::signalfd(-1, &sigset, SFD_NONBLOCK | SFD_CLOEXEC);
+    return signalfd_retval >= 0
+        ? make_ok_result(shared_fd(signalfd_retval))
+        : make_raw_error_result_from_errno();
 }
 
 
@@ -80,7 +79,7 @@ shared_ptr<interface_type> make_signalfd_watcher(
     fd_watching_event_loop &evloop, int signal_num, function<void()> &&signal_handler)
 {
     return make_shared<signalfd_watcher>(
-        evloop, create_signalfd_for_signal(signal_num), move(signal_handler));
+        evloop, get_result_value_or_throw(create_signalfd_for_signal(signal_num)), move(signal_handler));
 }
 
 }
