@@ -63,7 +63,7 @@ destroy_notifier::~destroy_notifier()
 
 TEST(NosyncManualFdWatcher, TestInitial)
 {
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     watcher->notify_watches(123, fd_watch_mode::input);
     watcher->notify_watches(456, fd_watch_mode::output);
@@ -75,7 +75,7 @@ TEST(NosyncManualFdWatcher, TestInitial)
 
 TEST(NosyncManualFdWatcher, TestSingleWatch)
 {
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     auto counter = 0U;
 
@@ -110,7 +110,7 @@ TEST(NosyncManualFdWatcher, TestSingleWatch)
 
 TEST(NosyncManualFdWatcher, TestCheckWatchesFdInfo)
 {
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     auto empty_func = []() {
     };
@@ -141,7 +141,7 @@ TEST(NosyncManualFdWatcher, TestMultipleWatchesSingleCond)
     constexpr auto fd = 123;
     constexpr auto mode = fd_watch_mode::input;
 
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     vector<unsigned> counters;
     vector<unique_ptr<activity_handle>> watch_handles;
@@ -193,7 +193,7 @@ TEST(NosyncManualFdWatcher, TestMultipleWatchesMultipleCond)
         make_tuple(123, fd_watch_mode::output),
         make_tuple(789, fd_watch_mode::input));
 
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     vector<unsigned> counters;
     vector<unique_ptr<activity_handle>> watch_handles;
@@ -226,7 +226,7 @@ TEST(NosyncManualFdWatcher, TestMultipleWatchesMultipleCond)
 
 TEST(NosyncManualFdWatcher, TestDetachedHandle)
 {
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     auto handle = watcher->add_watch(
         123, fd_watch_mode::input,
@@ -244,7 +244,7 @@ TEST(NosyncManualFdWatcher, TestRemoveDuringNotify)
     constexpr auto fd = 123;
     constexpr auto mode = fd_watch_mode::input;
 
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     auto counter_a = 0U;
     auto counter_b = 0U;
@@ -277,7 +277,7 @@ TEST(NosyncManualFdWatcher, TestAddDuringNotify)
     constexpr auto fd = 123;
     constexpr auto mode = fd_watch_mode::input;
 
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     auto counter_a = 0U;
     auto counter_b = 0U;
@@ -323,7 +323,7 @@ TEST(NosyncManualFdWatcher, TestUseHandleDuringDestroy)
     unique_ptr<activity_handle> a_handle;
     unique_ptr<activity_handle> b_handle;
 
-    auto watcher = manual_fd_watcher::create();
+    auto watcher = make_shared<manual_fd_watcher>();
 
     auto a_watch_destroy_checker = [&]() {
         ASSERT_TRUE(a_handle);

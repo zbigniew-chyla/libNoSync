@@ -1,13 +1,12 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <nosync/hex-encoded-messages-request-handler.h>
+#include <nosync/raw-error-result.h>
 #include <nosync/string-utils.h>
 #include <nosync/transforming-request-handler.h>
-#include <stdexcept>
 #include <system_error>
 #include <utility>
 
 using std::errc;
-using std::invalid_argument;
 using std::move;
 using std::shared_ptr;
 using std::string;
@@ -25,11 +24,8 @@ shared_ptr<request_handler<string, string>> make_hex_encoded_messages_request_ha
             return make_ok_result(bytes_to_hex_string(msg));
         },
         [](auto msg) {
-            try {
-               return make_ok_result(bytes_from_hex_string(msg));
-            } catch (const invalid_argument &) {
-               return make_error_result<string>(errc::bad_message);
-            }
+            auto decoded_msg = try_decode_hex_string_to_bytes(msg);
+            return decoded_msg ? make_ok_result(move(*decoded_msg)) : raw_error_result(errc::bad_message);
         });
 }
 

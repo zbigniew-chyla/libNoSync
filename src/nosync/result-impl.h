@@ -2,7 +2,7 @@
 #ifndef NOSYNC__RESULT_IMPL_H
 #define NOSYNC__RESULT_IMPL_H
 
-#include <stdexcept>
+#include <nosync/exceptions.h>
 #include <utility>
 
 
@@ -65,7 +65,7 @@ template<typename T>
 std::error_code result<T>::get_error() const
 {
     if (is_ok()) {
-        throw std::logic_error("reading error from async result which contains value");
+        throw_logic_error("reading error from async result which contains value");
     }
 
     return std::get<std::error_code>(res_err);
@@ -103,7 +103,7 @@ template<typename T>
 void result<T>::check_is_ok() const
 {
     if (!is_ok()) {
-        throw std::logic_error("reading async result value wich contains error");
+        throw_logic_error("reading async result value wich contains error");
     }
 }
 

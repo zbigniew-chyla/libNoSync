@@ -47,7 +47,7 @@ public:
 
     bool has_requests() const;
 
-    std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> pull_next_request();
+    [[deprecated("use pull_next_request_to_consumer instead")]] std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> pull_next_request();
 
     template<typename F>
     bool pull_next_request_to_consumer(const F &req_consumer);

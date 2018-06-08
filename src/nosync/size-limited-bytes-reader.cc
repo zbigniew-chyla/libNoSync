@@ -102,8 +102,8 @@ void size_limited_bytes_reader::handle_next_pending_request()
     }
 
     pending_requests.pull_next_request_to_consumer(
-        [&](auto req, auto timeout, auto res_handler) {
-            read_some_bytes(move(req), timeout, move(res_handler));
+        [this](auto req, auto timeout, auto res_handler) {
+            this->read_some_bytes(move(req), timeout, move(res_handler));
         });
 }
 

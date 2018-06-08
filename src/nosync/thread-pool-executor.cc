@@ -1,6 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <exception>
 #include <memory>
+#include <nosync/exceptions.h>
 #include <nosync/synchronized-queue.h>
 #include <nosync/thread-pool-executor.h>
 #include <thread>
@@ -108,11 +109,13 @@ void thread_pool_executor::run_worker_thread(
             break;
         }
 
-        try {
-            task();
-        } catch (...) {
-            exception_handler(current_exception());
-        }
+        try_with_catch_all(
+            [&]() {
+                task();
+            },
+            [&]() {
+                exception_handler(current_exception());
+            });
     }
 }
 

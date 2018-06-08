@@ -2,6 +2,7 @@
 #ifndef NOSYNC__THREADED_REQUEST_HANDLER_IMPL_H
 #define NOSYNC__THREADED_REQUEST_HANDLER_IMPL_H
 
+#include <nosync/exceptions.h>
 #include <nosync/raw-error-result.h>
 #include <nosync/result-handler.h>
 #include <system_error>
@@ -72,11 +73,13 @@ void threaded_request_handler<Req, Res>::handle_request(
     thread_executor(
         [exec_ctx = exec_ctx, request = std::make_shared<Req>(std::move(request)), timeout, response_handler = std::move(response_handler)]() mutable {
             std::shared_ptr<result<Res>> response;
-            try {
-                response = std::make_shared<result<Res>>(exec_ctx->sync_req_handler(std::move(*request), timeout));
-            } catch (...) {
-                response = std::make_shared<result<Res>>(raw_error_result(std::errc::owner_dead));
-            }
+            try_with_catch_all(
+                [&]() {
+                    response = std::make_shared<result<Res>>(exec_ctx->sync_req_handler(std::move(*request), timeout));
+                },
+                [&]() {
+                    response = std::make_shared<result<Res>>(raw_error_result(std::errc::owner_dead));
+                });
             exec_ctx->evloop_executor(
                 [response_handler = std::move(response_handler), response = std::move(response)]() mutable {
                     response_handler(std::move(*response));

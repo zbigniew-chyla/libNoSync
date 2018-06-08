@@ -2,6 +2,7 @@
 #ifndef NOSYNC__NUMBER_UTILS_IMPL_H
 #define NOSYNC__NUMBER_UTILS_IMPL_H
 
+#include <algorithm>
 #include <experimental/array>
 #include <experimental/type_traits>
 #include <nosync/type-utils.h>
@@ -188,9 +189,18 @@ constexpr T decode_be_bytes_to_number(std::experimental::string_view bytes)
         throw std::invalid_argument("too many input bytes for target type: "s + std::to_string(bytes.size()));
     }
 
+    return decode_leading_be_bytes_to_number(bytes);
+}
+
+
+template<typename T>
+constexpr T decode_leading_be_bytes_to_number(std::experimental::string_view bytes)
+{
+    const auto used_bytes_count = std::min(sizeof(T), bytes.size());
+
     T value = 0;
-    for (std::size_t i = 0; i < bytes.size(); ++i) {
-        value |= static_cast<T>(cast_to_unsigned(bytes[i])) << (sizeof_in_bits<char> * (bytes.size() - 1 - i));
+    for (std::size_t i = 0; i < used_bytes_count; ++i) {
+        value |= static_cast<T>(cast_to_unsigned(bytes[i])) << (sizeof_in_bits<char> * (used_bytes_count - 1 - i));
     }
 
     return value;
@@ -205,8 +215,17 @@ constexpr T decode_le_bytes_to_number(std::experimental::string_view bytes)
         throw std::invalid_argument("too many input bytes for target type: "s + std::to_string(bytes.size()));
     }
 
+    return decode_leading_le_bytes_to_number(bytes);
+}
+
+
+template<typename T>
+constexpr T decode_leading_le_bytes_to_number(std::experimental::string_view bytes)
+{
+    const auto used_bytes_count = std::min(sizeof(T), bytes.size());
+
     T value = 0;
-    for (size_t i = 0; i < bytes.size(); ++i) {
+    for (size_t i = 0; i < used_bytes_count; ++i) {
         value |= static_cast<T>(cast_to_unsigned(bytes[i])) << (sizeof_in_bits<char> * i);
     }
 

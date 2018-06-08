@@ -1,6 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <chrono>
-#include <experimental/array>
 #include <functional>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -14,7 +13,6 @@ using namespace std::chrono_literals;
 using nosync::activity_handle_mock;
 using nosync::eclock;
 using nosync::event_loop_mock;
-using std::experimental::make_array;
 using std::make_shared;
 using std::make_unique;
 using testing::_;

@@ -5,14 +5,16 @@
 #include <nosync/manual-event-loop.h>
 #include <nosync/periodic-tick-generator.h>
 
+namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using nosync::make_periodic_tick_generator;
 using nosync::manual_event_loop;
+using std::make_shared;
 
 
 TEST(NosyncTickGenerator, CreateTickTickDestroy)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
     ASSERT_FALSE(evloop->get_earliest_task_time());
 
     auto tick_counter = 0U;

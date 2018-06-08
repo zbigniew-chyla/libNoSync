@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#include <nosync/exceptions.h>
 #include <nosync/result.h>
-#include <stdexcept>
 #include <utility>
 
 using std::error_code;
@@ -33,7 +33,7 @@ bool result<void>::is_ok() const
 error_code result<void>::get_error() const
 {
     if (is_ok()) {
-        throw std::logic_error("reading error from async result which contains value");
+        throw_logic_error("reading error from async result which contains value");
     }
 
     return get<error_code>(res_err);

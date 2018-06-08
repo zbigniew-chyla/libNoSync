@@ -1,10 +1,10 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC__SUBPROCESS_REAPER_H
-#define NOSYNC__SUBPROCESS_REAPER_H
+#ifndef NOSYNC__SUBPROCESSES_REAPER_H
+#define NOSYNC__SUBPROCESSES_REAPER_H
 
-#include <functional>
 #include <nosync/fd-watching-event-loop.h>
 #include <nosync/request-handler.h>
+#include <nosync/result.h>
 #include <memory>
 #include <sys/types.h>
 
@@ -24,13 +24,13 @@ Requesting for status should be done immediately after starting a sub-process
 as the reaper quietly ignores exit statuses for sub-processes for which there
 are no pending requests.
 
-Normally there should be only one subprocess reaper used for the whole
+Normally there should be only one subprocesses reaper used for the whole
 application process.
 
 Note: SIGCHLD signal should be blocked when subprocess reaper is used.
 */
-[[deprecated("use make_subprocesses_reaper instead")]] std::shared_ptr<request_handler<pid_t, int>> make_subprocess_reaper(fd_watching_event_loop &evloop);
+result<std::shared_ptr<request_handler<pid_t, int>>> make_subprocesses_reaper(fd_watching_event_loop &evloop);
 
 }
 
-#endif /* NOSYNC__SUBPROCESS_REAPER_H */
+#endif /* NOSYNC__SUBPROCESSES_REAPER_H */

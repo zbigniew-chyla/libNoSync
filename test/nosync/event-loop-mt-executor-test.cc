@@ -1,16 +1,18 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <atomic>
 #include <gtest/gtest.h>
-#include <nosync/event-loop-based-mt-executor.h>
+#include <nosync/event-loop-mt-executor.h>
 #include <nosync/ppoll-based-event-loop.h>
 #include <thread>
+#include <utility>
 #include <vector>
 
 using namespace std::chrono_literals;
 using std::atomic_uint;
-using nosync::make_event_loop_based_mt_executor;
+using nosync::make_event_loop_mt_executor;
 using nosync::make_ppoll_based_event_loop;
 using std::make_shared;
+using std::move;
 using std::thread;
 using std::vector;
 
@@ -23,24 +25,29 @@ constexpr auto small_time_increment = 1ns;
 }
 
 
-TEST(NosyncEventLoopBasedMtExecutor, CheckLifetime)
+TEST(NosyncEventLoopMtExecutor, CheckLifetime)
 {
     auto evloop = make_ppoll_based_event_loop();
 
-    auto executor = make_event_loop_based_mt_executor(*evloop);
+    auto executor_res = make_event_loop_mt_executor(*evloop);
+    ASSERT_TRUE(executor_res.is_ok());
+    auto executor = move(executor_res.get_value());
     executor = nullptr;
 
     evloop->run_iterations();
 }
 
 
-TEST(NosyncEventLoopBasedMtExecutor, TestPushFromEvloopThread)
+TEST(NosyncEventLoopMtExecutor, TestPushFromEvloopThread)
 {
     auto evloop = make_ppoll_based_event_loop();
 
     auto counter = make_shared<unsigned>(0);
 
-    auto executor = make_event_loop_based_mt_executor(*evloop);
+    auto executor_res = make_event_loop_mt_executor(*evloop);
+    ASSERT_TRUE(executor_res.is_ok());
+    auto executor = move(executor_res.get_value());
+
     evloop->invoke_at(
         evloop->get_etime(),
         [executor, counter]() {
@@ -59,7 +66,7 @@ TEST(NosyncEventLoopBasedMtExecutor, TestPushFromEvloopThread)
 }
 
 
-TEST(NosyncEventLoopBasedMtExecutor, TestPushFromOtherThreads)
+TEST(NosyncEventLoopMtExecutor, TestPushFromOtherThreads)
 {
     constexpr auto threads_count = 4U;
 
@@ -71,7 +78,9 @@ TEST(NosyncEventLoopBasedMtExecutor, TestPushFromOtherThreads)
 
     vector<thread> worker_threads;
 
-    auto executor = make_event_loop_based_mt_executor(*evloop);
+    auto executor_res = make_event_loop_mt_executor(*evloop);
+    ASSERT_TRUE(executor_res.is_ok());
+    auto executor = move(executor_res.get_value());
 
     for (unsigned i = 0; i < threads_count; ++i) {
         evloop->invoke_at(

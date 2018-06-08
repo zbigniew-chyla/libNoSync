@@ -9,7 +9,6 @@
 #include <nosync/requests-queue.h>
 #include <nosync/result-utils.h>
 #include <nosync/type-utils.h>
-#include <stdexcept>
 #include <string>
 #include <system_error>
 #include <utility>
@@ -29,8 +28,6 @@ using nosync::requests_queue;
 using nosync::result;
 using std::errc;
 using std::function;
-using std::get;
-using std::logic_error;
 using std::make_error_code;
 using std::make_unique;
 using std::move;
@@ -50,11 +47,15 @@ TEST(NosyncRequestsQueue, CheckInitEmptyQueue)
     auto req_queue = make_unique<requests_queue<unsigned, string>>(*mock_evloop);
 
     ASSERT_FALSE(req_queue->has_requests());
-    ASSERT_THROW(req_queue->pull_next_request(), logic_error);
+    auto got_request = req_queue->pull_next_request_to_consumer(
+        [](auto, auto, auto) {
+            FAIL();
+        });
+    ASSERT_FALSE(got_request);
 }
 
 
-TEST(NosyncRequestsQueue, PullRequest)
+TEST(NosyncRequestsQueue, PullRequestToConsumer)
 {
     const auto current_time = ch::time_point<eclock>(ch::seconds(123456));
     constexpr auto read_timeout = 10s;
@@ -96,15 +97,22 @@ TEST(NosyncRequestsQueue, PullRequest)
     ASSERT_EQ(results.size(), 0U);
     ASSERT_TRUE(saved_timeout_task);
 
-    auto request = req_queue->pull_next_request();
-    ASSERT_FALSE(req_queue->has_requests());
+    function<void(result<string>)> req_res_handler;
+    auto got_request = req_queue->pull_next_request_to_consumer(
+        [&](auto req, auto timeout, auto res_handler) {
+            ASSERT_EQ(req, test_read_max_size);
+            ASSERT_EQ(timeout, read_timeout);
+            req_res_handler = move(res_handler);
+        });
 
-    ASSERT_EQ(get<unsigned>(request), test_read_max_size);
-    ASSERT_EQ(get<ch::time_point<eclock>>(request), current_time + read_timeout);
+    ASSERT_TRUE(got_request);
+    ASSERT_TRUE(req_res_handler);
+
+    ASSERT_FALSE(req_queue->has_requests());
 
     const auto test_result = make_ok_result("abc"s);
 
-    get<function<void(result<string>)>>(request)(test_result);
+    req_res_handler(test_result);
 
     ASSERT_EQ(results.size(), 1U);
     ASSERT_EQ(results.front(), test_result);

@@ -16,6 +16,7 @@
 #include <utility>
 #include <vector>
 
+namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using namespace std::string_literals;
 using nosync::bytes_reader_mock;
@@ -78,7 +79,7 @@ function<void(T)> make_vector_pusher(vector<T> &out_vector)
 
 TEST(NosyncLinesReader, ValidLines)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     auto lines_reader = make_lines_reader(
         *evloop, make_const_bytes_reader(*evloop, "\n\n123\n456789\n\nabcdefg\n"s), 7);
@@ -105,7 +106,7 @@ TEST(NosyncLinesReader, ValidLines)
 
 TEST(NosyncLinesReader, ValidLinesWithBigMax)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     auto lines_reader = make_lines_reader(
         *evloop, make_const_bytes_reader(*evloop, "\n\n123\n"s), 1024 * 1024);
@@ -129,7 +130,7 @@ TEST(NosyncLinesReader, ValidLinesWithBigMax)
 
 TEST(NosyncLinesReader, Eof)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     auto lines_reader = make_lines_reader(
         *evloop, make_const_bytes_reader(*evloop, "123\n456"s), 3);
@@ -153,7 +154,7 @@ TEST(NosyncLinesReader, Eof)
 
 TEST(NosyncLinesReader, TooLongLine)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     auto lines_reader = make_lines_reader(
         *evloop, make_const_bytes_reader(*evloop, "123\n456\nabcdefghi\n"s), 3);
@@ -177,7 +178,7 @@ TEST(NosyncLinesReader, TooLongLine)
 
 TEST(NosyncLinesReader, ReadError)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     auto mock_reader = make_shared<bytes_reader_mock>();
     EXPECT_CALL(*mock_reader, read_some_bytes_impl(_, _, _)).WillRepeatedly(Invoke(
@@ -207,7 +208,7 @@ TEST(NosyncLinesReader, ReadError)
 
 TEST(NosyncLinesReader, Timeout)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     auto mock_reader = make_shared<bytes_reader_mock>();
     EXPECT_CALL(*mock_reader, read_some_bytes_impl(Ge(1U), _, _)).WillRepeatedly(Invoke(

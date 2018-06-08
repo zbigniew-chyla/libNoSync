@@ -35,7 +35,7 @@ if(ENABLE_TESTS)
 
     file(GLOB_RECURSE nosync-test_SRC FOLLOW_SYMLINKS "test/*.cc")
     add_executable(nosync-test ${nosync-test_SRC})
-    target_compile_options(nosync-test PRIVATE --coverage -O0)
+    target_compile_options(nosync-test PRIVATE --coverage -O0 -Wno-deprecated-declarations)
     set_target_properties(nosync-test PROPERTIES LINK_FLAGS "--coverage")
     target_include_directories(nosync-test PUBLIC mock test)
     target_link_libraries(nosync-test nosync-static-for-test gtest gmock gtest_main)

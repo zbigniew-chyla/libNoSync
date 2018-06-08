@@ -5,13 +5,16 @@
 #include <nosync/io-utils.h>
 #include <unistd.h>
 
-using nosync::create_nonblocking_pipe;
+using nosync::open_pipe;
 using std::array;
 
 
-TEST(NosyncIoUtils, CreateNonBlockingPipeCheckFds)
+TEST(NosyncIoUtils, OpenPipeCheckFds)
 {
-    auto pipe_fds = create_nonblocking_pipe();
+    auto pipe_fds_res = open_pipe();
+    ASSERT_TRUE(pipe_fds_res.is_ok());
+    auto &pipe_fds = pipe_fds_res.get_value();
+
     ASSERT_GE(*pipe_fds[0], 0);
     ASSERT_GE(*pipe_fds[1], 0);
     auto read_open_flags = ::fcntl(*pipe_fds[0], F_GETFL);
@@ -21,9 +24,11 @@ TEST(NosyncIoUtils, CreateNonBlockingPipeCheckFds)
 }
 
 
-TEST(NosyncIoUtils, CreateNonBlockingPipeCheckEmptyRead)
+TEST(NosyncIoUtils, OpenPipeCheckEmptyRead)
 {
-    auto pipe_fds = create_nonblocking_pipe();
+    auto pipe_fds_res = open_pipe();
+    ASSERT_TRUE(pipe_fds_res.is_ok());
+    auto &pipe_fds = pipe_fds_res.get_value();
 
     errno = 0;
     array<char, 1> read_buf;
@@ -33,11 +38,13 @@ TEST(NosyncIoUtils, CreateNonBlockingPipeCheckEmptyRead)
 }
 
 
-TEST(NosyncIoUtils, CreateNonBlockingPipeCheckIO)
+TEST(NosyncIoUtils, OpenPipeCheckIO)
 {
     constexpr auto test_byte = '\xAD';
 
-    auto pipe_fds = create_nonblocking_pipe();
+    auto pipe_fds_res = open_pipe();
+    ASSERT_TRUE(pipe_fds_res.is_ok());
+    auto &pipe_fds = pipe_fds_res.get_value();
 
     auto write_char = test_byte;
     auto write_retval = ::write(*pipe_fds[1], &write_char, 1);
