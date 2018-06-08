@@ -198,30 +198,25 @@ TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromArray) {
 }
 
 
-TEST(NosyncNumberUtils, DecodeBeBytesToNumberFromStringView) {
-    ASSERT_EQ(decode_be_bytes_to_number<uint8_t>("\xFB"s), 0xFBU);
-    ASSERT_EQ(decode_be_bytes_to_number<int8_t>("\xFB"s), static_cast<int8_t>(0xFBU));
+TEST(NosyncNumberUtils, DecodeLeadingBeBytesToNumberFromStringView) {
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint8_t>("\xFB"s), 0xFBU);
+    ASSERT_EQ(decode_leading_be_bytes_to_number<int8_t>("\xFB"s), static_cast<int8_t>(0xFBU));
 
-    ASSERT_EQ(decode_be_bytes_to_number<uint16_t>("\x39\xFB"s), 0x39FBU);
-    ASSERT_EQ(decode_be_bytes_to_number<uint16_t>("\xFB"s), 0xFBU);
-    ASSERT_EQ(decode_be_bytes_to_number<int16_t>("\x39\xFB"s), static_cast<int16_t>(0x39FBU));
-    ASSERT_EQ(decode_be_bytes_to_number<int16_t>("\xFB"s), static_cast<int16_t>(0xFBU));
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint16_t>("\x39\xFB"s), 0x39FBU);
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint16_t>("\xFB"s), 0xFBU);
+    ASSERT_EQ(decode_leading_be_bytes_to_number<int16_t>("\x39\xFB"s), static_cast<int16_t>(0x39FBU));
+    ASSERT_EQ(decode_leading_be_bytes_to_number<int16_t>("\xFB"s), static_cast<int16_t>(0xFBU));
 
-    ASSERT_EQ(decode_be_bytes_to_number<uint32_t>("\xBA\x49\x39\xFB"s), 0xBA4939FBU);
-    ASSERT_EQ(decode_be_bytes_to_number<uint32_t>("\x39\xFB"s), 0x39FBU);
-    ASSERT_EQ(decode_be_bytes_to_number<int32_t>("\xBA\x49\x39\xFB"s), static_cast<int32_t>(0xBA4939FBU));
-    ASSERT_EQ(decode_be_bytes_to_number<int32_t>("\x39\xFB"s), static_cast<int32_t>(0x39FBU));
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint32_t>("\xBA\x49\x39\xFB"s), 0xBA4939FBU);
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint32_t>("\x39\xFB"s), 0x39FBU);
+    ASSERT_EQ(decode_leading_be_bytes_to_number<int32_t>("\xBA\x49\x39\xFB"s), static_cast<int32_t>(0xBA4939FBU));
+    ASSERT_EQ(decode_leading_be_bytes_to_number<int32_t>("\x39\xFB"s), static_cast<int32_t>(0x39FBU));
 }
 
 
-TEST(NosyncNumberUtils, DecodeBeBytesToNumberFromStringViewInputEmpty) {
-    ASSERT_EQ(decode_be_bytes_to_number<uint8_t>(""s), 0);
-    ASSERT_EQ(decode_be_bytes_to_number<uint16_t>(""s), 0);
-}
-
-
-TEST(NosyncNumberUtils, DecodeBeBytesToNumberFromStringViewInputTooBig) {
-    ASSERT_THROW(decode_be_bytes_to_number<uint16_t>("\x39\xFB\x12"s), std::invalid_argument);
+TEST(NosyncNumberUtils, DecodeLeadingBeBytesToNumberFromStringViewInputEmpty) {
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint8_t>(""s), 0);
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint16_t>(""s), 0);
 }
 
 
@@ -230,30 +225,25 @@ TEST(NosyncNumberUtils, DecodeLeadingBeBytesToNumberFromStringViewExtraBytesOnIn
 }
 
 
-TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromStringView) {
-    ASSERT_EQ(decode_le_bytes_to_number<uint8_t>("\xFB"s), 0xFBU);
-    ASSERT_EQ(decode_le_bytes_to_number<int8_t>("\xFB"s), static_cast<int8_t>(0xFBU));
+TEST(NosyncNumberUtils, DecodeLeadingLeBytesToNumberFromStringView) {
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint8_t>("\xFB"s), 0xFBU);
+    ASSERT_EQ(decode_leading_le_bytes_to_number<int8_t>("\xFB"s), static_cast<int8_t>(0xFBU));
 
-    ASSERT_EQ(decode_le_bytes_to_number<uint16_t>("\x39\xFB"s), 0xFB39U);
-    ASSERT_EQ(decode_le_bytes_to_number<uint16_t>("\xFB"s), 0xFBU);
-    ASSERT_EQ(decode_le_bytes_to_number<int16_t>("\x39\xFB"s), static_cast<int16_t>(0xFB39U));
-    ASSERT_EQ(decode_le_bytes_to_number<int16_t>("\xFB"s), static_cast<int16_t>(0xFBU));
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint16_t>("\x39\xFB"s), 0xFB39U);
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint16_t>("\xFB"s), 0xFBU);
+    ASSERT_EQ(decode_leading_le_bytes_to_number<int16_t>("\x39\xFB"s), static_cast<int16_t>(0xFB39U));
+    ASSERT_EQ(decode_leading_le_bytes_to_number<int16_t>("\xFB"s), static_cast<int16_t>(0xFBU));
 
-    ASSERT_EQ(decode_le_bytes_to_number<uint32_t>("\xBA\x49\x39\xFB"s), 0xFB3949BAU);
-    ASSERT_EQ(decode_le_bytes_to_number<uint32_t>("\x39\xFB"s), 0xFB39U);
-    ASSERT_EQ(decode_le_bytes_to_number<int32_t>("\xBA\x49\x39\xFB"s), static_cast<int32_t>(0xFB3949BAU));
-    ASSERT_EQ(decode_le_bytes_to_number<int32_t>("\x39\xFB"s), static_cast<int32_t>(0xFB39U));
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint32_t>("\xBA\x49\x39\xFB"s), 0xFB3949BAU);
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint32_t>("\x39\xFB"s), 0xFB39U);
+    ASSERT_EQ(decode_leading_le_bytes_to_number<int32_t>("\xBA\x49\x39\xFB"s), static_cast<int32_t>(0xFB3949BAU));
+    ASSERT_EQ(decode_leading_le_bytes_to_number<int32_t>("\x39\xFB"s), static_cast<int32_t>(0xFB39U));
 }
 
 
-TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromStringViewInputEmpty) {
-    ASSERT_EQ(decode_le_bytes_to_number<uint8_t>(""s), 0);
-    ASSERT_EQ(decode_le_bytes_to_number<uint16_t>(""s), 0);
-}
-
-
-TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromStringViewInputTooBig) {
-    ASSERT_THROW(decode_le_bytes_to_number<uint16_t>("\x39\xFB\x12"s), std::invalid_argument);
+TEST(NosyncNumberUtils, DecodeLeadingLeBytesToNumberFromStringViewInputEmpty) {
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint8_t>(""s), 0);
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint16_t>(""s), 0);
 }
 
 

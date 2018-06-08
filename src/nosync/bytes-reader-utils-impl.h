@@ -29,7 +29,7 @@ template<typename T1, typename ...TT>
 constexpr std::enable_if_t<!std::is_void<T1>::value, std::tuple<T1, TT...>> decode_be_bytes_to_numbers_impl(std::experimental::string_view input)
 {
     return std::tuple_cat(
-        std::make_tuple(decode_be_bytes_to_number<T1>(input.substr(0, sizeof(T1)))),
+        std::make_tuple(decode_leading_be_bytes_to_number<T1>(input)),
         decode_be_bytes_to_numbers_impl<TT...>(input.substr(sizeof(T1), sizeof_sum<TT...>)));
 }
 
@@ -71,7 +71,7 @@ void read_be_numbers_fully(
                 std::vector<T> res_numbers;
                 res_numbers.reserve(count);
                 for (std::size_t i = 0; i < count; ++i) {
-                    res_numbers.push_back(decode_be_bytes_to_number<T>(bytes_view.substr(i * sizeof(T), sizeof(T))));
+                    res_numbers.push_back(decode_leading_be_bytes_to_number<T>(bytes_view.substr(i * sizeof(T), sizeof(T))));
                 }
                 return make_ok_result(std::move(res_numbers));
             }));
@@ -86,7 +86,7 @@ void read_be_number_fully(std::shared_ptr<bytes_reader> reader, result_handler<T
         [res_handler = std::move(res_handler)](auto read_res) {
             res_handler(
                 read_res.is_ok()
-                    ? make_ok_result(decode_be_bytes_to_number<T>(read_res.get_value()))
+                    ? make_ok_result(decode_leading_be_bytes_to_number<T>(read_res.get_value()))
                     : raw_error_result(read_res));
         });
 }
