@@ -1,13 +1,15 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#include <nosync/bytes-reader-utils.h>
 #include <nosync/noconcurrent-bytes-io.h>
-#include <stdexcept>
+#include <nosync/raw-error-result.h>
+#include <system_error>
 #include <utility>
 
 namespace ch = std::chrono;
 using std::enable_shared_from_this;
+using std::errc;
 using std::make_shared;
 using std::move;
-using std::runtime_error;
 using std::shared_ptr;
 using std::size_t;
 using std::string;
@@ -46,7 +48,8 @@ void noconcurrent_bytes_io::read_some_bytes(
     size_t max_size, ch::nanoseconds timeout, result_handler<string> &&res_handler)
 {
     if (bio_active) {
-        throw runtime_error("async bytes read on sequential bio with operation in progress");
+        invoke_result_handler_later_via_bytes_reader(*base_bio, move(res_handler), raw_error_result(errc::not_supported));
+        return;
     }
 
     bio_active = true;
@@ -63,7 +66,8 @@ void noconcurrent_bytes_io::write_bytes(
     string &&data, result_handler<void> &&res_handler)
 {
     if (bio_active) {
-        throw runtime_error("async bytes write on sequential bio with operation in progress");
+        invoke_result_handler_later_via_bytes_reader(*base_bio, move(res_handler), raw_error_result(errc::not_supported));
+        return;
     }
 
     bio_active = true;
