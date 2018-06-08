@@ -2,6 +2,7 @@
 #include <cerrno>
 #include <iostream>
 #include <nosync/exceptions.h>
+#include <stdexcept>
 #include <string>
 #include <system_error>
 
@@ -9,6 +10,7 @@ using std::current_exception;
 using std::error_code;
 using std::exception;
 using std::exception_ptr;
+using std::logic_error;
 using std::ostream;
 using std::nested_exception;
 using std::rethrow_exception;
@@ -19,6 +21,12 @@ using std::system_error;
 
 namespace nosync
 {
+
+void throw_logic_error(const string &msg)
+{
+    throw logic_error(msg);
+}
+
 
 void throw_from_error_code(error_code ec)
 {

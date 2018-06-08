@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#include <nosync/exceptions.h>
 #include <nosync/manual-event-loop.h>
-#include <stdexcept>
 #include <utility>
 
 namespace ch = std::chrono;
@@ -12,7 +12,6 @@ using std::make_shared;
 using std::make_tuple;
 using std::make_unique;
 using std::move;
-using std::runtime_error;
 using std::shared_ptr;
 using std::uint64_t;
 using std::unique_ptr;
@@ -124,7 +123,7 @@ void manual_event_loop::disable(const manual_event_loop_task_handle &task_handle
 {
     auto task_iter = pending_tasks.find(make_tuple(task_handle.time, task_handle.id));
     if (task_iter == pending_tasks.end()) {
-        throw runtime_error("got cancel for non-existing task");
+        throw_logic_error("got cancel for non-existing task");
     }
 
     pending_tasks.erase(task_iter);
