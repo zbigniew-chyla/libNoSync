@@ -11,6 +11,8 @@ using nosync::decode_be_atoms_to_number;
 using nosync::decode_be_bytes_to_number;
 using nosync::decode_le_atoms_to_number;
 using nosync::decode_le_bytes_to_number;
+using nosync::decode_leading_be_bytes_to_number;
+using nosync::decode_leading_le_bytes_to_number;
 using nosync::encode_to_be_atoms;
 using nosync::encode_to_be_bytes;
 using nosync::encode_to_le_atoms;
@@ -223,6 +225,11 @@ TEST(NosyncNumberUtils, DecodeBeBytesToNumberFromStringViewInputTooBig) {
 }
 
 
+TEST(NosyncNumberUtils, DecodeLeadingBeBytesToNumberFromStringViewExtraBytesOnInput) {
+    ASSERT_EQ(decode_leading_be_bytes_to_number<uint16_t>("\x39\xFB\x12"s), 0x39FBU);
+}
+
+
 TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromStringView) {
     ASSERT_EQ(decode_le_bytes_to_number<uint8_t>("\xFB"s), 0xFBU);
     ASSERT_EQ(decode_le_bytes_to_number<int8_t>("\xFB"s), static_cast<int8_t>(0xFBU));
@@ -247,6 +254,11 @@ TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromStringViewInputEmpty) {
 
 TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromStringViewInputTooBig) {
     ASSERT_THROW(decode_le_bytes_to_number<uint16_t>("\x39\xFB\x12"s), std::invalid_argument);
+}
+
+
+TEST(NosyncNumberUtils, DecodeLeadingLeBytesToNumberFromStringViewExtraBytesOnInput) {
+    ASSERT_EQ(decode_leading_le_bytes_to_number<uint16_t>("\x39\xFB\x12"s), 0xFB39U);
 }
 
 
