@@ -164,7 +164,7 @@ TEST(NosyncBytesReadUtils, NosyncReadAllPendingDataAndThenWithPending)
 
 TEST(NosyncBytesReadUtils, ProcessNosyncReadBytesWithTimeoutGetResult)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
     auto mock_reader = make_shared<bytes_reader_mock>();
 
     constexpr auto byte_read_time = 1s;
@@ -194,7 +194,7 @@ TEST(NosyncBytesReadUtils, ProcessNosyncReadBytesWithTimeoutGetResult)
 
 TEST(NosyncBytesReadUtils, ProcessNosyncReadBytesWithTimeoutGetTimeout)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
     auto mock_reader = make_shared<bytes_reader_mock>();
 
     constexpr auto byte_read_time = 1s;

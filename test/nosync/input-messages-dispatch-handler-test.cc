@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using namespace std::string_literals;
 using nosync::manual_event_loop;
@@ -25,6 +26,7 @@ using nosync::result;
 using std::deque;
 using std::experimental::nullopt;
 using std::function;
+using std::make_shared;
 using std::make_tuple;
 using std::move;
 using std::nullptr_t;
@@ -72,7 +74,7 @@ function<void(T)> make_vector_pusher(vector<T> &out_vector)
 
 TEST(NosyncInputMessagesDispatchHandler, MultipleRequests)
 {
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     deque<string> input_msgs = {"1abc"s, "2de"s, "3fghi"s, "4jklmn"s};
     auto msgs_reader = make_func_request_handler<nullptr_t, string>(

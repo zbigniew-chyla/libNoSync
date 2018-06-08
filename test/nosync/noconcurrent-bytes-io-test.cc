@@ -11,6 +11,7 @@
 #include <system_error>
 #include <vector>
 
+namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using namespace std::string_literals;
 using nosync::bytes_io_mock;
@@ -41,7 +42,7 @@ TEST(NosyncNoconcurrentBytesIo, CheckThrows)
     auto noop_write_result_handler = [](result<void>) {
     };
 
-    auto evloop = manual_event_loop::create();
+    auto evloop = make_shared<manual_event_loop>(ch::time_point<nosync::eclock>());
 
     auto test_bio = make_shared<bytes_io_mock>();
 
