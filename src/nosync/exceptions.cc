@@ -22,6 +22,40 @@ using std::system_error;
 namespace nosync
 {
 
+namespace
+{
+
+void print_exception_info_impl(const exception_ptr &eptr, ostream &output, const string &line_prefix)
+{
+    static const string line_indent_str = "  ";
+
+    if (!eptr) {
+        return;
+    }
+
+    string exception_msg;
+    try {
+        rethrow_exception(eptr);
+    } catch (const exception &e) {
+        exception_msg = string("exception: ") + e.what();
+    } catch (...) {
+        exception_msg = "unknown exception";
+    }
+
+    output << line_prefix << exception_msg << std::endl;
+
+    try {
+        rethrow_exception(eptr);
+    } catch (const nested_exception &e) {
+        print_exception_info_impl(e.nested_ptr(), output, line_prefix + line_indent_str);
+    } catch (...) {
+        // not nested
+    }
+}
+
+}
+
+
 void throw_logic_error(const string &msg)
 {
     throw logic_error(msg);
@@ -56,36 +90,13 @@ void throw_system_error_from_errno(const string &msg)
 
 void print_exception_info(const exception_ptr &eptr, ostream &output, const string &line_prefix)
 {
-    static const string line_indent_str = "  ";
-
-    if (!eptr) {
-        return;
-    }
-
-    string exception_msg;
-    try {
-        rethrow_exception(eptr);
-    } catch (const exception &e) {
-        exception_msg = string("exception: ") + e.what();
-    } catch (...) {
-        exception_msg = "unknown exception";
-    }
-
-    output << line_prefix << exception_msg << std::endl;
-
-    try {
-        rethrow_exception(eptr);
-    } catch (const nested_exception &e) {
-        print_exception_info(e.nested_ptr(), output, line_prefix + line_indent_str);
-    } catch (...) {
-        // not nested
-    }
+    print_exception_info_impl(eptr, output, line_prefix);
 }
 
 
 void print_current_exception_info(ostream &output, const string &line_prefix)
 {
-    print_exception_info(current_exception(), output, line_prefix);
+    print_exception_info_impl(current_exception(), output, line_prefix);
 }
 
 }
