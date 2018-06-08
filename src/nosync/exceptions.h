@@ -11,6 +11,9 @@
 namespace nosync
 {
 
+template<typename Try, typename Catch>
+void try_with_catch_all(const Try &try_func, const Catch &catch_func);
+
 [[noreturn]] void throw_logic_error(const std::string &msg);
 
 [[noreturn]] void throw_from_error_code(std::error_code ec);
@@ -23,5 +26,7 @@ void print_exception_info(const std::exception_ptr &eptr, std::ostream &output, 
 void print_current_exception_info(std::ostream &output, const std::string &line_prefix = {});
 
 }
+
+#include <nosync/exceptions-impl.h>
 
 #endif /* NOSYNC__EXCEPTIONS_H */
