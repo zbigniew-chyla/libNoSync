@@ -15,15 +15,19 @@ result<void> block_signal_for_thread(int signal_num)
         return make_raw_error_result_from_errno();
     }
 
-    return sigprocmask(SIG_BLOCK, &sigset, nullptr) == 0
+    auto sigmask_retval = ::pthread_sigmask(SIG_BLOCK, &sigset, nullptr);
+    return sigmask_retval == 0
         ? make_ok_result()
-        : make_raw_error_result_from_errno();
+        : make_raw_error_result_from_errno_value(sigmask_retval);
 }
 
 
 result<void> ignore_signal_for_process(int signal_num)
 {
-    return ::signal(signal_num, SIG_IGN) != SIG_ERR
+    struct ::sigaction sa = {};
+    sa.sa_handler = SIG_IGN;
+
+    return ::sigaction(signal_num, &sa, nullptr) == 0
         ? make_ok_result()
         : make_raw_error_result_from_errno();
 }
