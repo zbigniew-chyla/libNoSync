@@ -10,8 +10,6 @@
 namespace nosync
 {
 
-[[deprecated("use open_pipe instead")]] std::array<owned_fd, 2> create_nonblocking_pipe();
-
 /*!
 Create pipe to be used inside the current process (with O_CLOEXEC and O_NONBLOCK flags set).
 */

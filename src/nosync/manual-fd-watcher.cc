@@ -91,12 +91,6 @@ bool manual_activity_handle::is_enabled() const
 }
 
 
-shared_ptr<manual_fd_watcher> manual_fd_watcher::create()
-{
-    return make_shared<manual_fd_watcher>();
-}
-
-
 unique_ptr<activity_handle> manual_fd_watcher::add_watch(
     int fd, fd_watch_mode mode, function<void()> &&notify_func)
 {

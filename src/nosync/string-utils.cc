@@ -2,7 +2,6 @@
 #include <cstring>
 #include <locale>
 #include <nosync/string-utils.h>
-#include <stdexcept>
 #include <string>
 
 
@@ -13,12 +12,10 @@ using std::experimental::make_optional;
 using std::experimental::nullopt;
 using std::experimental::optional;
 using std::experimental::string_view;
-using std::invalid_argument;
 using std::isprint;
 using std::locale;
 using std::size_t;
 using std::string;
-using std::to_string;
 
 
 namespace
@@ -100,22 +97,6 @@ string bytes_to_hex_string(string_view bytes)
     }
 
     return hex_str;
-}
-
-
-string bytes_from_hex_string(string_view hex_string)
-{
-    if (hex_string.size() % 2 != 0) {
-        throw invalid_argument("odd length of hex string: " + to_string(hex_string.size()));
-    }
-
-    auto opt_bytes = try_decode_hex_string_to_bytes(hex_string);
-
-    if (!opt_bytes) {
-        throw invalid_argument("encountered illegal hex digit in string: " + hex_string.to_string());
-    }
-
-    return move(*opt_bytes);
 }
 
 

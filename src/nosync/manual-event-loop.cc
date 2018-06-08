@@ -8,11 +8,9 @@ using std::experimental::nullopt;
 using std::experimental::optional;
 using std::function;
 using std::get;
-using std::make_shared;
 using std::make_tuple;
 using std::make_unique;
 using std::move;
-using std::shared_ptr;
 using std::uint64_t;
 using std::unique_ptr;
 
@@ -50,12 +48,6 @@ bool manual_event_loop_task_handle::is_enabled() const
 void manual_event_loop_task_handle::disable()
 {
     return evloop.disable(*this);
-}
-
-
-shared_ptr<manual_event_loop> manual_event_loop::create(ch::time_point<eclock> init_time)
-{
-    return make_shared<manual_event_loop>(init_time);
 }
 
 

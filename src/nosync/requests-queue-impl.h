@@ -8,7 +8,6 @@
 #include <nosync/raw-error-result.h>
 #include <nosync/result-utils.h>
 #include <nosync/time-utils.h>
-#include <stdexcept>
 #include <system_error>
 #include <utility>
 
@@ -80,22 +79,6 @@ template<typename Req, typename Res>
 bool requests_queue<Req, Res>::has_requests() const
 {
     return !requests.empty();
-}
-
-
-template<typename Req, typename Res>
-std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>> requests_queue<Req, Res>::pull_next_request()
-{
-    if (requests.empty()) {
-        throw std::logic_error("no requests in the queue");
-    }
-
-    auto next_request = std::move(requests.front());
-    requests.pop_front();
-
-    reschedule_timeout_task();
-
-    return next_request;
 }
 
 

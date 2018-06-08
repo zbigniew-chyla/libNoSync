@@ -1,7 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <experimental/array>
 #include <fcntl.h>
-#include <nosync/exceptions.h>
 #include <nosync/io-utils.h>
 #include <nosync/result-utils.h>
 #include <system_error>
@@ -13,12 +12,6 @@ using std::experimental::make_array;
 
 namespace nosync
 {
-
-array<owned_fd, 2> create_nonblocking_pipe()
-{
-    return get_result_value_or_throw(open_pipe(), "failed to create pipe");
-}
-
 
 result<array<owned_fd, 2>> open_pipe()
 {

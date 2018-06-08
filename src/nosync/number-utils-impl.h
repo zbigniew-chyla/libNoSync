@@ -7,7 +7,6 @@
 #include <experimental/type_traits>
 #include <nosync/type-utils.h>
 #include <utility>
-#include <stdexcept>
 #include <string>
 
 
@@ -182,18 +181,6 @@ constexpr T decode_le_bytes_to_number(const std::array<char, N> &bytes) noexcept
 
 
 template<typename T>
-constexpr T decode_be_bytes_to_number(std::experimental::string_view bytes)
-{
-    using namespace std::string_literals;
-    if (bytes.size() > sizeof(T)) {
-        throw std::invalid_argument("too many input bytes for target type: "s + std::to_string(bytes.size()));
-    }
-
-    return decode_leading_be_bytes_to_number(bytes);
-}
-
-
-template<typename T>
 constexpr T decode_leading_be_bytes_to_number(std::experimental::string_view bytes)
 {
     const auto used_bytes_count = std::min(sizeof(T), bytes.size());
@@ -204,18 +191,6 @@ constexpr T decode_leading_be_bytes_to_number(std::experimental::string_view byt
     }
 
     return value;
-}
-
-
-template<typename T>
-constexpr T decode_le_bytes_to_number(std::experimental::string_view bytes)
-{
-    using namespace std::string_literals;
-    if (bytes.size() > sizeof(T)) {
-        throw std::invalid_argument("too many input bytes for target type: "s + std::to_string(bytes.size()));
-    }
-
-    return decode_leading_le_bytes_to_number(bytes);
 }
 
 
