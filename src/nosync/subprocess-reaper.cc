@@ -1,9 +1,13 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <csignal>
+#include <nosync/exceptions.h>
 #include <nosync/func-request-handler.h>
+#include <nosync/raw-error-result.h>
 #include <nosync/requests-queue.h>
-#include <nosync/signalfd-watcher.h>
+#include <nosync/result-utils.h>
+#include <nosync/signal-watcher.h>
 #include <nosync/subprocess-reaper.h>
+#include <nosync/subprocesses-reaper.h>
 #include <nosync/type-utils.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -47,20 +51,29 @@ void collect_terminated_children(requests_queue<pid_t, int> &pending_requests)
 }
 
 
-shared_ptr<request_handler<pid_t, int>> make_subprocess_reaper(fd_watching_event_loop &evloop)
+result<shared_ptr<request_handler<pid_t, int>>> make_subprocesses_reaper(fd_watching_event_loop &evloop)
 {
     auto pending_child_status_requests = make_shared<requests_queue<pid_t, int>>(evloop);
 
-    auto sigchld_watcher = make_signalfd_watcher(
+    auto sigchld_watcher_res = make_signal_watcher(
         evloop, SIGCHLD,
         [pending_child_status_requests]() {
             collect_terminated_children(*pending_child_status_requests);
         });
 
-    return make_func_request_handler<pid_t, int>(
-        [pending_child_status_requests, sigchld_watcher = move(sigchld_watcher)](auto req_pid, auto timeout, auto res_handler) {
-            pending_child_status_requests->push_request(make_copy(req_pid), timeout, move(res_handler));
-        });
+    return sigchld_watcher_res.is_ok()
+        ? make_ok_result(
+            make_func_request_handler<pid_t, int>(
+                [pending_child_status_requests, sigchld_watcher = move(sigchld_watcher_res.get_value())](auto req_pid, auto timeout, auto res_handler) {
+                    pending_child_status_requests->push_request(make_copy(req_pid), timeout, move(res_handler));
+                }))
+        : raw_error_result(sigchld_watcher_res);
+}
+
+
+shared_ptr<request_handler<pid_t, int>> make_subprocess_reaper(fd_watching_event_loop &evloop)
+{
+    return get_result_value_or_throw(make_subprocesses_reaper(evloop));
 }
 
 }
