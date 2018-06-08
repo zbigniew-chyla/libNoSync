@@ -9,7 +9,7 @@
 namespace nosync
 {
 
-std::function<void(std::function<void()>)> make_event_loop_based_mt_executor(fd_watching_event_loop &evloop);
+[[deprecated("use make_event_loop_mt_executor instead")]] std::function<void(std::function<void()>)> make_event_loop_based_mt_executor(fd_watching_event_loop &evloop);
 
 }
 

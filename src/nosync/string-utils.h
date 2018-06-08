@@ -12,7 +12,7 @@ namespace nosync
 {
 
 std::string bytes_to_hex_string(std::experimental::string_view bytes);
-std::string bytes_from_hex_string(std::experimental::string_view hex_string);
+[[deprecated("use try_decode_hex_string_to_bytes instead")]] std::string bytes_from_hex_string(std::experimental::string_view hex_string);
 std::experimental::optional<std::string> try_decode_hex_string_to_bytes(std::experimental::string_view hex_string);
 
 template<typename T>

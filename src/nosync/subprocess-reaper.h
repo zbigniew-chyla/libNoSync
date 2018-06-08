@@ -29,7 +29,7 @@ application process.
 
 Note: SIGCHLD signal should be blocked when subprocess reaper is used.
 */
-std::shared_ptr<request_handler<pid_t, int>> make_subprocess_reaper(fd_watching_event_loop &evloop);
+[[deprecated("use make_subprocesses_reaper instead")]] std::shared_ptr<request_handler<pid_t, int>> make_subprocess_reaper(fd_watching_event_loop &evloop);
 
 }
 

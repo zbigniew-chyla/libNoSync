@@ -45,13 +45,13 @@ template<typename T, std::size_t N>
 constexpr T decode_le_bytes_to_number(const std::array<char, sizeof(T)> &bytes) noexcept;
 
 template<typename T = std::uintmax_t>
-constexpr T decode_be_bytes_to_number(std::experimental::string_view bytes);
+[[deprecated("use decode_leading_be_bytes_to_number instead")]] constexpr T decode_be_bytes_to_number(std::experimental::string_view bytes);
 
 template<typename T = std::uintmax_t>
 constexpr T decode_leading_be_bytes_to_number(std::experimental::string_view bytes);
 
 template<typename T = std::uintmax_t>
-constexpr T decode_le_bytes_to_number(std::experimental::string_view bytes);
+[[deprecated("use decode_leading_le_bytes_to_number instead")]] constexpr T decode_le_bytes_to_number(std::experimental::string_view bytes);
 
 template<typename T = std::uintmax_t>
 constexpr T decode_leading_le_bytes_to_number(std::experimental::string_view bytes);

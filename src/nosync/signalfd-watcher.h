@@ -11,7 +11,7 @@
 namespace nosync
 {
 
-std::shared_ptr<interface_type> make_signalfd_watcher(
+[[deprecated("use make_signal_watcher instead")]] std::shared_ptr<interface_type> make_signalfd_watcher(
     fd_watching_event_loop &evloop, int signal_num, std::function<void()> &&signal_handler);
 
 }
