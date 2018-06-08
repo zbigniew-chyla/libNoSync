@@ -6,6 +6,7 @@
 #include <system_error>
 
 using std::current_exception;
+using std::error_code;
 using std::exception;
 using std::exception_ptr;
 using std::ostream;
@@ -18,6 +19,18 @@ using std::system_error;
 
 namespace nosync
 {
+
+void throw_from_error_code(error_code ec)
+{
+    throw system_error(ec);
+}
+
+
+void throw_from_error_code(error_code ec, const string &msg)
+{
+    throw system_error(ec, msg);
+}
+
 
 void throw_system_error_from_errno()
 {

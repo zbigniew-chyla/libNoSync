@@ -5,10 +5,14 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#include <system_error>
 
 
 namespace nosync
 {
+
+[[noreturn]] void throw_from_error_code(std::error_code ec);
+[[noreturn]] void throw_from_error_code(std::error_code ec, const std::string &msg);
 
 [[noreturn]] void throw_system_error_from_errno();
 [[noreturn]] void throw_system_error_from_errno(const std::string &msg);
