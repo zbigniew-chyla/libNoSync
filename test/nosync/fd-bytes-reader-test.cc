@@ -7,13 +7,13 @@
 #include <memory>
 #include <nosync/activity-handle-mock.h>
 #include <nosync/event-loop.h>
-#include <nosync/exceptions.h>
 #include <nosync/fd-bytes-reader.h>
 #include <nosync/fd-watching-event-loop-mock.h>
 #include <nosync/owned-fd.h>
 #include <nosync/ppoll-based-event-loop.h>
 #include <nosync/result-utils.h>
 #include <nosync/result.h>
+#include <stdexcept>
 #include <string>
 #include <unistd.h>
 #include <utility>
@@ -32,14 +32,15 @@ using nosync::make_fd_bytes_reader;
 using nosync::make_ppoll_based_event_loop;
 using nosync::owned_fd;
 using nosync::result;
-using nosync::throw_system_error_from_errno;
 using std::array;
 using std::experimental::string_view;
 using std::function;
 using std::make_shared;
 using std::make_unique;
 using std::move;
+using std::runtime_error;
 using std::string;
+using std::to_string;
 using std::vector;
 using testing::_;
 using testing::Eq;
@@ -59,7 +60,7 @@ array<owned_fd, 2> create_nonblocking_pipe()
     int pipe_fds[2];
     int pipe_retval = ::pipe2(pipe_fds, O_CLOEXEC | O_NONBLOCK);
     if (pipe_retval < 0) {
-        throw_system_error_from_errno("failed to create pipe");
+        throw runtime_error("failed to create pipe: " + to_string(errno));
     }
 
     return {owned_fd(pipe_fds[0]), owned_fd(pipe_fds[1])};
