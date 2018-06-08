@@ -107,7 +107,10 @@ bool requests_queue<Req, Res>::pull_next_request_to_consumer(const F &req_consum
         return false;
     }
 
-    auto req = pull_next_request();
+    auto req = std::move(requests.front());
+    requests.pop_front();
+
+    reschedule_timeout_task();
 
     req_consumer(
         std::move(std::get<Req>(req)),
