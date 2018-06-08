@@ -1,5 +1,4 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <map>
 #include <nosync/manual-event-loop.h>
 #include <stdexcept>
 #include <utility>
