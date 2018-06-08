@@ -3,15 +3,14 @@
 #define NOSYNC__FILE_UTILS_H
 
 #include <nosync/owned-fd.h>
-#include <nosync/result.h>
-#include <string>
+#include <nosync/ux/file-utils.h>
 
 
 namespace nosync
 {
 
-result<owned_fd> open_file_for_read(const std::string &path);
-result<owned_fd> open_file_for_write(const std::string &path);
+using ux::open_file_for_read;
+using ux::open_file_for_write;
 
 }
 

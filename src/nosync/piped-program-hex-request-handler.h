@@ -3,19 +3,13 @@
 #define NOSYNC__PIPED_PROGRAM_HEX_REQUEST_HANDLER_H
 
 #include <nosync/fd-watching-event-loop.h>
-#include <nosync/request-handler.h>
-#include <memory>
-#include <string>
-#include <sys/types.h>
-#include <vector>
+#include <nosync/ux/piped-program-hex-request-handler.h>
 
 
 namespace nosync
 {
 
-std::shared_ptr<request_handler<std::string, std::string>> start_piped_program_hex_request_handler(
-    fd_watching_event_loop &evloop, const std::shared_ptr<request_handler<::pid_t, int>> &subproc_reaper,
-    const std::string &cmd_path, const std::vector<std::string> &cmd_args);
+using ux::start_piped_program_hex_request_handler;
 
 }
 

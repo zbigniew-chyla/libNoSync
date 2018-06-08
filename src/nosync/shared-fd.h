@@ -3,33 +3,13 @@
 #define NOSYNC__SHARED_FD_H
 
 #include <nosync/owned-fd.h>
-#include <memory>
+#include <nosync/ux/shared-fd.h>
 
 
 namespace nosync
 {
 
-class shared_fd
-{
-public:
-    shared_fd();
-
-    explicit shared_fd(int fd);
-    shared_fd(owned_fd &&ofd);
-
-    shared_fd(const shared_fd &other) = default;
-    shared_fd &operator=(const shared_fd &other) = default;
-
-    shared_fd(shared_fd &&other) = default;
-    shared_fd &operator=(shared_fd &&other) = default;
-
-    explicit operator bool() const noexcept;
-
-    int operator*() const noexcept;
-
-private:
-    std::shared_ptr<owned_fd> ofd;
-};
+using ux::shared_fd;
 
 }
 

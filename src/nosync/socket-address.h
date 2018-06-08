@@ -2,35 +2,15 @@
 #ifndef NOSYNC__SOCKET_ADDRESS_H
 #define NOSYNC__SOCKET_ADDRESS_H
 
-#include <cstddef>
-
-
-struct sockaddr;
+#include <nosync/ux/socket-address.h>
 
 
 namespace nosync
 {
 
-struct socket_address_view
-{
-    const ::sockaddr *addr;
-    std::size_t addr_size;
-};
+using ux::socket_address_view;
 
-
-class socket_address
-{
-public:
-    virtual ~socket_address() = default;
-
-    virtual int get_address_family() const = 0;
-    virtual socket_address_view get_view() const = 0;
-
-protected:
-    socket_address() = default;
-    socket_address(const socket_address &) = default;
-    socket_address(socket_address &&) = default;
-};
+using ux::socket_address;
 
 }
 

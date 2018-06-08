@@ -2,15 +2,14 @@
 #ifndef NOSYNC__EVENT_LOOP_MT_EXECUTOR_H
 #define NOSYNC__EVENT_LOOP_MT_EXECUTOR_H
 
-#include <functional>
 #include <nosync/fd-watching-event-loop.h>
-#include <nosync/result.h>
+#include <nosync/ux/event-loop-mt-executor.h>
 
 
 namespace nosync
 {
 
-result<std::function<void(std::function<void()>)>> make_event_loop_mt_executor(fd_watching_event_loop &evloop);
+using ux::make_event_loop_mt_executor;
 
 }
 
