@@ -1,16 +1,11 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <csignal>
-#include <nosync/event-loop-utils.h>
-#include <nosync/raw-error-result.h>
 #include <nosync/requests-queue.h>
-#include <nosync/result-utils.h>
 #include <nosync/signalfd-watcher.h>
 #include <nosync/subprocess-reaper.h>
-#include <nosync/time-utils.h>
 #include <nosync/type-utils.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <system_error>
 
 namespace ch = std::chrono;
 using std::make_shared;
