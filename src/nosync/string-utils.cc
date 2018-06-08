@@ -9,6 +9,9 @@
 namespace nosync
 {
 
+using std::experimental::make_optional;
+using std::experimental::nullopt;
+using std::experimental::optional;
 using std::experimental::string_view;
 using std::invalid_argument;
 using std::isprint;
@@ -29,9 +32,9 @@ constexpr char number_to_hex_digit(unsigned value) noexcept
 }
 
 
-unsigned number_from_hex_digit(char hex_digit)
+optional<unsigned> try_decode_hex_digit_to_number(char hex_digit)
 {
-    unsigned digit_value;
+    optional<unsigned> digit_value;
     if (hex_digit >= '0' && hex_digit <= '9') {
         digit_value = hex_digit - '0';
     } else if (hex_digit >= 'A' && hex_digit <= 'F') {
@@ -39,7 +42,7 @@ unsigned number_from_hex_digit(char hex_digit)
     } else if (hex_digit >= 'a' && hex_digit <= 'f') {
         digit_value = hex_digit - 'a' + 10;
     } else {
-        throw invalid_argument("illegal hex digit: " + string(1, hex_digit));
+        digit_value = nullopt;
     }
 
     return digit_value;
@@ -106,16 +109,34 @@ string bytes_from_hex_string(string_view hex_string)
         throw invalid_argument("odd length of hex string: " + to_string(hex_string.size()));
     }
 
+    auto opt_bytes = try_decode_hex_string_to_bytes(hex_string);
+
+    if (!opt_bytes) {
+        throw invalid_argument("encountered illegal hex digit in string: " + hex_string.to_string());
+    }
+
+    return move(*opt_bytes);
+}
+
+
+optional<string> try_decode_hex_string_to_bytes(string_view hex_string)
+{
+    if (hex_string.size() % 2 != 0) {
+        return nullopt;
+    }
+
     string bytes;
     bytes.reserve(hex_string.size() / 2);
 
     for (size_t i = 0; i < hex_string.size(); i += 2) {
-        const auto hi_nibble = number_from_hex_digit(hex_string[i]);
-        const auto lo_nibble = number_from_hex_digit(hex_string[i + 1]);
-        bytes.push_back((hi_nibble << 4) | lo_nibble);
+        const auto opt_hi_nibble = try_decode_hex_digit_to_number(hex_string[i]);
+        const auto opt_lo_nibble = try_decode_hex_digit_to_number(hex_string[i + 1]);
+        if (opt_hi_nibble && opt_lo_nibble) {
+            bytes.push_back((*opt_hi_nibble << 4) | *opt_lo_nibble);
+        }
     }
 
-    return bytes;
+    return bytes.size() * 2 == hex_string.size() ? make_optional(move(bytes)) : nullopt;
 }
 
 
