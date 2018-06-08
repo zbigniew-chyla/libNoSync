@@ -7,6 +7,7 @@
 #include <nosync/fd-utils.h>
 #include <nosync/result-utils.h>
 #include <nosync/shared-fd.h>
+#include <nosync/signal-watcher.h>
 #include <nosync/signalfd-watcher.h>
 #include <sys/signalfd.h>
 
@@ -75,11 +76,22 @@ void signalfd_watcher::handle_signalfd_input()
 }
 
 
+result<shared_ptr<interface_type>> make_signal_watcher(
+    fd_watching_event_loop &evloop, int signal_num, function<void()> &&signal_handler)
+{
+    auto signal_fd_res = create_signalfd_for_signal(signal_num);
+    return signal_fd_res.is_ok()
+        ? make_ok_result(
+            make_shared<signalfd_watcher>(
+                evloop, move(signal_fd_res.get_value()), move(signal_handler)))
+        : raw_error_result(signal_fd_res);
+}
+
+
 shared_ptr<interface_type> make_signalfd_watcher(
     fd_watching_event_loop &evloop, int signal_num, function<void()> &&signal_handler)
 {
-    return make_shared<signalfd_watcher>(
-        evloop, get_result_value_or_throw(create_signalfd_for_signal(signal_num)), move(signal_handler));
+    return get_result_value_or_throw(make_signal_watcher(evloop, signal_num, move(signal_handler)));
 }
 
 }
