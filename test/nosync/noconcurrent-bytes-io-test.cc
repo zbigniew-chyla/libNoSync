@@ -15,7 +15,6 @@ using namespace std::chrono_literals;
 using namespace std::string_literals;
 using nosync::bytes_io_mock;
 using nosync::result;
-using nosync::event_loop;
 using nosync::make_copy;
 using nosync::make_ok_result;
 using nosync::manual_event_loop;
