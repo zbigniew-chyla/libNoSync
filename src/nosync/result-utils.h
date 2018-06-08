@@ -11,6 +11,7 @@ namespace nosync
 {
 
 raw_error_result make_raw_error_result_from_errno();
+raw_error_result make_raw_error_result_from_errno_value(int errno_value);
 
 raw_error_result make_timeout_raw_error_result();
 

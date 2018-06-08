@@ -13,7 +13,12 @@ namespace nosync
 
 raw_error_result make_raw_error_result_from_errno()
 {
-    const auto errno_value = errno;
+    return make_raw_error_result_from_errno_value(errno);
+}
+
+
+raw_error_result make_raw_error_result_from_errno_value(int errno_value)
+{
     return raw_error_result(error_code(errno_value, std::generic_category()));
 }
 
