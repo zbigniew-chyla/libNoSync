@@ -3,7 +3,7 @@
 #include <functional>
 #include <gtest/gtest.h>
 #include <memory>
-#include <nosync/event-loop-based-mt-executor.h>
+#include <nosync/event-loop-mt-executor.h>
 #include <nosync/event-loop-utils.h>
 #include <nosync/event-loop.h>
 #include <nosync/ppoll-based-event-loop.h>
@@ -24,11 +24,12 @@ using nosync::result;
 using nosync::make_copy;
 using nosync::make_timeout_raw_error_result;
 using nosync::make_ok_result;
-using nosync::make_event_loop_based_mt_executor;
+using nosync::make_event_loop_mt_executor;
 using nosync::make_ppoll_based_event_loop;
 using nosync::make_thread_pool_executor;
 using nosync::make_threaded_request_handler;
 using std::errc;
+using std::move;
 using std::runtime_error;
 using std::size_t;
 using std::string;
@@ -40,7 +41,10 @@ TEST(NosyncThreadedRequestHandler, CheckThreadIds)
 {
     auto evloop = make_ppoll_based_event_loop();
 
-    auto evloop_mt_executor = make_event_loop_based_mt_executor(*evloop);
+    auto evloop_mt_executor_res = make_event_loop_mt_executor(*evloop);
+    ASSERT_TRUE(evloop_mt_executor_res.is_ok());
+    auto evloop_mt_executor = move(evloop_mt_executor_res.get_value());
+
     auto req_handler = make_threaded_request_handler<string, thread::id>(
         make_copy(evloop_mt_executor), nosync::make_thread_pool_executor(1),
         [](auto, auto) {
@@ -85,7 +89,10 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerResults)
 
     auto evloop = make_ppoll_based_event_loop();
 
-    auto evloop_mt_executor = make_event_loop_based_mt_executor(*evloop);
+    auto evloop_mt_executor_res = make_event_loop_mt_executor(*evloop);
+    ASSERT_TRUE(evloop_mt_executor_res.is_ok());
+    auto evloop_mt_executor = move(evloop_mt_executor_res.get_value());
+
     auto strsize_calculator = make_threaded_request_handler<string, size_t>(
         make_copy(evloop_mt_executor), make_thread_pool_executor(1),
         [calculation_time](auto request, auto timeout) {
@@ -130,7 +137,10 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerException)
 {
     auto evloop = make_ppoll_based_event_loop();
 
-    auto evloop_mt_executor = make_event_loop_based_mt_executor(*evloop);
+    auto evloop_mt_executor_res = make_event_loop_mt_executor(*evloop);
+    ASSERT_TRUE(evloop_mt_executor_res.is_ok());
+    auto evloop_mt_executor = move(evloop_mt_executor_res.get_value());
+
     auto req_handler = make_threaded_request_handler<string, string>(
         make_copy(evloop_mt_executor), make_thread_pool_executor(1),
         [](auto, auto) -> result<string> {
