@@ -3,9 +3,12 @@
 #include <mutex>
 #include <nosync/activity-owner.h>
 #include <nosync/event-loop-based-mt-executor.h>
+#include <nosync/event-loop-mt-executor.h>
 #include <nosync/event-loop-utils.h>
 #include <nosync/fd-utils.h>
 #include <nosync/io-utils.h>
+#include <nosync/raw-error-result.h>
+#include <nosync/result-utils.h>
 #include <queue>
 #include <utility>
 
@@ -128,18 +131,31 @@ void queued_tasks_dispatcher::handle_in_notify()
 }
 
 
-function<void(function<void()>)> make_event_loop_based_mt_executor(fd_watching_event_loop &evloop)
+result<function<void(function<void()>)>> make_event_loop_mt_executor(fd_watching_event_loop &evloop)
 {
-    auto pipe_fds = create_nonblocking_pipe();
+    auto pipe_fds_res = open_pipe();
+    if (!pipe_fds_res.is_ok()) {
+        return raw_error_result(pipe_fds_res);
+    }
+
+    auto &pipe_fds = pipe_fds_res.get_value();
+
     auto tasks_queue = make_shared<synchronized_queue<function<void()>>>();
 
     auto dispatcher = make_shared<queued_tasks_dispatcher>(evloop, tasks_queue, move(pipe_fds[0]));
     dispatcher->start();
 
     auto tasks_pusher = make_shared<synchronized_queue_pusher<function<void()>>>(move(tasks_queue), move(pipe_fds[1]));
-    return [tasks_pusher = move(tasks_pusher)](function<void()> task) {
-        tasks_pusher->push(move(task));
-    };
+    return make_ok_result(
+        [tasks_pusher = move(tasks_pusher)](function<void()> task) {
+            tasks_pusher->push(move(task));
+        });
+}
+
+
+function<void(function<void()>)> make_event_loop_based_mt_executor(fd_watching_event_loop &evloop)
+{
+    return get_result_value_or_throw(make_event_loop_mt_executor(evloop));
 }
 
 }
