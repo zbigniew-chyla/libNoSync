@@ -4,13 +4,10 @@
 
 #include <functional>
 #include <nosync/fd-watching-event-loop.h>
-#include <nosync/result.h>
 
 
 namespace nosync
 {
-
-result<std::function<void(std::function<void()>)>> make_event_loop_mt_executor(fd_watching_event_loop &evloop);
 
 std::function<void(std::function<void()>)> make_event_loop_based_mt_executor(fd_watching_event_loop &evloop);
 
