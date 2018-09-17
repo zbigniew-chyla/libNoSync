@@ -1,17 +1,24 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <ctime>
+#include <experimental/array>
 #include <gtest/gtest.h>
 #include <nosync/time-utils.h>
 #include <sys/time.h>
 
 namespace ch = std::chrono;
 using namespace std::chrono_literals;
+using namespace std::string_literals;
+using nosync::format_time_to_gmtime_microseconds;
+using nosync::format_time_to_gmtime_microseconds_array;
+using nosync::format_time_to_gmtime_seconds;
+using nosync::format_time_to_gmtime_seconds_array;
 using nosync::make_duration_from_timespec;
 using nosync::make_duration_from_timeval;
 using nosync::make_timespec_from_duration;
 using nosync::make_timeval_from_duration;
 using nosync::time_point_sat_add;
 using nosync::to_float_seconds;
+using std::experimental::to_array;
 
 
 TEST(NosyncTimeUtils, MakeTimespecFromDuration)
@@ -119,4 +126,40 @@ TEST(NosyncTimeUtils, TestTimePointSatAddWithUnderflow)
     ASSERT_EQ(time_point_sat_add(time_point::min() + 20s, -30s), time_point::min());
     ASSERT_EQ(time_point_sat_add(time_point(-1000s), ch::nanoseconds::min()), time_point::min());
     ASSERT_EQ(time_point_sat_add(time_point::min(), ch::nanoseconds::min()), time_point::min());
+}
+
+
+TEST(NosyncTimeUtils, TestFormatTimeToGmtimeSeconds)
+{
+    ASSERT_EQ(format_time_to_gmtime_seconds(ch::system_clock::from_time_t(1509128597)), "2017-10-27T18:23:17"s);
+    ASSERT_EQ(format_time_to_gmtime_seconds(ch::system_clock::from_time_t(1488589690)), "2017-03-04T01:08:10"s);
+    ASSERT_EQ(format_time_to_gmtime_seconds(ch::system_clock::from_time_t(1488589690) + 3ms), "2017-03-04T01:08:10"s);
+    ASSERT_EQ(format_time_to_gmtime_seconds(ch::system_clock::from_time_t(1488589690) + 7us), "2017-03-04T01:08:10"s);
+}
+
+
+TEST(NosyncTimeUtils, TestFormatTimeToGmtimeMicroseconds)
+{
+    ASSERT_EQ(format_time_to_gmtime_microseconds(ch::system_clock::from_time_t(1488589690)), "2017-03-04T01:08:10.000000"s);
+    ASSERT_EQ(format_time_to_gmtime_microseconds(ch::system_clock::from_time_t(1488589690) + 3ms), "2017-03-04T01:08:10.003000"s);
+    ASSERT_EQ(format_time_to_gmtime_microseconds(ch::system_clock::from_time_t(1488589690) + 7us), "2017-03-04T01:08:10.000007"s);
+    ASSERT_EQ(format_time_to_gmtime_microseconds(ch::system_clock::from_time_t(1488589690) + 987654us), "2017-03-04T01:08:10.987654"s);
+}
+
+
+TEST(NosyncTimeUtils, TestFormatTimeToGmtimeSecondsArray)
+{
+    ASSERT_EQ(format_time_to_gmtime_seconds_array(ch::system_clock::from_time_t(1509128597)), to_array("2017-10-27T18:23:17"));
+    ASSERT_EQ(format_time_to_gmtime_seconds_array(ch::system_clock::from_time_t(1488589690)), to_array("2017-03-04T01:08:10"));
+    ASSERT_EQ(format_time_to_gmtime_seconds_array(ch::system_clock::from_time_t(1488589690) + 3ms), to_array("2017-03-04T01:08:10"));
+    ASSERT_EQ(format_time_to_gmtime_seconds_array(ch::system_clock::from_time_t(1488589690) + 7us), to_array("2017-03-04T01:08:10"));
+}
+
+
+TEST(NosyncTimeUtils, TestFormatTimeToGmtimeMicrosecondsArray)
+{
+    ASSERT_EQ(format_time_to_gmtime_microseconds_array(ch::system_clock::from_time_t(1488589690)), to_array("2017-03-04T01:08:10.000000"));
+    ASSERT_EQ(format_time_to_gmtime_microseconds_array(ch::system_clock::from_time_t(1488589690) + 3ms), to_array("2017-03-04T01:08:10.003000"));
+    ASSERT_EQ(format_time_to_gmtime_microseconds_array(ch::system_clock::from_time_t(1488589690) + 7us), to_array("2017-03-04T01:08:10.000007"));
+    ASSERT_EQ(format_time_to_gmtime_microseconds_array(ch::system_clock::from_time_t(1488589690) + 987654us), to_array("2017-03-04T01:08:10.987654"));
 }
