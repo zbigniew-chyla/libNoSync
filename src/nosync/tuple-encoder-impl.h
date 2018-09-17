@@ -38,10 +38,7 @@ public:
 
 private:
     template<std::size_t Idx>
-    constexpr std::enable_if_t<(Idx + 1 < sizeof...(EE)), OutputIt> encode_from_index(const std::tuple<EE...> &value, OutputIt out) const;
-
-    template<std::size_t Idx>
-    constexpr std::enable_if_t<(Idx + 1 == sizeof...(EE)), OutputIt> encode_from_index(const std::tuple<EE...> &value, OutputIt out) const;
+    constexpr OutputIt encode_from_index(const std::tuple<EE...> &value, OutputIt out) const;
 
     const Encoder &enc;
 };
@@ -140,17 +137,13 @@ constexpr OutputIt encoder<std::tuple<EE...>, Encoder, OutputIt>::operator()(con
 
 template<typename Encoder, typename OutputIt, typename ...EE>
 template<std::size_t Idx>
-constexpr std::enable_if_t<(Idx + 1 < sizeof...(EE)), OutputIt> encoder<std::tuple<EE...>, Encoder, OutputIt>::encode_from_index(const std::tuple<EE...> &value, OutputIt out) const
+constexpr OutputIt encoder<std::tuple<EE...>, Encoder, OutputIt>::encode_from_index(const std::tuple<EE...> &value, OutputIt out) const
 {
-    return encode_from_index<Idx + 1>(value, encode_tuple(std::get<Idx>(value), enc, out));
-}
-
-
-template<typename Encoder, typename OutputIt, typename ...EE>
-template<std::size_t Idx>
-constexpr std::enable_if_t<(Idx + 1 == sizeof...(EE)), OutputIt> encoder<std::tuple<EE...>, Encoder, OutputIt>::encode_from_index(const std::tuple<EE...> &value, OutputIt out) const
-{
-    return encode_tuple(std::get<Idx>(value), enc, out);
+    if constexpr (Idx + 1 < sizeof...(EE)) {
+        return encode_from_index<Idx + 1>(value, encode_tuple(std::get<Idx>(value), enc, out));
+    } else {
+        return encode_tuple(std::get<Idx>(value), enc, out);
+    }
 }
 
 

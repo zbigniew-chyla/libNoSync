@@ -39,30 +39,6 @@ constexpr auto encode_to_le_atoms_impl(T value, std::index_sequence<I...>) noexc
     return std::array{get_nth_atom<Atom>(value, I)...};
 }
 
-
-template<typename TL, typename TR>
-constexpr std::enable_if_t<std::is_signed_v<TL> && !std::is_signed_v<TR>, bool>
-is_number_less(TL lhs, TR rhs) noexcept
-{
-    return lhs < 0 || cast_to_unsigned(lhs) < rhs;
-}
-
-
-template<typename TL, typename TR>
-constexpr std::enable_if_t<!std::is_signed_v<TL> && std::is_signed_v<TR>, bool>
-is_number_less(TL lhs, TR rhs) noexcept
-{
-    return rhs >= 0 && lhs < cast_to_unsigned(rhs);
-}
-
-
-template<typename TL, typename TR>
-constexpr std::enable_if_t<std::is_signed_v<TL> == std::is_signed_v<TR>, bool>
-is_number_less(TL lhs, TR rhs) noexcept
-{
-    return lhs < rhs;
-}
-
 }
 
 
@@ -210,7 +186,16 @@ template<typename TL, typename TR>
 constexpr bool is_number_less(TL lhs, TR rhs) noexcept
 {
     static_assert(std::is_integral_v<TL> && std::is_integral_v<TR>, "need integral parameters");
-    return number_utils_impl::is_number_less(lhs, rhs);
+
+    using std::is_signed_v;
+
+    if constexpr (is_signed_v<TL> && !is_signed_v<TR>) {
+        return lhs < 0 || cast_to_unsigned(lhs) < rhs;
+    } else if constexpr (!is_signed_v<TL> && is_signed_v<TR>) {
+        return rhs >= 0 && lhs < cast_to_unsigned(rhs);
+    } else {
+        return lhs < rhs;
+    }
 }
 
 
