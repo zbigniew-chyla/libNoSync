@@ -23,7 +23,7 @@ namespace
 
 constexpr char number_to_hex_digit(unsigned value) noexcept
 {
-    const auto eff_value = value & 0x0F;
+    const auto eff_value = value & 0x0FU;
     char digit = eff_value < 10 ? '0' + eff_value : 'A' + eff_value - 10;
     return digit;
 }
@@ -92,8 +92,8 @@ string bytes_to_hex_string(string_view bytes)
 
     for (auto byte : bytes) {
         auto byte_value = static_cast<unsigned char>(byte);
-        hex_str += number_to_hex_digit(byte_value >> 4);
-        hex_str += number_to_hex_digit(byte_value & 0x0F);
+        hex_str += number_to_hex_digit(byte_value >> 4U);
+        hex_str += number_to_hex_digit(byte_value & 0x0FU);
     }
 
     return hex_str;
@@ -113,7 +113,7 @@ optional<string> try_decode_hex_string_to_bytes(string_view hex_string)
         const auto opt_hi_nibble = try_decode_hex_digit_to_number(hex_string[i]);
         const auto opt_lo_nibble = try_decode_hex_digit_to_number(hex_string[i + 1]);
         if (opt_hi_nibble && opt_lo_nibble) {
-            bytes.push_back((*opt_hi_nibble << 4) | *opt_lo_nibble);
+            bytes.push_back((*opt_hi_nibble << 4U) | *opt_lo_nibble);
         }
     }
 
