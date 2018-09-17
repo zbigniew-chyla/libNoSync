@@ -46,7 +46,7 @@ template<typename TL, typename TR>
 constexpr std::enable_if_t<std::is_signed<TL>::value && !std::is_signed<TR>::value, bool>
 is_number_less(TL lhs, TR rhs) noexcept
 {
-    return lhs < 0 || static_cast<std::make_unsigned_t<TL>>(lhs) < rhs;
+    return lhs < 0 || cast_to_unsigned(lhs) < rhs;
 }
 
 
@@ -54,7 +54,7 @@ template<typename TL, typename TR>
 constexpr std::enable_if_t<!std::is_signed<TL>::value && std::is_signed<TR>::value, bool>
 is_number_less(TL lhs, TR rhs) noexcept
 {
-    return rhs >= 0 && lhs < static_cast<std::make_unsigned_t<TR>>(rhs);
+    return rhs >= 0 && lhs < cast_to_unsigned(rhs);
 }
 
 
