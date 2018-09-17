@@ -13,7 +13,6 @@
 #include <nosync/ppoll-based-event-loop.h>
 #include <nosync/result-utils.h>
 #include <nosync/result.h>
-#include <stdexcept>
 #include <string>
 #include <unistd.h>
 #include <utility>
@@ -38,7 +37,6 @@ using std::function;
 using std::make_shared;
 using std::make_unique;
 using std::move;
-using std::runtime_error;
 using std::string;
 using std::to_string;
 using std::vector;
@@ -57,10 +55,10 @@ constexpr auto very_long_timeout = 1h;
 
 array<owned_fd, 2> create_nonblocking_pipe()
 {
-    int pipe_fds[2];
+    int pipe_fds[2] = {-1, -1};
     int pipe_retval = ::pipe2(pipe_fds, O_CLOEXEC | O_NONBLOCK);
     if (pipe_retval < 0) {
-        throw runtime_error("failed to create pipe: " + to_string(errno));
+        ADD_FAILURE();
     }
 
     return {owned_fd(pipe_fds[0]), owned_fd(pipe_fds[1])};
