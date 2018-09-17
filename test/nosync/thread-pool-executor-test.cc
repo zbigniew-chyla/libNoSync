@@ -2,6 +2,7 @@
 #include <atomic>
 #include <gtest/gtest.h>
 #include <mutex>
+#include <nosync/test/macros.h>
 #include <nosync/thread-pool-executor.h>
 #include <stdexcept>
 #include <thread>
@@ -102,6 +103,7 @@ TEST(NosyncThreadPoolExecutor, ThreadIds)
 
 TEST(NosyncThreadPoolExecutor, ExceptionHandler)
 {
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     atomic_uint counter(0);
     atomic_uint exception_counter(0);
 
@@ -125,4 +127,5 @@ TEST(NosyncThreadPoolExecutor, ExceptionHandler)
 
     ASSERT_EQ(counter, 1U);
     ASSERT_EQ(exception_counter, 1U);
+#endif
 }
