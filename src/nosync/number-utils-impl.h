@@ -3,7 +3,6 @@
 #define NOSYNC__NUMBER_UTILS_IMPL_H
 
 #include <algorithm>
-#include <experimental/array>
 #include <nosync/type-utils.h>
 #include <utility>
 #include <string>
@@ -16,7 +15,6 @@ namespace nosync
 namespace number_utils_impl
 {
 
-using std::experimental::make_array;
 using std::size_t;
 
 
@@ -31,14 +29,14 @@ constexpr auto get_nth_atom(T value, size_t n) noexcept
 template<typename Atom, typename T, size_t... I>
 constexpr auto encode_to_be_atoms_impl(T value, std::index_sequence<I...>) noexcept
 {
-    return make_array(get_nth_atom<Atom>(value, sizeof_in_atoms<Atom, T> - 1 - I)...);
+    return std::array{get_nth_atom<Atom>(value, sizeof_in_atoms<Atom, T> - 1 - I)...};
 }
 
 
 template<typename Atom, typename T, size_t... I>
 constexpr auto encode_to_le_atoms_impl(T value, std::index_sequence<I...>) noexcept
 {
-    return make_array(get_nth_atom<Atom>(value, I)...);
+    return std::array{get_nth_atom<Atom>(value, I)...};
 }
 
 

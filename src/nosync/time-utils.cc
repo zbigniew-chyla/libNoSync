@@ -3,7 +3,6 @@
 #include <cinttypes>
 #include <cstdio>
 #include <cstring>
-#include <experimental/array>
 #include <functional>
 #include <nosync/function-utils.h>
 #include <nosync/time-utils.h>
@@ -11,7 +10,6 @@
 
 using namespace std::chrono_literals;
 using std::array;
-using std::experimental::make_array;
 using std::get;
 using std::make_tuple;
 using std::size_t;
@@ -104,9 +102,9 @@ constexpr auto concat_array_str_buf_arrays(const A ...str_buf)
 
     concat_array_ranges(
         concat_buffer,
-        make_array(
+        array{
             make_tuple(str_buf.data(), str_buf.data() + str_buf.size() - 1)...,
-            make_tuple(null_terminator.data(), null_terminator.data() + 1)));
+            make_tuple(null_terminator.data(), null_terminator.data() + 1)});
 
     return concat_buffer;
 }

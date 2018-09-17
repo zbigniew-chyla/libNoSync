@@ -1,7 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <array>
 #include <cerrno>
-#include <experimental/array>
 #include <functional>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -30,7 +29,6 @@ using nosync::ux::owned_fd;
 using nosync::ux::shared_fd;
 using std::array;
 using std::error_code;
-using std::experimental::make_array;
 using std::function;
 using std::generic_category;
 using std::make_shared;
@@ -183,7 +181,7 @@ TEST(NosyncSocketConnectionsFdAcceptor, CheckSingleAccept)
     ASSERT_EQ(check_read_retval, -1);
     ASSERT_EQ(errno, EAGAIN);
 
-    const auto sock_data = make_array('\xA9', '\xC1');
+    const array sock_data = {'\xA9', '\xC1'};
     auto write_retval = write_nointr(*client_sock_fd, sock_data.data(), sock_data.size());
     ASSERT_GT(write_retval, 0);
     ASSERT_EQ(static_cast<size_t>(write_retval), sock_data.size());
