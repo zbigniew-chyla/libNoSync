@@ -43,7 +43,7 @@ private:
 
 buffered_bytes_reader::buffered_bytes_reader(
     size_t buffer_size, shared_ptr<bytes_reader> &&base_reader)
-    : max_buffer_size(buffer_size), base_reader(move(base_reader))
+    : max_buffer_size(buffer_size), base_reader(move(base_reader)), buffer()
 {
 }
 
