@@ -2,6 +2,7 @@
 #include <experimental/optional>
 #include <gtest/gtest.h>
 #include <nosync/result.h>
+#include <nosync/test/macros.h>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -24,7 +25,9 @@ TEST(NosyncResult, UseWithError)
     auto res = make_error_result<string>(ec);
     ASSERT_FALSE(res.is_ok());
     ASSERT_EQ(res.get_error(), ec);
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     ASSERT_THROW(res.get_value(), std::logic_error);
+#endif
 }
 
 
@@ -34,7 +37,9 @@ TEST(NosyncResult, UseWithValue)
     auto res = make_ok_result(value);
     ASSERT_TRUE(res.is_ok());
     ASSERT_EQ(res.get_value(), value);
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     ASSERT_THROW(res.get_error(), std::logic_error);
+#endif
 }
 
 
@@ -98,7 +103,9 @@ TEST(NosyncResult, UseVoidWithOk)
 {
     auto res = make_ok_result();
     ASSERT_TRUE(res.is_ok());
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     ASSERT_THROW(res.get_error(), std::logic_error);
+#endif
 }
 
 
