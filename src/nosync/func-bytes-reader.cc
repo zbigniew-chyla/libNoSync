@@ -37,7 +37,7 @@ func_bytes_reader::func_bytes_reader(
 
 
 void func_bytes_reader::read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout, result_handler<string> &&res_handler)
+    size_t max_size, ch::nanoseconds timeout, result_handler<string> &&res_handler)
 {
     reader_func(max_size, timeout, move(res_handler));
 }
