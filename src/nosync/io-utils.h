@@ -2,18 +2,14 @@
 #ifndef NOSYNC__IO_UTILS_H
 #define NOSYNC__IO_UTILS_H
 
-#include <array>
 #include <nosync/owned-fd.h>
-#include <nosync/result.h>
+#include <nosync/ux/io-utils.h>
 
 
 namespace nosync
 {
 
-/*!
-Create pipe to be used inside the current process (with O_CLOEXEC and O_NONBLOCK flags set).
-*/
-result<std::array<owned_fd, 2>> open_pipe();
+using ux::open_pipe;
 
 }
 

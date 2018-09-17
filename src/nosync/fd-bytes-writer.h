@@ -2,16 +2,15 @@
 #ifndef NOSYNC__FD_BYTES_WRITER_H
 #define NOSYNC__FD_BYTES_WRITER_H
 
-#include <nosync/bytes-writer.h>
 #include <nosync/fd-watcher.h>
 #include <nosync/shared-fd.h>
-#include <memory>
+#include <nosync/ux/fd-bytes-writer.h>
 
 
 namespace nosync
 {
 
-std::shared_ptr<bytes_writer> make_fd_bytes_writer(fd_watcher &watcher, shared_fd &&fd);
+using ux::make_fd_bytes_writer;
 
 }
 
