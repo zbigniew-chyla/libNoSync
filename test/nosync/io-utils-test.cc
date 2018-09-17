@@ -2,10 +2,10 @@
 #include <cerrno>
 #include <fcntl.h>
 #include <gtest/gtest.h>
-#include <nosync/io-utils.h>
+#include <nosync/ux/io-utils.h>
 #include <unistd.h>
 
-using nosync::open_pipe;
+using nosync::ux::open_pipe;
 using std::array;
 
 

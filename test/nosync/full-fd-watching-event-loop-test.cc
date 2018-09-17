@@ -1,9 +1,9 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <gtest/gtest.h>
 #include <memory>
-#include <nosync/full-fd-watching-event-loop-mock.h>
+#include <nosync/ux/full-fd-watching-event-loop-mock.h>
 
-using nosync::full_fd_watching_event_loop_mock;
+using nosync::ux::full_fd_watching_event_loop_mock;
 using std::make_unique;
 
 

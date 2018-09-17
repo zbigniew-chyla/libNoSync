@@ -3,13 +3,13 @@
 #define NOSYNC__SOCKET_ACTIVATION_H
 
 #include <nosync/owned-fd.h>
-#include <vector>
+#include <nosync/ux/socket-activation.h>
 
 
 namespace nosync
 {
 
-std::vector<owned_fd> takeover_socket_activated_fds();
+using ux::takeover_socket_activated_fds;
 
 }
 

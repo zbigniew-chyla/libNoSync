@@ -2,16 +2,15 @@
 #ifndef NOSYNC__FD_BYTES_READER_H
 #define NOSYNC__FD_BYTES_READER_H
 
-#include <nosync/bytes-reader.h>
 #include <nosync/fd-watching-event-loop.h>
 #include <nosync/shared-fd.h>
-#include <memory>
+#include <nosync/ux/fd-bytes-reader.h>
 
 
 namespace nosync
 {
 
-std::shared_ptr<bytes_reader> make_fd_bytes_reader(fd_watching_event_loop &evloop, shared_fd &&fd);
+using ux::make_fd_bytes_reader;
 
 }
 
