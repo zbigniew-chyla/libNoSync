@@ -1,6 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <csignal>
-#include <nosync/exceptions.h>
 #include <nosync/result-utils.h>
 #include <nosync/signal-utils.h>
 
@@ -30,18 +29,6 @@ result<void> ignore_signal_for_process(int signal_num)
     return ::sigaction(signal_num, &sa, nullptr) == 0
         ? make_ok_result()
         : make_raw_error_result_from_errno();
-}
-
-
-void block_signal(int signal_num)
-{
-    throw_if_error_result(block_signal_for_thread(signal_num));
-}
-
-
-void ignore_signal(int signal_num)
-{
-    (void) ignore_signal_for_process(signal_num);
 }
 
 }

@@ -22,8 +22,6 @@ class manual_event_loop_task_handle;
 class manual_event_loop : public event_loop
 {
 public:
-    [[deprecated("use the constructor instead")]] static std::shared_ptr<manual_event_loop> create(std::chrono::time_point<eclock> init_time = {});
-
     manual_event_loop(std::chrono::time_point<eclock> init_time);
     ~manual_event_loop() override;
 

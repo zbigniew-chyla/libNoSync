@@ -3,7 +3,6 @@
 #include <csignal>
 #include <cstring>
 #include <nosync/activity-owner.h>
-#include <nosync/exceptions.h>
 #include <nosync/fd-utils.h>
 #include <nosync/result-utils.h>
 #include <nosync/shared-fd.h>

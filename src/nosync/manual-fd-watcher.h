@@ -19,8 +19,6 @@ struct fd_watch;
 class manual_fd_watcher : public fd_watcher
 {
 public:
-    [[deprecated("use the constructor instead")]] static std::shared_ptr<manual_fd_watcher> create();
-
     manual_fd_watcher();
     ~manual_fd_watcher() override;
 
