@@ -13,7 +13,7 @@ using nosync::make_error_result;
 using nosync::make_ok_result;
 using std::add_const_t ;
 using std::errc;
-using std::is_same;
+using std::is_same_v;
 using std::make_error_code;
 using std::move;
 using std::string;
@@ -56,9 +56,9 @@ TEST(NosyncResult, CheckValueType)
     auto res = make_ok_result("abc"s);
     const auto const_res = make_ok_result("abc"s);
 
-    ASSERT_TRUE((is_same<decltype(res.get_value()), string &>::value));
-    ASSERT_TRUE((is_same<decltype(const_res.get_value()), const string &>::value));
-    ASSERT_TRUE((is_same<decltype(move(res).get_value()), string &&>::value));
+    ASSERT_TRUE((is_same_v<decltype(res.get_value()), string &>));
+    ASSERT_TRUE((is_same_v<decltype(const_res.get_value()), const string &>));
+    ASSERT_TRUE((is_same_v<decltype(move(res).get_value()), string &&>));
 }
 
 

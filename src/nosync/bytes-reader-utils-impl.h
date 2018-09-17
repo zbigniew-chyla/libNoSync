@@ -19,14 +19,14 @@ namespace bytes_reader_utils_impl
 {
 
 template<typename T1 = void>
-constexpr std::enable_if_t<std::is_void<T1>::value, std::tuple<>> decode_be_bytes_to_numbers_impl(std::experimental::string_view)
+constexpr std::enable_if_t<std::is_void_v<T1>, std::tuple<>> decode_be_bytes_to_numbers_impl(std::experimental::string_view)
 {
     return {};
 }
 
 
 template<typename T1, typename ...TT>
-constexpr std::enable_if_t<!std::is_void<T1>::value, std::tuple<T1, TT...>> decode_be_bytes_to_numbers_impl(std::experimental::string_view input)
+constexpr std::enable_if_t<!std::is_void_v<T1>, std::tuple<T1, TT...>> decode_be_bytes_to_numbers_impl(std::experimental::string_view input)
 {
     return std::tuple_cat(
         std::make_tuple(decode_leading_be_bytes_to_number<T1>(input)),

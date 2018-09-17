@@ -2,7 +2,6 @@
 #ifndef NOSYNC__TUPLE_LIKE_H
 #define NOSYNC__TUPLE_LIKE_H
 
-#include <experimental/type_traits>
 #include <type_traits>
 
 
@@ -21,7 +20,7 @@ template<typename T, typename = void>
 struct is_tuple_like;
 
 template<typename T>
-struct is_tuple_like<T, std::experimental::void_t<decltype(std::is_base_of<tuple_like<T>, T>::value)>>;
+struct is_tuple_like<T, std::void_t<decltype(std::is_base_of_v<tuple_like<T>, T>)>>;
 
 
 template<typename T>
