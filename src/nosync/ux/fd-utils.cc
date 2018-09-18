@@ -8,10 +8,10 @@
 #include <unistd.h>
 
 using std::array;
-using std::experimental::string_view;
 using std::make_unique;
 using std::size_t;
 using std::string;
+using std::string_view;
 
 
 namespace nosync::ux

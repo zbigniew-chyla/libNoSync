@@ -11,7 +11,6 @@
 #include <utility>
 
 using std::enable_shared_from_this;
-using std::experimental::string_view;
 using std::function;
 using std::lock_guard;
 using std::make_shared;
@@ -19,6 +18,7 @@ using std::move;
 using std::mutex;
 using std::queue;
 using std::shared_ptr;
+using std::string_view;
 
 
 namespace nosync::ux

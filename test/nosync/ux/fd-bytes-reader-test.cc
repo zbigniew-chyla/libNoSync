@@ -1,6 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <array>
-#include <experimental/string_view>
 #include <fcntl.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -14,6 +13,7 @@
 #include <nosync/ux/owned-fd.h>
 #include <nosync/ux/ppoll-based-event-loop.h>
 #include <string>
+#include <string_view>
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -32,12 +32,12 @@ using nosync::ux::make_ppoll_based_event_loop;
 using nosync::ux::owned_fd;
 using nosync::result;
 using std::array;
-using std::experimental::string_view;
 using std::function;
 using std::make_shared;
 using std::make_unique;
 using std::move;
 using std::string;
+using std::string_view;
 using std::to_string;
 using std::vector;
 using testing::_;

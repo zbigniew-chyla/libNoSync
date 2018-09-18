@@ -99,7 +99,7 @@ TEST(NosyncInputMessagesDispatchHandler, MultipleRequests)
     auto messages_dispatcher = make_input_messages_dispatch_handler(
         *evloop, move(msgs_reader),
         [](auto msg) {
-            return !msg.empty() ? std::experimental::make_optional(msg.substr(0, 1).to_string()) : nullopt;
+            return !msg.empty() ? std::experimental::make_optional(string(msg.substr(0, 1))) : nullopt;
         });
 
     vector<tuple<unsigned, result<string>>> saved_results;

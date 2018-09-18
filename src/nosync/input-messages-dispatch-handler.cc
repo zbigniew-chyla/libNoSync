@@ -1,7 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
 #include <experimental/optional>
-#include <experimental/string_view>
 #include <nosync/eclock.h>
 #include <nosync/input-messages-dispatch-handler.h>
 #include <nosync/memory-utils.h>
@@ -10,6 +9,7 @@
 #include <nosync/result-utils.h>
 #include <nosync/time-utils.h>
 #include <nosync/utils.h>
+#include <string_view>
 #include <system_error>
 
 namespace ch = std::chrono;
@@ -17,13 +17,13 @@ using namespace std::chrono_literals;
 using std::enable_shared_from_this;
 using std::errc;
 using std::experimental::optional;
-using std::experimental::string_view;
 using std::function;
 using std::make_shared;
 using std::move;
 using std::nullptr_t;
 using std::shared_ptr;
 using std::string;
+using std::string_view;
 
 
 namespace nosync

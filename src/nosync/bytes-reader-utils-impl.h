@@ -2,12 +2,12 @@
 #ifndef NOSYNC__BYTES_READER_UTILS_IMPL_H
 #define NOSYNC__BYTES_READER_UTILS_IMPL_H
 
-#include <experimental/string_view>
 #include <nosync/number-utils.h>
 #include <nosync/raw-error-result.h>
 #include <nosync/result-handler.h>
 #include <nosync/time-utils.h>
 #include <nosync/type-utils.h>
+#include <string_view>
 #include <type_traits>
 #include <utility>
 
@@ -19,7 +19,7 @@ namespace bytes_reader_utils_impl
 {
 
 template<typename T1 = void>
-constexpr std::conditional_t<std::is_void_v<T1>, std::tuple<>, std::tuple<T1>> decode_be_bytes_to_numbers_impl([[maybe_unused]] std::experimental::string_view input)
+constexpr std::conditional_t<std::is_void_v<T1>, std::tuple<>, std::tuple<T1>> decode_be_bytes_to_numbers_impl([[maybe_unused]] std::string_view input)
 {
     if constexpr (std::is_void_v<T1>) {
         return {};
@@ -30,7 +30,7 @@ constexpr std::conditional_t<std::is_void_v<T1>, std::tuple<>, std::tuple<T1>> d
 
 
 template<typename T1, typename T2, typename ...TT>
-constexpr std::tuple<T1, T2, TT...> decode_be_bytes_to_numbers_impl(std::experimental::string_view input)
+constexpr std::tuple<T1, T2, TT...> decode_be_bytes_to_numbers_impl(std::string_view input)
 {
     return std::tuple_cat(
         decode_be_bytes_to_numbers_impl<T1>(input),
@@ -39,7 +39,7 @@ constexpr std::tuple<T1, T2, TT...> decode_be_bytes_to_numbers_impl(std::experim
 
 
 template<typename ...T>
-constexpr std::tuple<T...> decode_be_bytes_to_numbers(std::experimental::string_view input)
+constexpr std::tuple<T...> decode_be_bytes_to_numbers(std::string_view input)
 {
     return decode_be_bytes_to_numbers_impl<T...>(input);
 }
@@ -71,7 +71,7 @@ void read_be_numbers_fully(
         transform_result_handler<std::string>(
             std::move(res_handler),
             [count](auto read_data) {
-                std::experimental::string_view bytes_view(read_data);
+                std::string_view bytes_view(read_data);
                 std::vector<T> res_numbers;
                 res_numbers.reserve(count);
                 for (std::size_t i = 0; i < count; ++i) {

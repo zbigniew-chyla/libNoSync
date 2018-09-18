@@ -7,12 +7,12 @@
 #include <utility>
 
 using std::enable_shared_from_this;
-using std::experimental::string_view;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;
 using std::size_t;
 using std::string;
+using std::string_view;
 
 
 namespace nosync::ux
