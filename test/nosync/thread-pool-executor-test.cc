@@ -2,13 +2,14 @@
 #include <atomic>
 #include <gtest/gtest.h>
 #include <mutex>
-#include <nosync/thread-pool-executor.h>
+#include <nosync/test/macros.h>
+#include <nosync/ux/thread-pool-executor.h>
 #include <stdexcept>
 #include <thread>
 #include <vector>
 
-using nosync::make_thread_pool_executor;
-using nosync::thread_pool_executor_destroy_mode;
+using nosync::ux::make_thread_pool_executor;
+using nosync::ux::thread_pool_executor_destroy_mode;
 using std::atomic_uint;
 using std::exception_ptr;
 using std::function;
@@ -102,6 +103,7 @@ TEST(NosyncThreadPoolExecutor, ThreadIds)
 
 TEST(NosyncThreadPoolExecutor, ExceptionHandler)
 {
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     atomic_uint counter(0);
     atomic_uint exception_counter(0);
 
@@ -125,4 +127,5 @@ TEST(NosyncThreadPoolExecutor, ExceptionHandler)
 
     ASSERT_EQ(counter, 1U);
     ASSERT_EQ(exception_counter, 1U);
+#endif
 }

@@ -6,6 +6,8 @@
 namespace nosync
 {
 
+#if defined(__cpp_exceptions) && __cpp_exceptions
+
 template<typename Try, typename Catch>
 void try_with_catch_all(const Try &try_func, const Catch &catch_func)
 {
@@ -15,6 +17,16 @@ void try_with_catch_all(const Try &try_func, const Catch &catch_func)
         catch_func();
     }
 }
+
+#else
+
+template<typename Try, typename Catch>
+void try_with_catch_all(const Try &try_func, const Catch &)
+{
+    try_func();
+}
+
+#endif
 
 }
 

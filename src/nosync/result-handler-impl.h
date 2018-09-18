@@ -15,7 +15,7 @@ namespace result_handler_impl
 template<typename InType, typename OutType, typename F>
 struct result_handler_merger
 {
-    static_assert(std::is_assignable<std::function<void(InType, result_handler<OutType>)>, F>::value, "parameter must be proper function-like type");
+    static_assert(std::is_assignable_v<std::function<void(InType, result_handler<OutType>)>, F>, "parameter must be proper function-like type");
     result_handler<InType> operator()(result_handler<OutType> &&base_res_handler, F &&handle_func) const;
 };
 
@@ -23,7 +23,7 @@ struct result_handler_merger
 template<typename OutType, typename F>
 struct result_handler_merger<void, OutType, F>
 {
-    static_assert(std::is_assignable<std::function<void(result_handler<OutType>)>, F>::value, "parameter must be proper function-like type");
+    static_assert(std::is_assignable_v<std::function<void(result_handler<OutType>)>, F>, "parameter must be proper function-like type");
     result_handler<void> operator()(result_handler<OutType> &&base_res_handler, F &&handle_func) const;
 };
 
@@ -31,7 +31,7 @@ struct result_handler_merger<void, OutType, F>
 template<typename InType, typename OutType, typename F>
 struct result_handler_transformer
 {
-    static_assert(std::is_assignable<std::function<result<OutType>(InType)>, F>::value, "parameter must be proper function-like type");
+    static_assert(std::is_assignable_v<std::function<result<OutType>(InType)>, F>, "parameter must be proper function-like type");
     result_handler<InType> operator()(result_handler<OutType> &&base_res_handler, F &&trans_func) const;
 };
 
@@ -39,7 +39,7 @@ struct result_handler_transformer
 template<typename OutType, typename F>
 struct result_handler_transformer<void, OutType, F>
 {
-    static_assert(std::is_assignable<std::function<result<OutType>()>, F>::value, "parameter must be proper function-like type");
+    static_assert(std::is_assignable_v<std::function<result<OutType>()>, F>, "parameter must be proper function-like type");
     result_handler<void> operator()(result_handler<OutType> &&base_res_handler, F &&trans_func) const;
 };
 

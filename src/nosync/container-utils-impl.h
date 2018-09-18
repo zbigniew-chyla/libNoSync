@@ -2,7 +2,6 @@
 #ifndef NOSYNC__CONTAINER_UTILS_IMPL_H
 #define NOSYNC__CONTAINER_UTILS_IMPL_H
 
-#include <experimental/array>
 #include <utility>
 
 
@@ -16,7 +15,7 @@ namespace container_utils_impl
 template<typename T, std::size_t N, typename F, std::size_t ...I>
 constexpr std::array<T, N> generate_array(const F &elem_generator, std::index_sequence<I...>)
 {
-    return std::experimental::make_array(elem_generator(I)...);
+    return {elem_generator(I)...};
 }
 
 };

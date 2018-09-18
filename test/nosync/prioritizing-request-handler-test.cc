@@ -1,6 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <chrono>
-#include <experimental/array>
 #include <functional>
 #include <gtest/gtest.h>
 #include <memory>
@@ -21,8 +20,8 @@ using nosync::make_prioritizing_request_handler;
 using nosync::request_handler;
 using nosync::request_handler_mock;
 using nosync::result;
+using std::array;
 using std::function;
-using std::experimental::make_array;
 using std::make_shared;
 using std::make_unique;
 using std::move;
@@ -122,7 +121,7 @@ TEST(NosyncPrioritizingRequestHandler, DelayedLowPrio)
 
     ASSERT_EQ(results.size(), 0U);
 
-    const auto res_values = make_array('X', 'Y', 'Z');
+    const array res_values = {'X', 'Y', 'Z'};
     for (unsigned i = 0; i < res_values.size(); ++i) {
         const auto test_result = make_ok_result(res_values[i]);
         ASSERT_EQ(saved_res_handlers.size(), i + 1);

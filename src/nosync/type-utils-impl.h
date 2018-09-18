@@ -9,25 +9,6 @@
 namespace nosync
 {
 
-namespace type_utils_impl
-{
-
-template<typename T1 = void>
-constexpr std::enable_if_t<std::is_void<T1>::value, std::size_t> get_sizeof_sum_impl() noexcept
-{
-    return 0;
-}
-
-
-template<typename T1, typename ...TT>
-constexpr std::enable_if_t<!std::is_void<T1>::value, std::size_t> get_sizeof_sum_impl() noexcept
-{
-    return sizeof(T1) + get_sizeof_sum<TT...>();
-}
-
-}
-
-
 template<typename T>
 constexpr std::size_t get_sizeof_in_bits() noexcept
 {
@@ -49,7 +30,7 @@ constexpr std::size_t get_sizeof_in_atoms() noexcept
 template<typename ...T>
 constexpr std::size_t get_sizeof_sum() noexcept
 {
-    return type_utils_impl::get_sizeof_sum_impl<T...>();
+    return (0 + ... + sizeof(T));
 }
 
 

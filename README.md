@@ -1,7 +1,7 @@
 
 ## libnosync - async event loop for applications with reproducible behaviour
 
-Simple C++14 event loop implementation designed with code reproducibility in
+Simple C++17 event loop implementation designed with code reproducibility in
 mind. It's meant to be used in applications split into two parts:
 
  - "core" part with reproducible behaviour (including dependency on time),

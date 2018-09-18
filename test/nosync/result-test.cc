@@ -2,6 +2,7 @@
 #include <experimental/optional>
 #include <gtest/gtest.h>
 #include <nosync/result.h>
+#include <nosync/test/macros.h>
 #include <stdexcept>
 #include <string>
 #include <system_error>
@@ -12,7 +13,7 @@ using nosync::make_error_result;
 using nosync::make_ok_result;
 using std::add_const_t ;
 using std::errc;
-using std::is_same;
+using std::is_same_v;
 using std::make_error_code;
 using std::move;
 using std::string;
@@ -24,7 +25,9 @@ TEST(NosyncResult, UseWithError)
     auto res = make_error_result<string>(ec);
     ASSERT_FALSE(res.is_ok());
     ASSERT_EQ(res.get_error(), ec);
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     ASSERT_THROW(res.get_value(), std::logic_error);
+#endif
 }
 
 
@@ -34,7 +37,9 @@ TEST(NosyncResult, UseWithValue)
     auto res = make_ok_result(value);
     ASSERT_TRUE(res.is_ok());
     ASSERT_EQ(res.get_value(), value);
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     ASSERT_THROW(res.get_error(), std::logic_error);
+#endif
 }
 
 
@@ -51,9 +56,9 @@ TEST(NosyncResult, CheckValueType)
     auto res = make_ok_result("abc"s);
     const auto const_res = make_ok_result("abc"s);
 
-    ASSERT_TRUE((is_same<decltype(res.get_value()), string &>::value));
-    ASSERT_TRUE((is_same<decltype(const_res.get_value()), const string &>::value));
-    ASSERT_TRUE((is_same<decltype(move(res).get_value()), string &&>::value));
+    ASSERT_TRUE((is_same_v<decltype(res.get_value()), string &>));
+    ASSERT_TRUE((is_same_v<decltype(const_res.get_value()), const string &>));
+    ASSERT_TRUE((is_same_v<decltype(move(res).get_value()), string &&>));
 }
 
 
@@ -98,7 +103,9 @@ TEST(NosyncResult, UseVoidWithOk)
 {
     auto res = make_ok_result();
     ASSERT_TRUE(res.is_ok());
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     ASSERT_THROW(res.get_error(), std::logic_error);
+#endif
 }
 
 

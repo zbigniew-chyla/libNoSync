@@ -3,15 +3,16 @@
 #include <functional>
 #include <gtest/gtest.h>
 #include <memory>
-#include <nosync/event-loop-mt-executor.h>
 #include <nosync/event-loop-utils.h>
 #include <nosync/event-loop.h>
-#include <nosync/ppoll-based-event-loop.h>
 #include <nosync/request-handler.h>
 #include <nosync/result-utils.h>
-#include <nosync/thread-pool-executor.h>
-#include <nosync/threaded-request-handler.h>
+#include <nosync/test/macros.h>
 #include <nosync/type-utils.h>
+#include <nosync/ux/event-loop-mt-executor.h>
+#include <nosync/ux/ppoll-based-event-loop.h>
+#include <nosync/ux/thread-pool-executor.h>
+#include <nosync/ux/threaded-request-handler.h>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -24,10 +25,10 @@ using nosync::result;
 using nosync::make_copy;
 using nosync::make_timeout_raw_error_result;
 using nosync::make_ok_result;
-using nosync::make_event_loop_mt_executor;
-using nosync::make_ppoll_based_event_loop;
-using nosync::make_thread_pool_executor;
-using nosync::make_threaded_request_handler;
+using nosync::ux::make_event_loop_mt_executor;
+using nosync::ux::make_ppoll_based_event_loop;
+using nosync::ux::make_thread_pool_executor;
+using nosync::ux::make_threaded_request_handler;
 using std::errc;
 using std::move;
 using std::runtime_error;
@@ -46,7 +47,7 @@ TEST(NosyncThreadedRequestHandler, CheckThreadIds)
     auto evloop_mt_executor = move(evloop_mt_executor_res.get_value());
 
     auto req_handler = make_threaded_request_handler<string, thread::id>(
-        make_copy(evloop_mt_executor), nosync::make_thread_pool_executor(1),
+        make_copy(evloop_mt_executor), nosync::ux::make_thread_pool_executor(1),
         [](auto, auto) {
             return make_ok_result(std::this_thread::get_id());
         });
@@ -135,6 +136,7 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerResults)
 
 TEST(NosyncThreadedRequestHandler, CheckHandlerException)
 {
+#if NOSYNC_TEST_EXCEPTIONS_ENABLED
     auto evloop = make_ppoll_based_event_loop();
 
     auto evloop_mt_executor_res = make_event_loop_mt_executor(*evloop);
@@ -170,4 +172,5 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerException)
     ASSERT_EQ(saved_results.size(), 1U);
     ASSERT_FALSE(saved_results.front().is_ok());
     ASSERT_EQ(saved_results.front().get_error(), make_error_code(errc::owner_dead));
+#endif
 }

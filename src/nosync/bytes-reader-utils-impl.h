@@ -19,18 +19,22 @@ namespace bytes_reader_utils_impl
 {
 
 template<typename T1 = void>
-constexpr std::enable_if_t<std::is_void<T1>::value, std::tuple<>> decode_be_bytes_to_numbers_impl(std::experimental::string_view)
+constexpr std::conditional_t<std::is_void_v<T1>, std::tuple<>, std::tuple<T1>> decode_be_bytes_to_numbers_impl([[maybe_unused]] std::experimental::string_view input)
 {
-    return {};
+    if constexpr (std::is_void_v<T1>) {
+        return {};
+    } else {
+        return {decode_leading_be_bytes_to_number<T1>(input)};
+    }
 }
 
 
-template<typename T1, typename ...TT>
-constexpr std::enable_if_t<!std::is_void<T1>::value, std::tuple<T1, TT...>> decode_be_bytes_to_numbers_impl(std::experimental::string_view input)
+template<typename T1, typename T2, typename ...TT>
+constexpr std::tuple<T1, T2, TT...> decode_be_bytes_to_numbers_impl(std::experimental::string_view input)
 {
     return std::tuple_cat(
-        std::make_tuple(decode_leading_be_bytes_to_number<T1>(input)),
-        decode_be_bytes_to_numbers_impl<TT...>(input.substr(sizeof(T1), sizeof_sum<TT...>)));
+        decode_be_bytes_to_numbers_impl<T1>(input),
+        decode_be_bytes_to_numbers_impl<T2, TT...>(input.substr(sizeof(T1), sizeof_sum<T2, TT...>)));
 }
 
 

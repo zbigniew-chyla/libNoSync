@@ -36,7 +36,7 @@ struct is_tuple_like : public std::false_type
 
 
 template<typename T>
-struct is_tuple_like<T, std::experimental::void_t<decltype(std::is_base_of<tuple_like<T>, T>::value)>> : public std::is_base_of<tuple_like<T>, T>
+struct is_tuple_like<T, std::void_t<decltype(std::is_base_of_v<tuple_like<T>, T>)>> : public std::is_base_of<tuple_like<T>, T>
 {
 };
 
@@ -46,7 +46,7 @@ constexpr auto get_tuple_like_class_members(const T &value)
 {
     constexpr auto cls_fields = T::cls_fields;
     return tuple_like_impl::get_tuple_like_class_members_impl(
-        value, cls_fields, std::make_index_sequence<std::tuple_size<decltype(cls_fields)>::value>());
+        value, cls_fields, std::make_index_sequence<std::tuple_size_v<decltype(cls_fields)>>());
 }
 
 }

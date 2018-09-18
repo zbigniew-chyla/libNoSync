@@ -3,13 +3,13 @@
 #define NOSYNC__PPOLL_BASED_EVENT_LOOP_H
 
 #include <nosync/full-fd-watching-event-loop.h>
-#include <memory>
+#include <nosync/ux/ppoll-based-event-loop.h>
 
 
 namespace nosync
 {
 
-std::shared_ptr<full_fd_watching_event_loop> make_ppoll_based_event_loop();
+using ux::make_ppoll_based_event_loop;
 
 }
 

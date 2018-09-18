@@ -17,7 +17,7 @@ template<typename T>
 std::weak_ptr<T> weak_from_that(T *obj)
 {
     static_assert(
-        std::is_base_of<std::enable_shared_from_this<T>, T>::value,
+        std::is_base_of_v<std::enable_shared_from_this<T>, T>,
         "type must inherit from enable_shared_from_this<>");
     return obj->shared_from_this();
 }
