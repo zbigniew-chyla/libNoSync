@@ -3,7 +3,7 @@
 #define NOSYNC__STRING_UTILS_H
 
 #include <array>
-#include <experimental/optional>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -12,7 +12,7 @@ namespace nosync
 {
 
 std::string bytes_to_hex_string(std::string_view bytes);
-std::experimental::optional<std::string> try_decode_hex_string_to_bytes(std::string_view hex_string);
+std::optional<std::string> try_decode_hex_string_to_bytes(std::string_view hex_string);
 
 template<typename T>
 constexpr std::array<char, sizeof(T) * 2> number_to_hex_digits_array(T value) noexcept;

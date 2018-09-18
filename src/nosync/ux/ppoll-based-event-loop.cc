@@ -1,12 +1,12 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
 #include <cerrno>
-#include <experimental/optional>
 #include <nosync/eclock.h>
 #include <nosync/manual-event-loop.h>
 #include <nosync/time-utils.h>
 #include <nosync/ux/manual-fd-watcher.h>
 #include <nosync/ux/ppoll-based-event-loop.h>
+#include <optional>
 #include <poll.h>
 #include <vector>
 
@@ -14,13 +14,13 @@ namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using std::errc;
 using std::error_code;
-using std::experimental::optional;
 using std::function;
 using std::get;
 using std::make_error_code;
 using std::make_shared;
 using std::make_unique;
 using std::move;
+using std::optional;
 using std::shared_ptr;
 using std::system_category;
 using std::unique_ptr;

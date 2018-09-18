@@ -184,7 +184,7 @@ template<typename Req, typename Res>
 void requests_queue<Req, Res>::disable_timeout_task_if_present()
 {
     if (scheduled_timeout_task) {
-        scheduled_timeout_task = std::experimental::nullopt;
+        scheduled_timeout_task = std::nullopt;
     }
 }
 
@@ -212,7 +212,7 @@ void requests_queue<Req, Res>::reschedule_timeout_task()
             evloop.invoke_at(
                 min_timeout_end,
                 [this]() {
-                    scheduled_timeout_task = std::experimental::nullopt;
+                    scheduled_timeout_task = std::nullopt;
                     handle_pending_timeouts();
                     reschedule_timeout_task();
                 }));
