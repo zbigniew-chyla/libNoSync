@@ -4,12 +4,12 @@
 
 #include <chrono>
 #include <cstdint>
-#include <experimental/optional>
 #include <functional>
 #include <nosync/eclock.h>
 #include <nosync/event-loop.h>
 #include <map>
 #include <memory>
+#include <optional>
 #include <tuple>
 
 
@@ -25,7 +25,7 @@ public:
     manual_event_loop(std::chrono::time_point<eclock> init_time);
     ~manual_event_loop() override;
 
-    std::experimental::optional<std::chrono::time_point<eclock>> get_earliest_task_time() const;
+    std::optional<std::chrono::time_point<eclock>> get_earliest_task_time() const;
     bool process_time_passage(std::chrono::nanoseconds time_delta);
     void quit();
 

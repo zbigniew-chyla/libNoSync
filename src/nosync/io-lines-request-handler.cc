@@ -1,6 +1,4 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <experimental/optional>
-#include <experimental/string_view>
 #include <nosync/input-messages-dispatch-handler.h>
 #include <nosync/io-lines-request-handler.h>
 #include <nosync/lines-reader.h>
@@ -9,18 +7,20 @@
 #include <nosync/sequential-chunks-writer.h>
 #include <nosync/string-utils.h>
 #include <nosync/time-utils.h>
+#include <optional>
+#include <string_view>
 
 namespace ch = std::chrono;
 using namespace std::string_literals;
 using std::errc;
-using std::experimental::nullopt;
-using std::experimental::optional;
-using std::experimental::string_view;
 using std::make_shared;
 using std::move;
+using std::nullopt;
 using std::nullptr_t;
+using std::optional;
 using std::shared_ptr;
 using std::string;
+using std::string_view;
 using std::uint64_t;
 
 
@@ -85,7 +85,7 @@ optional<string> try_decode_response_line_id(string_view resp_line)
 {
     auto sep_pos = resp_line.find(req_id_separator);
     return sep_pos != string_view::npos
-        ? std::experimental::make_optional(resp_line.substr(0, sep_pos).to_string())
+        ? std::make_optional(string(resp_line.substr(0, sep_pos)))
         : nullopt;
 }
 
@@ -93,7 +93,7 @@ optional<string> try_decode_response_line_id(string_view resp_line)
 string decode_response_line_data(string_view resp_line)
 {
     auto sep_pos = resp_line.find(req_id_separator);
-    return sep_pos != string_view::npos ? resp_line.substr(sep_pos + 1).to_string() : ""s;
+    return sep_pos != string_view::npos ? string(resp_line.substr(sep_pos + 1)) : ""s;
 }
 
 

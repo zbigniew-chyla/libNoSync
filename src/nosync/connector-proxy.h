@@ -1,7 +1,7 @@
 #ifndef NOSYNC__CONNECTOR_PROXY_H
 #define NOSYNC__CONNECTOR_PROXY_H
 
-#include <experimental/string_view>
+#include <string_view>
 
 
 namespace nosync
@@ -19,7 +19,7 @@ In future the returned object will be a wrapper around base_obj providing
 additional functionality. The template will support only specific types then.
 */
 template<typename T>
-T make_connector_proxy(std::experimental::string_view name, T &&base_obj);
+T make_connector_proxy(std::string_view name, T &&base_obj);
 
 }
 

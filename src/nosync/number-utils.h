@@ -4,8 +4,8 @@
 
 #include <array>
 #include <cstdint>
-#include <experimental/string_view>
 #include <nosync/type-utils.h>
+#include <string_view>
 
 
 namespace nosync
@@ -45,10 +45,10 @@ template<typename T, std::size_t N>
 constexpr T decode_le_bytes_to_number(const std::array<char, sizeof(T)> &bytes) noexcept;
 
 template<typename T = std::uintmax_t>
-constexpr T decode_leading_be_bytes_to_number(std::experimental::string_view bytes);
+constexpr T decode_leading_be_bytes_to_number(std::string_view bytes);
 
 template<typename T = std::uintmax_t>
-constexpr T decode_leading_le_bytes_to_number(std::experimental::string_view bytes);
+constexpr T decode_leading_le_bytes_to_number(std::string_view bytes);
 
 template<typename TL, typename TR>
 constexpr bool is_number_less(TL lhs, TR rhs) noexcept;

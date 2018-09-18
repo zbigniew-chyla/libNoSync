@@ -1,5 +1,4 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <experimental/optional>
 #include <functional>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -9,6 +8,7 @@
 #include <nosync/event-loop-utils.h>
 #include <nosync/manual-event-loop.h>
 #include <nosync/result.h>
+#include <optional>
 #include <string>
 #include <system_error>
 #include <utility>
@@ -27,11 +27,11 @@ using nosync::manual_event_loop;
 using nosync::process_read_bytes_with_timeout;
 using std::errc;
 using std::error_code;
-using std::experimental::optional;
 using std::function;
 using std::make_error_code;
 using std::make_shared;
 using std::move;
+using std::optional;
 using std::ref;
 using std::size_t;
 using std::string;

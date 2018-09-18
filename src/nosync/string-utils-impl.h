@@ -50,7 +50,7 @@ std::string make_string(const std::array<char, N> &bytes)
 
 
 template<std::size_t N>
-constexpr std::experimental::string_view make_string_view(const std::array<char, N> &bytes) noexcept
+constexpr std::string_view make_string_view(const std::array<char, N> &bytes) noexcept
 {
     return {bytes.data(), bytes.size()};
 }

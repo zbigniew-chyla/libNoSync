@@ -8,14 +8,14 @@
 namespace nosync
 {
 
-using std::experimental::make_optional;
-using std::experimental::nullopt;
-using std::experimental::optional;
-using std::experimental::string_view;
 using std::isprint;
 using std::locale;
+using std::make_optional;
+using std::nullopt;
+using std::optional;
 using std::size_t;
 using std::string;
+using std::string_view;
 
 
 namespace

@@ -3,12 +3,12 @@
 #define NOSYNC__BYTES_READER_UTILS_H
 
 #include <chrono>
-#include <experimental/optional>
 #include <functional>
 #include <nosync/bytes-reader.h>
 #include <nosync/event-loop.h>
 #include <nosync/result-handler.h>
 #include <memory>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -47,7 +47,7 @@ template<typename Res>
 void process_read_bytes_with_timeout(
     event_loop &evloop, std::shared_ptr<bytes_reader> &&reader,
     std::chrono::nanoseconds timeout,
-    std::function<std::experimental::optional<Res>(char)> &&bytes_processor,
+    std::function<std::optional<Res>(char)> &&bytes_processor,
     result_handler<Res> &&res_handler);
 
 template<typename F>
