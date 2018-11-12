@@ -4,6 +4,7 @@
 
 #include <array>
 #include <functional>
+#include <nosync/int-range.h>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -198,7 +199,7 @@ constexpr encoder<std::array<E, I>, Encoder, OutputIt>::encoder(const Encoder &e
 template<typename E, std::size_t I, typename Encoder, typename OutputIt>
 constexpr OutputIt encoder<std::array<E, I>, Encoder, OutputIt>::operator()(const std::array<E, I> &value, OutputIt out) const
 {
-    for (std::size_t i = 0; i < value.size(); ++i) {
+    for (auto i : int_range(value.size())) {
         out = encode_tuple(value[i], enc, out);
     }
 
