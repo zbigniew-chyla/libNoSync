@@ -65,7 +65,7 @@ thread_pool_executor::thread_pool_executor(
 
 thread_pool_executor::~thread_pool_executor()
 {
-    for (unsigned i = 0; i < worker_threads.size(); ++i) {
+    for (auto i = worker_threads.size(); i != 0; --i) {
         tasks_queue->enqueue(nullptr);
     }
 
@@ -82,7 +82,7 @@ thread_pool_executor::~thread_pool_executor()
 void thread_pool_executor::add_worker_threads(unsigned thread_count)
 {
     exception_ptr threads_init_exception;
-    for (unsigned i = 0; i < thread_count; ++i) {
+    for (auto i = thread_count; i != 0; --i) {
         worker_threads.emplace_back(
             [tasks_queue = tasks_queue, exception_handler = exception_handler]() mutable {
                 run_worker_thread(*tasks_queue, move(*exception_handler));
