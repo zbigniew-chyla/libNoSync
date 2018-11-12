@@ -12,7 +12,7 @@ template<typename T>
 std::weak_ptr<T> weak_from_shared(std::shared_ptr<T> ptr);
 
 template<typename T>
-std::weak_ptr<T> weak_from_that(T *obj);
+[[deprecated("use std::enable_shared_from_this::weak_from this instead")]] std::weak_ptr<T> weak_from_that(T *obj);
 
 template<typename T, typename F>
 auto make_weak_this_func_proxy(T *self, F func);

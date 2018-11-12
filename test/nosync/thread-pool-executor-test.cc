@@ -13,10 +13,10 @@ using nosync::ux::thread_pool_executor_destroy_mode;
 using std::atomic_uint;
 using std::exception_ptr;
 using std::function;
-using std::lock_guard;
 using std::mutex;
 using std::rethrow_exception;
 using std::runtime_error;
+using std::scoped_lock;
 using std::thread;
 using std::vector;
 
@@ -79,14 +79,14 @@ TEST(NosyncThreadPoolExecutor, ThreadIds)
         for (unsigned i = 0; i < tasks_count; ++i) {
             executor(
                 [i, &tasks_numbers, &tasks_thread_ids, &tasks_mutex]() {
-                    lock_guard<mutex> lock(tasks_mutex);
+                    scoped_lock lock(tasks_mutex);
                     tasks_numbers.push_back(i);
                     tasks_thread_ids.push_back(std::this_thread::get_id());
                 });
         }
     }
 
-    lock_guard<mutex> lock(tasks_mutex);
+    scoped_lock lock(tasks_mutex);
 
     ASSERT_EQ(tasks_numbers.size(), tasks_count);
     ASSERT_EQ(tasks_thread_ids.size(), tasks_count);

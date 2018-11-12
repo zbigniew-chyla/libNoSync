@@ -24,6 +24,8 @@ public:
     void handle_request(Req &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler) override;
 
 private:
+    using std::enable_shared_from_this<sequential_request_handler<Req, Res>>::weak_from_this;
+
     void handle_next_pending_request_if_needed();
 
     event_loop &evloop;
@@ -46,7 +48,7 @@ void sequential_request_handler<Req, Res>::handle_request(Req &&request, std::ch
     if (!request_ongoing) {
         base_req_handler->handle_request(
             std::move(request), timeout,
-            [req_handler_wptr = weak_from_that(this), res_handler = std::move(res_handler)](auto res) {
+            [req_handler_wptr = weak_from_this(), res_handler = std::move(res_handler)](auto res) {
                 res_handler(std::move(res));
                 auto req_handler_ptr = req_handler_wptr.lock();
                 if (req_handler_ptr) {

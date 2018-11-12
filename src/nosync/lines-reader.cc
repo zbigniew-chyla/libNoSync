@@ -115,7 +115,7 @@ void lines_reader::handle_request(
             max_line_size - prefix_size,
             merge_result_handler<tuple<string, string>>(
                 move(res_handler),
-                [req_handler_wptr = weak_from_that(this), prefix = move(prefix)](auto read_pair, auto res_handler) {
+                [req_handler_wptr = weak_from_this(), prefix = move(prefix)](auto read_pair, auto res_handler) {
                     const auto &line_reminder = get<0>(read_pair);
                     const auto &after_line = get<1>(read_pair);
                     auto req_handler_ptr = req_handler_wptr.lock();

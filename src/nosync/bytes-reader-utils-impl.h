@@ -2,6 +2,7 @@
 #ifndef NOSYNC__BYTES_READER_UTILS_IMPL_H
 #define NOSYNC__BYTES_READER_UTILS_IMPL_H
 
+#include <nosync/int-range.h>
 #include <nosync/number-utils.h>
 #include <nosync/raw-error-result.h>
 #include <nosync/result-handler.h>
@@ -74,7 +75,7 @@ void read_be_numbers_fully(
                 std::string_view bytes_view(read_data);
                 std::vector<T> res_numbers;
                 res_numbers.reserve(count);
-                for (std::size_t i = 0; i < count; ++i) {
+                for (auto i : int_range(count)) {
                     res_numbers.push_back(decode_leading_be_bytes_to_number<T>(bytes_view.substr(i * sizeof(T), sizeof(T))));
                 }
                 return make_ok_result(std::move(res_numbers));

@@ -3,6 +3,7 @@
 #define NOSYNC__NUMBER_UTILS_IMPL_H
 
 #include <algorithm>
+#include <nosync/int-range.h>
 #include <nosync/type-utils.h>
 #include <utility>
 #include <string>
@@ -104,7 +105,7 @@ constexpr T decode_be_atoms_to_number(const std::array<Atom, N> &atoms) noexcept
     static_assert(N <= sizeof_in_atoms<Atom, T>, "size of input array must not exceed the size of target type");
 
     T value = 0;
-    for (size_t i = 0; i < atoms.size(); ++i) {
+    for (auto i : int_range(atoms.size())) {
         value |= static_cast<T>(cast_to_unsigned(atoms[i])) << (sizeof_in_bits<Atom> * (atoms.size() - 1 - i));
     }
 
@@ -118,7 +119,7 @@ constexpr T decode_le_atoms_to_number(const std::array<Atom, N> &atoms) noexcept
     static_assert(N <= sizeof_in_atoms<Atom, T>, "size of input array must not exceed the size of target type");
 
     T value = 0;
-    for (size_t i = 0; i < atoms.size(); ++i) {
+    for (auto i : int_range(atoms.size())) {
         value |= static_cast<T>(cast_to_unsigned(atoms[i])) << (sizeof_in_bits<Atom> * i);
     }
 
@@ -160,7 +161,7 @@ constexpr T decode_leading_be_bytes_to_number(std::string_view bytes)
     const auto used_bytes_count = std::min(sizeof(T), bytes.size());
 
     T value = 0;
-    for (std::size_t i = 0; i < used_bytes_count; ++i) {
+    for (auto i : int_range(used_bytes_count)) {
         value |= static_cast<T>(cast_to_unsigned(bytes[i])) << (sizeof_in_bits<char> * (used_bytes_count - 1 - i));
     }
 
@@ -174,7 +175,7 @@ constexpr T decode_leading_le_bytes_to_number(std::string_view bytes)
     const auto used_bytes_count = std::min(sizeof(T), bytes.size());
 
     T value = 0;
-    for (size_t i = 0; i < used_bytes_count; ++i) {
+    for (auto i : int_range(used_bytes_count)) {
         value |= static_cast<T>(cast_to_unsigned(bytes[i])) << (sizeof_in_bits<char> * i);
     }
 
