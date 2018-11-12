@@ -16,7 +16,7 @@ synchronized_queue<T>::synchronized_queue()
 template<typename T>
 void synchronized_queue<T>::enqueue(T element)
 {
-    std::lock_guard<std::mutex> lock(elements_mutex);
+    std::scoped_lock lock(elements_mutex);
     bool was_empty = elements.empty();
     elements.push(std::move(element));
     if (was_empty) {

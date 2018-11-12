@@ -12,11 +12,11 @@
 
 using std::enable_shared_from_this;
 using std::function;
-using std::lock_guard;
 using std::make_shared;
 using std::move;
 using std::mutex;
 using std::queue;
+using std::scoped_lock;
 using std::shared_ptr;
 using std::string_view;
 
@@ -64,7 +64,7 @@ synchronized_queue_pusher<T>::synchronized_queue_pusher(
 template<typename T>
 void synchronized_queue_pusher<T>::push(T element)
 {
-    lock_guard<mutex> queue_lock(out_queue->queue_mutex);
+    scoped_lock queue_lock(out_queue->queue_mutex);
     out_queue->elements.push(move(element));
     if (out_queue->elements.size() == 1) {
         write_some_bytes_to_fd(*out_notify_fd, string_view(&queue_fd_notify_byte, 1));
@@ -114,7 +114,7 @@ void queued_tasks_dispatcher::handle_in_notify()
     auto notify_read_res = read_some_bytes_from_fd(*in_notify_fd, queue_fd_notify_read_size);
 
     {
-        lock_guard<mutex> tasks_queue_lock(tasks_queue->queue_mutex);
+        scoped_lock tasks_queue_lock(tasks_queue->queue_mutex);
         while (!tasks_queue->elements.empty()) {
             invoke_later(evloop, move(tasks_queue->elements.front()));
             tasks_queue->elements.pop();
