@@ -24,6 +24,8 @@ public:
     void handle_request(std::nullptr_t &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler) override;
 
 private:
+    using std::enable_shared_from_this<grouping_null_request_handler<Res>>::weak_from_this;
+
     event_loop &evloop;
     std::shared_ptr<request_handler<std::nullptr_t, Res>> base_req_handler;
     requests_queue<std::nullptr_t, Res> pending_requests;
@@ -50,7 +52,7 @@ void grouping_null_request_handler<Res>::handle_request(std::nullptr_t &&request
 
     base_req_handler->handle_request(
         std::move(request), timeout,
-        [&evloop = evloop, req_handler_wptr = weak_from_that(this), res_handler = std::move(res_handler)](auto res) mutable {
+        [&evloop = evloop, req_handler_wptr = weak_from_this(), res_handler = std::move(res_handler)](auto res) mutable {
             requests_queue<std::nullptr_t, Res> grouped_reqs(evloop);
 
             auto req_handler_ptr = req_handler_wptr.lock();

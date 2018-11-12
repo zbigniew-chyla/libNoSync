@@ -63,7 +63,7 @@ void buffered_bytes_reader::read_some_bytes(
     } else {
         base_reader->read_some_bytes(
             max_buffer_size, timeout,
-            [reader_wptr = weak_from_that(this), max_size, res_handler = move(res_handler)](auto res) {
+            [reader_wptr = weak_from_this(), max_size, res_handler = move(res_handler)](auto res) {
                 if (!res.is_ok() || res.get_value().size() <= max_size) {
                     res_handler(move(res));
                 } else {

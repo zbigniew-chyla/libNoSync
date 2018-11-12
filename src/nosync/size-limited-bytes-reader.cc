@@ -76,7 +76,7 @@ void size_limited_bytes_reader::read_some_bytes(
     if (!read_ongoing) {
         base_reader->read_some_bytes(
             std::min(max_size, remaining_size_limit), timeout,
-            [reader_wptr = weak_from_that(this), res_handler = move(res_handler)](auto read_res) {
+            [reader_wptr = weak_from_this(), res_handler = move(res_handler)](auto read_res) {
                 const size_t read_bytes_count = read_res.is_ok() ? read_res.get_value().size() : 0U;
                 res_handler(move(read_res));
 

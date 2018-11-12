@@ -89,7 +89,7 @@ void input_messages_dispatch_handler::read_next_message_if_needed()
 
     messages_reader->handle_request(
         nullptr, min_timeout,
-        [disp_handler_wptr = weak_from_that(this)](auto read_res) {
+        [disp_handler_wptr = weak_from_this()](auto read_res) {
             auto disp_handler_ptr = disp_handler_wptr.lock();
             if (!disp_handler_ptr) {
                 return;

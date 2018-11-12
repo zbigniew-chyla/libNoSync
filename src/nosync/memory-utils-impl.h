@@ -26,7 +26,7 @@ std::weak_ptr<T> weak_from_that(T *obj)
 template<typename T, typename F>
 auto make_weak_this_func_proxy(T *self, F func)
 {
-    return [self_wptr = weak_from_that(self), func = std::move(func)]() {
+    return [self_wptr = self->weak_from_this(), func = std::move(func)]() {
         auto self_ptr = self_wptr.lock();
         if (self_ptr) {
             func(*self_ptr);
