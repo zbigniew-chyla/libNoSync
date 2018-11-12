@@ -6,6 +6,7 @@
 #include <experimental/optional>
 #include <fcntl.h>
 #include <limits>
+#include <nosync/int-range.h>
 #include <nosync/result-utils.h>
 #include <nosync/ux/socket-activation.h>
 #include <sys/types.h>
@@ -85,7 +86,7 @@ vector<owned_fd> takeover_socket_activated_fds()
     (void) ::unsetenv(socket_activation_listen_fds_var_name);
 
     vector<owned_fd> activated_fds;
-    for (int i = 0; i < *listen_fds_var; ++i) {
+    for (auto i : make_int_range(*listen_fds_var)) {
         int fd = socket_activation_first_fd + i;
         if (set_cloexec_flag_on_fd(fd).is_ok()) {
             activated_fds.emplace_back(fd);
