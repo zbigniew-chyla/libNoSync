@@ -1,16 +1,16 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <atomic>
 #include <gtest/gtest.h>
-#include <nosync/ux/event-loop-mt-executor.h>
-#include <nosync/ux/ppoll-based-event-loop.h>
+#include <nosync/os/ux/event-loop-mt-executor.h>
+#include <nosync/os/ux/ppoll-based-event-loop.h>
 #include <thread>
 #include <utility>
 #include <vector>
 
 using namespace std::chrono_literals;
 using std::atomic_uint;
-using nosync::ux::make_event_loop_mt_executor;
-using nosync::ux::make_ppoll_based_event_loop;
+using nosync::os::ux::make_event_loop_mt_executor;
+using nosync::os::ux::make_ppoll_based_event_loop;
 using std::make_shared;
 using std::move;
 using std::thread;

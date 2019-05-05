@@ -3,13 +3,13 @@
 #include <gtest/gtest.h>
 #include <mutex>
 #include <nosync/test/macros.h>
-#include <nosync/ux/thread-pool-executor.h>
+#include <nosync/os/ux/thread-pool-executor.h>
 #include <stdexcept>
 #include <thread>
 #include <vector>
 
-using nosync::ux::make_thread_pool_executor;
-using nosync::ux::thread_pool_executor_destroy_mode;
+using nosync::os::ux::make_thread_pool_executor;
+using nosync::os::ux::thread_pool_executor_destroy_mode;
 using std::atomic_uint;
 using std::exception_ptr;
 using std::function;
