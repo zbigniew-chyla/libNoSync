@@ -37,6 +37,13 @@ public:
     explicit requests_queue(event_loop &evloop);
     ~requests_queue();
 
+    requests_queue(requests_queue &&) = default;
+
+    requests_queue &operator=(requests_queue &&) = delete;
+
+    requests_queue(const requests_queue &) = delete;
+    requests_queue &operator=(const requests_queue &) = delete;
+
     void push_request(
         Req &&request, std::chrono::time_point<eclock> timeout_end,
         result_handler<Res> &&res_handler);
