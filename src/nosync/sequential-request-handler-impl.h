@@ -72,7 +72,7 @@ void sequential_request_handler<Req, Res>::handle_next_pending_request_if_needed
 
     pending_requests.pull_next_request_to_consumer(
         [this](auto &&req, auto timeout, auto &&res_handler) {
-            this->handle_request(move(req), timeout, move(res_handler));
+            this->handle_request(std::move(req), timeout, std::move(res_handler));
         });
 }
 
