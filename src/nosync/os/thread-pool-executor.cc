@@ -2,8 +2,8 @@
 #include <exception>
 #include <memory>
 #include <nosync/exceptions.h>
-#include <nosync/os/ux/synchronized-queue.h>
-#include <nosync/os/ux/thread-pool-executor.h>
+#include <nosync/os/synchronized-queue.h>
+#include <nosync/os/thread-pool-executor.h>
 #include <thread>
 #include <utility>
 #include <vector>
@@ -18,7 +18,7 @@ using std::thread;
 using std::vector;
 
 
-namespace nosync::os::ux
+namespace nosync::os
 {
 
 namespace
