@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <nosync/func-bytes-writer.h>
-#include <nosync/os/ux/threaded-bytes-writer.h>
+#include <nosync/os/threaded-bytes-writer.h>
 #include <nosync/os/threaded-request-handler.h>
 #include <utility>
 
@@ -10,7 +10,7 @@ using std::shared_ptr;
 using std::string;
 
 
-namespace nosync::os::ux
+namespace nosync::os
 {
 
 shared_ptr<bytes_writer> make_threaded_bytes_writer(
