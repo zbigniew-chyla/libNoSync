@@ -10,7 +10,7 @@ namespace nosync
 
 template<typename T>
 void invoke_result_handler_at(
-    event_loop &evloop, std::chrono::time_point<eclock> time,
+    event_loop &evloop, eclock::time_point time,
     result_handler<T> &&res_handler, result<T> &&res)
 {
     evloop.invoke_at(
@@ -23,7 +23,7 @@ void invoke_result_handler_at(
 
 template<typename T, typename ResultLike>
 void invoke_result_handler_at(
-    event_loop &evloop, std::chrono::time_point<eclock> time,
+    event_loop &evloop, eclock::time_point time,
     result_handler<T> &&res_handler, const ResultLike &res)
 {
     return invoke_result_handler_at(evloop, time, std::move(res_handler), result<T>(res));

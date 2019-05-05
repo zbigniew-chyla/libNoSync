@@ -26,7 +26,7 @@ implementation with possibly modified timeout value such that it never exceeds
 limit, all request are forwarded with timeout set to zero.
 */
 std::shared_ptr<bytes_reader> make_time_limited_bytes_reader(
-    event_loop &evloop, std::chrono::time_point<eclock> timeout_end,
+    event_loop &evloop, eclock::time_point timeout_end,
     std::shared_ptr<bytes_reader> &&base_reader);
 
 }

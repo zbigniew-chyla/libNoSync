@@ -34,12 +34,12 @@ namespace
 {
 
 int call_ppoll_with_abs_timeout(
-    pollfd *fds, nfds_t nfds, const eclock &clock, optional<ch::time_point<eclock>> abs_timeout)
+    pollfd *fds, nfds_t nfds, const eclock &clock, optional<eclock::time_point> abs_timeout)
 {
     int ppoll_retval;
     do {
         optional<timespec> ppoll_timeout;
-        if (abs_timeout && *abs_timeout != ch::time_point<eclock>::max()) {
+        if (abs_timeout && *abs_timeout != eclock::time_point::max()) {
             ppoll_timeout = make_timespec_from_duration(std::max<ch::nanoseconds>(*abs_timeout - clock.now(), 0ns));
         }
 
@@ -116,8 +116,8 @@ class ppoll_based_event_loop : public full_fd_watching_event_loop
 public:
     ppoll_based_event_loop();
 
-    unique_ptr<activity_handle> invoke_at(ch::time_point<eclock> time, function<void()> &&task) override;
-    ch::time_point<eclock> get_etime() const override;
+    unique_ptr<activity_handle> invoke_at(eclock::time_point time, function<void()> &&task) override;
+    eclock::time_point get_etime() const override;
 
     unique_ptr<activity_handle> add_watch(int fd, fd_watch_mode mode, function<void()> &&notify_func) override;
 
@@ -128,7 +128,7 @@ private:
     eclock clock;
     unique_ptr<manual_event_loop> sub_evloop;
     unique_ptr<manual_fd_watcher> sub_fd_watcher;
-    ch::time_point<eclock> etime;
+    eclock::time_point etime;
     bool quit_request_pending;
 };
 
@@ -141,13 +141,13 @@ ppoll_based_event_loop::ppoll_based_event_loop()
 }
 
 
-unique_ptr<activity_handle> ppoll_based_event_loop::invoke_at(ch::time_point<eclock> time, function<void()> &&task)
+unique_ptr<activity_handle> ppoll_based_event_loop::invoke_at(eclock::time_point time, function<void()> &&task)
 {
     return sub_evloop->invoke_at(time, move(task));
 }
 
 
-ch::time_point<eclock> ppoll_based_event_loop::get_etime() const
+eclock::time_point ppoll_based_event_loop::get_etime() const
 {
     return etime;
 }
