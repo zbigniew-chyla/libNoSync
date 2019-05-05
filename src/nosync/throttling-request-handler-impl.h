@@ -1,4 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#ifndef NOSYNC__THROTTLING_REQUEST_HANDLER_IMPL_H
+#define NOSYNC__THROTTLING_REQUEST_HANDLER_IMPL_H
+
 #include <nosync/eclock.h>
 #include <nosync/result-handler.h>
 #include <utility>
@@ -72,3 +75,5 @@ std::shared_ptr<request_handler<Req, Res>> make_throttling_request_handler(
 }
 
 }
+
+#endif /* NOSYNC__THROTTLING_REQUEST_HANDLER_IMPL_H */
