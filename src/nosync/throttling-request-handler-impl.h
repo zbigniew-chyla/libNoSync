@@ -30,7 +30,7 @@ private:
     event_loop &evloop;
     std::chrono::nanoseconds min_req_time_distance;
     std::shared_ptr<request_handler<Req, Res>> base_handler;
-    std::chrono::time_point<eclock> min_allowed_req_time;
+    eclock::time_point min_allowed_req_time;
 };
 
 
@@ -39,7 +39,7 @@ throttling_request_handler<Req, Res>::throttling_request_handler(
     event_loop &evloop, std::chrono::nanoseconds min_req_time_distance,
     std::shared_ptr<request_handler<Req, Res>> &&base_handler)
     : evloop(evloop), min_req_time_distance(min_req_time_distance), base_handler(std::move(base_handler)),
-    min_allowed_req_time(std::chrono::time_point<eclock>::min())
+    min_allowed_req_time(eclock::time_point::min())
 {
 }
 

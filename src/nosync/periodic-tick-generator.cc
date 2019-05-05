@@ -25,7 +25,7 @@ private:
     event_loop &evloop;
     ch::nanoseconds interval;
     function<void()> tick_func;
-    ch::time_point<eclock> last_tick_time;
+    eclock::time_point last_tick_time;
     activity_owner tick_task_owner;
 };
 
