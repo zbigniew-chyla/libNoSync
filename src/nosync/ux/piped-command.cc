@@ -1,7 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
 #include <array>
-#include <chrono>
 #include <experimental/filesystem>
 #include <fcntl.h>
 #include <iterator>
@@ -22,7 +21,6 @@
 #include <system_error>
 #include <unistd.h>
 
-namespace ch = std::chrono;
 using namespace std::string_literals;
 using std::array;
 using std::errc;
@@ -131,7 +129,7 @@ tuple<::pid_t, shared_ptr<bytes_io>> start_piped_command(
     sub_stdout_fds[1].reset();
 
     subproc_reaper->handle_request(
-        make_copy(fork_res), ch::nanoseconds::max(),
+        make_copy(fork_res), eclock::duration::max(),
         [status_collector = move(status_collector)](auto res) {
             if (res.is_ok()) {
                 status_collector(res.get_value());

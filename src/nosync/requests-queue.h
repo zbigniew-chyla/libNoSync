@@ -2,7 +2,6 @@
 #ifndef NOSYNC__REQUESTS_QUEUE_H
 #define NOSYNC__REQUESTS_QUEUE_H
 
-#include <chrono>
 #include <cstddef>
 #include <deque>
 #include <functional>
@@ -37,12 +36,19 @@ public:
     explicit requests_queue(event_loop &evloop);
     ~requests_queue();
 
+    requests_queue(requests_queue &&) = default;
+
+    requests_queue &operator=(requests_queue &&) = delete;
+
+    requests_queue(const requests_queue &) = delete;
+    requests_queue &operator=(const requests_queue &) = delete;
+
     void push_request(
-        Req &&request, std::chrono::time_point<eclock> timeout_end,
+        Req &&request, eclock::time_point timeout_end,
         result_handler<Res> &&res_handler);
 
     void push_request(
-        Req &&request, std::chrono::nanoseconds timeout,
+        Req &&request, eclock::duration timeout,
         result_handler<Res> &&res_handler);
 
     bool has_requests() const;
@@ -63,8 +69,8 @@ private:
     void reschedule_timeout_task();
 
     event_loop &evloop;
-    std::deque<std::tuple<Req, std::chrono::time_point<eclock>, result_handler<Res>>> requests;
-    std::optional<std::tuple<std::chrono::time_point<eclock>, activity_owner>> scheduled_timeout_task;
+    std::deque<std::tuple<Req, eclock::time_point, result_handler<Res>>> requests;
+    std::optional<std::tuple<eclock::time_point, activity_owner>> scheduled_timeout_task;
 };
 
 }

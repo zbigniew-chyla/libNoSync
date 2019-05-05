@@ -12,7 +12,6 @@
 #include <system_error>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::errc;
 using std::error_code;
 using std::function;
@@ -40,7 +39,7 @@ public:
     failed_recv_bytes_io(event_loop &evloop, error_code pending_error);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
     void write_bytes(string &&data, result_handler<void> &&res_handler) override;
@@ -58,7 +57,7 @@ failed_recv_bytes_io::failed_recv_bytes_io(event_loop &evloop, error_code pendin
 
 
 void failed_recv_bytes_io::read_some_bytes(
-    size_t, ch::nanoseconds, result_handler<string> &&res_handler)
+    size_t, eclock::duration, result_handler<string> &&res_handler)
 {
     auto err = pending_error.value_or(make_error_code(errc::not_connected));
     if (pending_error) {

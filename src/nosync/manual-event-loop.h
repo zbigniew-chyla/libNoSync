@@ -2,7 +2,6 @@
 #ifndef NOSYNC__MANUAL_EVENT_LOOP_H
 #define NOSYNC__MANUAL_EVENT_LOOP_H
 
-#include <chrono>
 #include <cstdint>
 #include <functional>
 #include <nosync/eclock.h>
@@ -22,22 +21,22 @@ class manual_event_loop_task_handle;
 class manual_event_loop : public event_loop
 {
 public:
-    manual_event_loop(std::chrono::time_point<eclock> init_time);
+    manual_event_loop(eclock::time_point init_time);
     ~manual_event_loop() override;
 
-    std::optional<std::chrono::time_point<eclock>> get_earliest_task_time() const;
-    bool process_time_passage(std::chrono::nanoseconds time_delta);
+    std::optional<eclock::time_point> get_earliest_task_time() const;
+    bool process_time_passage(eclock::duration time_delta);
     void quit();
 
     bool is_enabled(const manual_event_loop_task_handle &task_handle) const;
     void disable(const manual_event_loop_task_handle &task_handle);
 
-    std::unique_ptr<activity_handle> invoke_at(std::chrono::time_point<eclock> time, std::function<void()> &&task) override;
-    std::chrono::time_point<eclock> get_etime() const override;
+    std::unique_ptr<activity_handle> invoke_at(eclock::time_point time, std::function<void()> &&task) override;
+    eclock::time_point get_etime() const override;
 
 private:
-    std::chrono::time_point<eclock> last_event_time;
-    std::map<std::tuple<std::chrono::time_point<eclock>, std::uint64_t>, std::function<void()>> pending_tasks;
+    eclock::time_point last_event_time;
+    std::map<std::tuple<eclock::time_point, std::uint64_t>, std::function<void()>> pending_tasks;
     std::uint64_t next_task_id;
     bool quit_request_pending;
 };

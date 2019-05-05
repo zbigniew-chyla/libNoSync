@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__THREADED_REQUEST_HANDLER_IMPL_H
-#define NOSYNC_UX__THREADED_REQUEST_HANDLER_IMPL_H
+#ifndef NOSYNC__UX__THREADED_REQUEST_HANDLER_IMPL_H
+#define NOSYNC__UX__THREADED_REQUEST_HANDLER_IMPL_H
 
 #include <nosync/exceptions.h>
 #include <nosync/raw-error-result.h>
@@ -20,10 +20,10 @@ struct thread_exec_context : public std::enable_shared_from_this<thread_exec_con
 {
     thread_exec_context(
         std::function<void(std::function<void()>)> &&evloop_executor,
-        std::function<result<Res>(Req request, std::chrono::nanoseconds timeout)> &&sync_req_handler);
+        std::function<result<Res>(Req request, eclock::duration timeout)> &&sync_req_handler);
 
     std::function<void(std::function<void()>)> evloop_executor;
-    std::function<result<Res>(Req request, std::chrono::nanoseconds timeout)> sync_req_handler;
+    std::function<result<Res>(Req request, eclock::duration timeout)> sync_req_handler;
 };
 
 
@@ -34,10 +34,10 @@ public:
     threaded_request_handler(
         std::function<void(std::function<void()>)> &&evloop_executor,
         std::function<void(std::function<void()>)> &&thread_executor,
-        std::function<result<Res>(Req request, std::chrono::nanoseconds timeout)> &&sync_req_handler);
+        std::function<result<Res>(Req request, eclock::duration timeout)> &&sync_req_handler);
 
     void handle_request(
-        Req &&request, std::chrono::nanoseconds timeout,
+        Req &&request, eclock::duration timeout,
         result_handler<Res> &&response_handler) override;
 
 private:
@@ -49,7 +49,7 @@ private:
 template<typename Req, typename Res>
 thread_exec_context<Req, Res>::thread_exec_context(
     std::function<void(std::function<void()>)> &&evloop_executor,
-    std::function<result<Res>(Req request, std::chrono::nanoseconds timeout)> &&sync_req_handler)
+    std::function<result<Res>(Req request, eclock::duration timeout)> &&sync_req_handler)
     : evloop_executor(std::move(evloop_executor)), sync_req_handler(std::move(sync_req_handler))
 {
 }
@@ -59,7 +59,7 @@ template<typename Req, typename Res>
 threaded_request_handler<Req, Res>::threaded_request_handler(
     std::function<void(std::function<void()>)> &&evloop_executor,
     std::function<void(std::function<void()>)> &&thread_executor,
-    std::function<result<Res>(Req request, std::chrono::nanoseconds timeout)> &&sync_req_handler)
+    std::function<result<Res>(Req request, eclock::duration timeout)> &&sync_req_handler)
     : thread_executor(std::move(thread_executor)),
     exec_ctx(std::make_shared<thread_exec_context<Req, Res>>(std::move(evloop_executor), std::move(sync_req_handler)))
 {
@@ -68,7 +68,7 @@ threaded_request_handler<Req, Res>::threaded_request_handler(
 
 template<typename Req, typename Res>
 void threaded_request_handler<Req, Res>::handle_request(
-    Req &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&response_handler)
+    Req &&request, eclock::duration timeout, result_handler<Res> &&response_handler)
 {
     thread_executor(
         [exec_ctx = exec_ctx, request = std::make_shared<Req>(std::move(request)), timeout, response_handler = std::move(response_handler)]() mutable {
@@ -94,7 +94,7 @@ template<typename Req, typename Res>
 std::shared_ptr<request_handler<Req, Res>> make_threaded_request_handler(
     std::function<void(std::function<void()>)> &&evloop_executor,
     std::function<void(std::function<void()>)> &&thread_executor,
-    std::function<result<Res>(Req request, std::chrono::nanoseconds timeout)> &&sync_req_handler)
+    std::function<result<Res>(Req request, eclock::duration timeout)> &&sync_req_handler)
 {
     return std::make_shared<threaded_request_handler_impl::threaded_request_handler<Req, Res>>(
         std::move(evloop_executor), std::move(thread_executor), std::move(sync_req_handler));
@@ -102,4 +102,4 @@ std::shared_ptr<request_handler<Req, Res>> make_threaded_request_handler(
 
 }
 
-#endif /* NOSYNC_UX__THREADED_REQUEST_HANDLER_IMPL_H */
+#endif /* NOSYNC__UX__THREADED_REQUEST_HANDLER_IMPL_H */

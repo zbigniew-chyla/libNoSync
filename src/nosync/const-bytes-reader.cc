@@ -4,7 +4,6 @@
 #include <nosync/result-handler-utils.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;
@@ -24,7 +23,7 @@ public:
     const_bytes_reader(event_loop &evloop, string &&input_bytes);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -41,7 +40,7 @@ const_bytes_reader::const_bytes_reader(event_loop &evloop, string &&input_bytes)
 
 
 void const_bytes_reader::read_some_bytes(
-    size_t max_size, ch::nanoseconds, result_handler<string> &&res_handler)
+    size_t max_size, eclock::duration, result_handler<string> &&res_handler)
 {
     auto chunk = input_bytes.substr(offset, max_size);
     offset += chunk.size();

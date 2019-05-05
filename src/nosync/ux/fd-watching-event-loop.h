@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__FD_WATCHING_EVENT_LOOP_H
-#define NOSYNC_UX__FD_WATCHING_EVENT_LOOP_H
+#ifndef NOSYNC__UX__FD_WATCHING_EVENT_LOOP_H
+#define NOSYNC__UX__FD_WATCHING_EVENT_LOOP_H
 
 #include <nosync/event-loop.h>
 #include <nosync/ux/fd-watcher.h>
@@ -23,4 +23,4 @@ class fd_watching_event_loop : public fd_watcher, public event_loop
 
 }
 
-#endif /* NOSYNC_UX__FD_WATCHING_EVENT_LOOP_H */
+#endif /* NOSYNC__UX__FD_WATCHING_EVENT_LOOP_H */

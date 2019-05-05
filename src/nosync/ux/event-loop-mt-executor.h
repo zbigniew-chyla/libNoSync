@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__EVENT_LOOP_MT_EXECUTOR_H
-#define NOSYNC_UX__EVENT_LOOP_MT_EXECUTOR_H
+#ifndef NOSYNC__UX__EVENT_LOOP_MT_EXECUTOR_H
+#define NOSYNC__UX__EVENT_LOOP_MT_EXECUTOR_H
 
 #include <functional>
 #include <nosync/result.h>
@@ -14,4 +14,4 @@ result<std::function<void(std::function<void()>)>> make_event_loop_mt_executor(f
 
 }
 
-#endif /* NOSYNC_UX__EVENT_LOOP_MT_EXECUTOR_H */
+#endif /* NOSYNC__UX__EVENT_LOOP_MT_EXECUTOR_H */

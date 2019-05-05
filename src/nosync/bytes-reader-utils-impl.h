@@ -100,7 +100,7 @@ void read_be_number_fully(std::shared_ptr<bytes_reader> reader, result_handler<T
 template<typename Res>
 void process_read_bytes_with_timeout(
     event_loop &evloop, std::shared_ptr<bytes_reader> &&reader,
-    std::chrono::nanoseconds timeout,
+    eclock::duration timeout,
     std::function<std::optional<Res>(char)> &&bytes_processor,
     result_handler<Res> &&res_handler)
 {
@@ -133,7 +133,7 @@ template<typename F>
 void invoke_later_via_bytes_reader(bytes_reader &reader, F &&task)
 {
     reader.read_some_bytes(
-        0U, std::chrono::nanoseconds::max(),
+        0U, eclock::duration::max(),
         [task = std::forward<F>(task)](auto) mutable {
             task();
         });

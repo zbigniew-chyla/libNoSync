@@ -2,7 +2,6 @@
 #ifndef NOSYNC__EVENT_LOOP_H
 #define NOSYNC__EVENT_LOOP_H
 
-#include <chrono>
 #include <functional>
 #include <nosync/activity-handle.h>
 #include <nosync/eclock.h>
@@ -42,8 +41,8 @@ In other words, it must return very quickly.
 class event_loop : public interface_type
 {
 public:
-    virtual std::unique_ptr<activity_handle> invoke_at(std::chrono::time_point<eclock> time, std::function<void()> &&task) = 0;
-    virtual std::chrono::time_point<eclock> get_etime() const = 0;
+    virtual std::unique_ptr<activity_handle> invoke_at(eclock::time_point time, std::function<void()> &&task) = 0;
+    virtual eclock::time_point get_etime() const = 0;
 };
 
 }

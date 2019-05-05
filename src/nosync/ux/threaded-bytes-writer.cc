@@ -1,12 +1,9 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <chrono>
 #include <nosync/func-bytes-writer.h>
 #include <nosync/ux/threaded-bytes-writer.h>
 #include <nosync/ux/threaded-request-handler.h>
 #include <utility>
 
-namespace ch = std::chrono;
-using namespace std::chrono_literals;
 using std::function;
 using std::move;
 using std::shared_ptr;
@@ -29,7 +26,7 @@ shared_ptr<bytes_writer> make_threaded_bytes_writer(
 
     return make_func_bytes_writer(
         [write_req_handler = move(write_req_handler)](auto data, auto res_handler) {
-            write_req_handler->handle_request(move(data), ch::nanoseconds::max(), move(res_handler));
+            write_req_handler->handle_request(move(data), eclock::duration::max(), move(res_handler));
         }
     );
 }

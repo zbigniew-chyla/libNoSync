@@ -22,7 +22,7 @@ public:
         std::function<result<OutRes>(InRes)> &&res_transformer);
 
     void handle_request(
-        InReq &&request, std::chrono::nanoseconds timeout,
+        InReq &&request, eclock::duration timeout,
         result_handler<OutRes> &&response_handler) override;
 
 private:
@@ -45,7 +45,7 @@ full_transforming_request_handler<InReq, OutReq, InRes, OutRes>::full_transformi
 
 template<typename InReq, typename OutReq, typename InRes, typename OutRes>
 void full_transforming_request_handler<InReq, OutReq, InRes, OutRes>::handle_request(
-    InReq &&request, std::chrono::nanoseconds timeout,
+    InReq &&request, eclock::duration timeout,
     result_handler<OutRes> &&response_handler)
 {
     using std::move;
@@ -75,7 +75,7 @@ public:
         std::function<result<OutReq>(InReq)> &&req_transformer);
 
     void handle_request(
-        InReq &&request, std::chrono::nanoseconds timeout,
+        InReq &&request, eclock::duration timeout,
         result_handler<Res> &&response_handler) override;
 
 private:
@@ -97,7 +97,7 @@ transforming_request_handler<InReq, OutReq, Res>::transforming_request_handler(
 
 template<typename InReq, typename OutReq, typename Res>
 void transforming_request_handler<InReq, OutReq, Res>::handle_request(
-    InReq &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&response_handler)
+    InReq &&request, eclock::duration timeout, result_handler<Res> &&response_handler)
 {
     using std::move;
 

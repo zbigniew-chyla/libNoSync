@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__SOCKET_DATAGRAMS_RESPONDING_ACCEPTOR_H
-#define NOSYNC_UX__SOCKET_DATAGRAMS_RESPONDING_ACCEPTOR_H
+#ifndef NOSYNC__UX__SOCKET_DATAGRAMS_RESPONDING_ACCEPTOR_H
+#define NOSYNC__UX__SOCKET_DATAGRAMS_RESPONDING_ACCEPTOR_H
 
 #include <cstddef>
 #include <functional>
@@ -21,4 +21,4 @@ std::shared_ptr<interface_type> make_socket_datagrams_responding_acceptor(
 
 }
 
-#endif /* NOSYNC_UX__SOCKET_DATAGRAMS_RESPONDING_ACCEPTOR_H */
+#endif /* NOSYNC__UX__SOCKET_DATAGRAMS_RESPONDING_ACCEPTOR_H */

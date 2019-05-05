@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__SIGNAL_UTILS_H
-#define NOSYNC_UX__SIGNAL_UTILS_H
+#ifndef NOSYNC__UX__SIGNAL_UTILS_H
+#define NOSYNC__UX__SIGNAL_UTILS_H
 
 #include <nosync/result.h>
 
@@ -13,4 +13,4 @@ result<void> ignore_signal_for_process(int signal_num);
 
 }
 
-#endif /* NOSYNC_UX__SIGNAL_UTILS_H */
+#endif /* NOSYNC__UX__SIGNAL_UTILS_H */

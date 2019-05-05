@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__FD_WATCHER_H
-#define NOSYNC_UX__FD_WATCHER_H
+#ifndef NOSYNC__UX__FD_WATCHER_H
+#define NOSYNC__UX__FD_WATCHER_H
 
 #include <functional>
 #include <nosync/activity-handle.h>
@@ -41,4 +41,4 @@ public:
 
 }
 
-#endif /* NOSYNC_UX__FD_WATCHER_H */
+#endif /* NOSYNC__UX__FD_WATCHER_H */

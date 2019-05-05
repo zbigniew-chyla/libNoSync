@@ -1,4 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#ifndef NOSYNC__UTILS_IMPL_H
+#define NOSYNC__UTILS_IMPL_H
+
 #include <algorithm>
 #include <type_traits>
 
@@ -18,3 +21,5 @@ auto min_transformed_value(InputIt first, InputIt last, UnaryOperation unary_op)
 }
 
 }
+
+#endif /* NOSYNC__UTILS_IMPL_H */

@@ -1,6 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
-#include <chrono>
 #include <memory>
 #include <nosync/bytes-reader-utils.h>
 #include <nosync/eclock.h>
@@ -13,8 +12,6 @@
 #include <system_error>
 #include <utility>
 
-namespace ch = std::chrono;
-using namespace std::chrono_literals;
 using namespace std::string_literals;
 using std::errc;
 using std::enable_shared_from_this;
@@ -37,7 +34,7 @@ public:
     size_limited_bytes_reader(event_loop &evloop, size_t total_size_limit, shared_ptr<bytes_reader> &&base_reader);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -59,7 +56,7 @@ size_limited_bytes_reader::size_limited_bytes_reader(
 
 
 void size_limited_bytes_reader::read_some_bytes(
-    size_t max_size, ch::nanoseconds timeout,
+    size_t max_size, eclock::duration timeout,
     result_handler<string> &&res_handler)
 {
     if (max_size == 0) {

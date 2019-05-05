@@ -3,7 +3,6 @@
 #include <nosync/manual-event-loop.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::function;
 using std::get;
 using std::make_tuple;
@@ -21,19 +20,19 @@ namespace nosync
 class manual_event_loop_task_handle : public activity_handle
 {
 public:
-    manual_event_loop_task_handle(manual_event_loop &evloop, ch::time_point<eclock> time, uint64_t id);
+    manual_event_loop_task_handle(manual_event_loop &evloop, eclock::time_point time, uint64_t id);
 
     bool is_enabled() const override;
     void disable() override;
 
     manual_event_loop &evloop;
-    const ch::time_point<eclock> time;
+    const eclock::time_point time;
     const uint64_t id;
 };
 
 
 manual_event_loop_task_handle::manual_event_loop_task_handle(
-    manual_event_loop &evloop, ch::time_point<eclock> time, uint64_t id)
+    manual_event_loop &evloop, eclock::time_point time, uint64_t id)
     : evloop(evloop), time(time), id(id)
 {
 }
@@ -51,7 +50,7 @@ void manual_event_loop_task_handle::disable()
 }
 
 
-manual_event_loop::manual_event_loop(ch::time_point<eclock> init_time)
+manual_event_loop::manual_event_loop(eclock::time_point init_time)
     : last_event_time(init_time), pending_tasks(), next_task_id(0U), quit_request_pending(false)
 {
 }
@@ -68,21 +67,21 @@ manual_event_loop::~manual_event_loop()
 }
 
 
-optional<ch::time_point<eclock>> manual_event_loop::get_earliest_task_time() const
+optional<eclock::time_point> manual_event_loop::get_earliest_task_time() const
 {
     if (pending_tasks.empty()) {
         return nullopt;
     }
 
-    return get<ch::time_point<eclock>>(pending_tasks.begin()->first);
+    return get<eclock::time_point>(pending_tasks.begin()->first);
 }
 
 
-bool manual_event_loop::process_time_passage(ch::nanoseconds time_delta)
+bool manual_event_loop::process_time_passage(eclock::duration time_delta)
 {
     last_event_time += time_delta;
 
-    while (!pending_tasks.empty() && get<ch::time_point<eclock>>(pending_tasks.cbegin()->first) <= last_event_time) {
+    while (!pending_tasks.empty() && get<eclock::time_point>(pending_tasks.cbegin()->first) <= last_event_time) {
         auto head_iter = pending_tasks.begin();
         auto task = move(head_iter->second);
         pending_tasks.erase(head_iter);
@@ -94,7 +93,7 @@ bool manual_event_loop::process_time_passage(ch::nanoseconds time_delta)
         }
     }
 
-    return pending_tasks.empty() || get<ch::time_point<eclock>>(pending_tasks.cbegin()->first) > last_event_time;
+    return pending_tasks.empty() || get<eclock::time_point>(pending_tasks.cbegin()->first) > last_event_time;
 }
 
 
@@ -122,7 +121,7 @@ void manual_event_loop::disable(const manual_event_loop_task_handle &task_handle
 }
 
 
-unique_ptr<activity_handle> manual_event_loop::invoke_at(ch::time_point<eclock> time, function<void()> &&task)
+unique_ptr<activity_handle> manual_event_loop::invoke_at(eclock::time_point time, function<void()> &&task)
 {
     auto task_id = next_task_id;
     ++next_task_id;
@@ -132,7 +131,7 @@ unique_ptr<activity_handle> manual_event_loop::invoke_at(ch::time_point<eclock> 
 }
 
 
-ch::time_point<eclock> manual_event_loop::get_etime() const
+eclock::time_point manual_event_loop::get_etime() const
 {
     return last_event_time;
 }

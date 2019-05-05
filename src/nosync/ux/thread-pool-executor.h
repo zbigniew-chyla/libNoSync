@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__THREAD_POOL_EXECUTOR_H
-#define NOSYNC_UX__THREAD_POOL_EXECUTOR_H
+#ifndef NOSYNC__UX__THREAD_POOL_EXECUTOR_H
+#define NOSYNC__UX__THREAD_POOL_EXECUTOR_H
 
 #include <exception>
 #include <functional>
@@ -23,4 +23,4 @@ std::function<void(std::function<void()>)> make_thread_pool_executor(
 
 }
 
-#endif /* NOSYNC_UX__THREAD_POOL_EXECUTOR_H */
+#endif /* NOSYNC__UX__THREAD_POOL_EXECUTOR_H */

@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC__SEQUENTIAL_REQUEST_IMPL_HANDLER_IMPL_H
-#define NOSYNC__SEQUENTIAL_REQUEST_IMPL_HANDLER_IMPL_H
+#ifndef NOSYNC__SEQUENTIAL_REQUEST_HANDLER_IMPL_H
+#define NOSYNC__SEQUENTIAL_REQUEST_HANDLER_IMPL_H
 
 #include <nosync/memory-utils.h>
 #include <nosync/requests-queue.h>
@@ -21,7 +21,7 @@ class sequential_request_handler : public request_handler<Req, Res>, public std:
 public:
     sequential_request_handler(event_loop &evloop, std::shared_ptr<request_handler<Req, Res>> &&base_req_handler);
 
-    void handle_request(Req &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler) override;
+    void handle_request(Req &&request, eclock::duration timeout, result_handler<Res> &&res_handler) override;
 
 private:
     using std::enable_shared_from_this<sequential_request_handler<Req, Res>>::weak_from_this;
@@ -43,7 +43,7 @@ sequential_request_handler<Req, Res>::sequential_request_handler(event_loop &evl
 
 
 template<typename Req, typename Res>
-void sequential_request_handler<Req, Res>::handle_request(Req &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler)
+void sequential_request_handler<Req, Res>::handle_request(Req &&request, eclock::duration timeout, result_handler<Res> &&res_handler)
 {
     if (!request_ongoing) {
         base_req_handler->handle_request(
@@ -72,7 +72,7 @@ void sequential_request_handler<Req, Res>::handle_next_pending_request_if_needed
 
     pending_requests.pull_next_request_to_consumer(
         [this](auto &&req, auto timeout, auto &&res_handler) {
-            this->handle_request(move(req), timeout, move(res_handler));
+            this->handle_request(std::move(req), timeout, std::move(res_handler));
         });
 }
 
@@ -89,4 +89,4 @@ std::shared_ptr<request_handler<Req, Res>> make_sequential_request_handler(
 
 }
 
-#endif /* NOSYNC__SEQUENTIAL_REQUEST_IMPL_HANDLER_IMPL_H */
+#endif /* NOSYNC__SEQUENTIAL_REQUEST_HANDLER_IMPL_H */
