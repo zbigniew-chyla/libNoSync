@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__MANUAL_FD_WATCHER_H
-#define NOSYNC_UX__MANUAL_FD_WATCHER_H
+#ifndef NOSYNC__UX__MANUAL_FD_WATCHER_H
+#define NOSYNC__UX__MANUAL_FD_WATCHER_H
 
 #include <functional>
 #include <nosync/ux/fd-watcher.h>
@@ -35,4 +35,4 @@ protected:
 
 }
 
-#endif /* NOSYNC_UX__MANUAL_FD_WATCHER_H */
+#endif /* NOSYNC__UX__MANUAL_FD_WATCHER_H */

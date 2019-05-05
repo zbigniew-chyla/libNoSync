@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__THREADED_BYTES_WRITER_H
-#define NOSYNC_UX__THREADED_BYTES_WRITER_H
+#ifndef NOSYNC__UX__THREADED_BYTES_WRITER_H
+#define NOSYNC__UX__THREADED_BYTES_WRITER_H
 
 #include <functional>
 #include <nosync/bytes-writer.h>
@@ -18,4 +18,4 @@ std::shared_ptr<bytes_writer> make_threaded_bytes_writer(
 
 }
 
-#endif /* NOSYNC_UX__THREADED_BYTES_WRITER_H */
+#endif /* NOSYNC__UX__THREADED_BYTES_WRITER_H */

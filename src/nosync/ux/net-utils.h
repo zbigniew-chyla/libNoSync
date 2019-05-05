@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__NET_UTILS_H
-#define NOSYNC_UX__NET_UTILS_H
+#ifndef NOSYNC__UX__NET_UTILS_H
+#define NOSYNC__UX__NET_UTILS_H
 
 #include <cstdint>
 #include <memory>
@@ -50,4 +50,4 @@ result<owned_fd> open_local_abstract_listening_stream_socket(const std::string &
 
 }
 
-#endif /* NOSYNC_UX__NET_UTILS_H */
+#endif /* NOSYNC__UX__NET_UTILS_H */

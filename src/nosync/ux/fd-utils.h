@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__FD_UTILS_H
-#define NOSYNC_UX__FD_UTILS_H
+#ifndef NOSYNC__UX__FD_UTILS_H
+#define NOSYNC__UX__FD_UTILS_H
 
 #include <cstddef>
 #include <experimental/string_view>
@@ -36,4 +36,4 @@ result<std::size_t> write_some_bytes_to_fd(int fd, std::experimental::string_vie
 
 }
 
-#endif /* NOSYNC_UX__FD_UTILS_H */
+#endif /* NOSYNC__UX__FD_UTILS_H */

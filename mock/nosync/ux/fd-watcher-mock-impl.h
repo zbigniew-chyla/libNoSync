@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__FD_WATCHER_MOCK_IMPL_H
-#define NOSYNC_UX__FD_WATCHER_MOCK_IMPL_H
+#ifndef NOSYNC__UX__FD_WATCHER_MOCK_IMPL_H
+#define NOSYNC__UX__FD_WATCHER_MOCK_IMPL_H
 
 #include <utility>
 
@@ -15,4 +15,4 @@ inline std::unique_ptr<activity_handle> fd_watcher_no_rvref_wrapper::add_watch(i
 
 }
 
-#endif /* NOSYNC_UX__FD_WATCHER_MOCK_IMPL_H */
+#endif /* NOSYNC__UX__FD_WATCHER_MOCK_IMPL_H */

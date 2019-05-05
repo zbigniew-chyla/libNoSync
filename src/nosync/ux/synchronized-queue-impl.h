@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__SYNCHRONIZED_QUEUE_IMPL_H
-#define NOSYNC_UX__SYNCHRONIZED_QUEUE_IMPL_H
+#ifndef NOSYNC__UX__SYNCHRONIZED_QUEUE_IMPL_H
+#define NOSYNC__UX__SYNCHRONIZED_QUEUE_IMPL_H
 
 
 namespace nosync::ux
@@ -43,4 +43,4 @@ T synchronized_queue<T>::dequeue()
 
 }
 
-#endif /* NOSYNC_UX__SYNCHRONIZED_QUEUE_IMPL_H */
+#endif /* NOSYNC__UX__SYNCHRONIZED_QUEUE_IMPL_H */
