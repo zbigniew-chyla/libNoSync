@@ -1,4 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#ifndef NOSYNC__MEMORY_UTILS_IMPL_H
+#define NOSYNC__MEMORY_UTILS_IMPL_H
+
 #include <type_traits>
 #include <utility>
 
@@ -35,3 +38,5 @@ auto make_weak_this_func_proxy(T *self, F func)
 }
 
 }
+
+#endif /* NOSYNC__MEMORY_UTILS_IMPL_H */
