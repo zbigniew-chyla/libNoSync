@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC__OS__UX__THREADED_REQUEST_HANDLER_IMPL_H
-#define NOSYNC__OS__UX__THREADED_REQUEST_HANDLER_IMPL_H
+#ifndef NOSYNC__OS__THREADED_REQUEST_HANDLER_IMPL_H
+#define NOSYNC__OS__THREADED_REQUEST_HANDLER_IMPL_H
 
 #include <nosync/exceptions.h>
 #include <nosync/raw-error-result.h>
@@ -9,7 +9,7 @@
 #include <utility>
 
 
-namespace nosync::os::ux
+namespace nosync::os
 {
 
 namespace threaded_request_handler_impl
@@ -102,4 +102,4 @@ std::shared_ptr<request_handler<Req, Res>> make_threaded_request_handler(
 
 }
 
-#endif /* NOSYNC__OS__UX__THREADED_REQUEST_HANDLER_IMPL_H */
+#endif /* NOSYNC__OS__THREADED_REQUEST_HANDLER_IMPL_H */

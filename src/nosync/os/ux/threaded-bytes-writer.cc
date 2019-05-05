@@ -1,7 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <nosync/func-bytes-writer.h>
 #include <nosync/os/ux/threaded-bytes-writer.h>
-#include <nosync/os/ux/threaded-request-handler.h>
+#include <nosync/os/threaded-request-handler.h>
 #include <utility>
 
 using std::function;

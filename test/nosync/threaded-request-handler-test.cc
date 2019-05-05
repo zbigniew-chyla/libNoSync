@@ -10,9 +10,9 @@
 #include <nosync/test/macros.h>
 #include <nosync/type-utils.h>
 #include <nosync/os/thread-pool-executor.h>
+#include <nosync/os/threaded-request-handler.h>
 #include <nosync/os/ux/event-loop-mt-executor.h>
 #include <nosync/os/ux/ppoll-based-event-loop.h>
-#include <nosync/os/ux/threaded-request-handler.h>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -26,9 +26,9 @@ using nosync::make_copy;
 using nosync::make_timeout_raw_error_result;
 using nosync::make_ok_result;
 using nosync::os::make_thread_pool_executor;
+using nosync::os::make_threaded_request_handler;
 using nosync::os::ux::make_event_loop_mt_executor;
 using nosync::os::ux::make_ppoll_based_event_loop;
-using nosync::os::ux::make_threaded_request_handler;
 using std::errc;
 using std::move;
 using std::runtime_error;
