@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__SOCKET_CONNECTIONS_BYTES_IO_ACCEPTOR_H
-#define NOSYNC_UX__SOCKET_CONNECTIONS_BYTES_IO_ACCEPTOR_H
+#ifndef NOSYNC__UX__SOCKET_CONNECTIONS_BYTES_IO_ACCEPTOR_H
+#define NOSYNC__UX__SOCKET_CONNECTIONS_BYTES_IO_ACCEPTOR_H
 
 #include <functional>
 #include <nosync/bytes-io.h>
@@ -20,4 +20,4 @@ std::shared_ptr<interface_type> make_socket_connections_bytes_io_acceptor(
 
 }
 
-#endif /* NOSYNC_UX__SOCKET_CONNECTIONS_BYTES_IO_ACCEPTOR_H */
+#endif /* NOSYNC__UX__SOCKET_CONNECTIONS_BYTES_IO_ACCEPTOR_H */

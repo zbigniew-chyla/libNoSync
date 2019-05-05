@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__FILE_UTILS_H
-#define NOSYNC_UX__FILE_UTILS_H
+#ifndef NOSYNC__UX__FILE_UTILS_H
+#define NOSYNC__UX__FILE_UTILS_H
 
 #include <nosync/result.h>
 #include <nosync/ux/owned-fd.h>
@@ -15,4 +15,4 @@ result<owned_fd> open_file_for_write(const std::string &path);
 
 }
 
-#endif /* NOSYNC_UX__FILE_UTILS_H */
+#endif /* NOSYNC__UX__FILE_UTILS_H */

@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__SUBPROCESSES_REAPER_H
-#define NOSYNC_UX__SUBPROCESSES_REAPER_H
+#ifndef NOSYNC__UX__SUBPROCESSES_REAPER_H
+#define NOSYNC__UX__SUBPROCESSES_REAPER_H
 
 #include <functional>
 #include <nosync/request-handler.h>
@@ -34,4 +34,4 @@ result<std::shared_ptr<request_handler<pid_t, int>>> make_subprocesses_reaper(fd
 
 }
 
-#endif /* NOSYNC_UX__SUBPROCESSES_REAPER_H */
+#endif /* NOSYNC__UX__SUBPROCESSES_REAPER_H */

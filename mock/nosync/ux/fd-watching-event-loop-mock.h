@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__FD_WATCHING_EVENT_LOOP_MOCK_H
-#define NOSYNC_UX__FD_WATCHING_EVENT_LOOP_MOCK_H
+#ifndef NOSYNC__UX__FD_WATCHING_EVENT_LOOP_MOCK_H
+#define NOSYNC__UX__FD_WATCHING_EVENT_LOOP_MOCK_H
 
 #include <gmock/gmock.h>
 #include <nosync/ux/fd-watching-event-loop.h>
@@ -37,4 +37,4 @@ public:
 
 #include <nosync/ux/fd-watching-event-loop-mock-impl.h>
 
-#endif /* NOSYNC_UX__FD_WATCHING_EVENT_LOOP_MOCK_H */
+#endif /* NOSYNC__UX__FD_WATCHING_EVENT_LOOP_MOCK_H */

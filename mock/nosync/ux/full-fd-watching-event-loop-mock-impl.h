@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_IMPL_H
-#define NOSYNC_UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_IMPL_H
+#ifndef NOSYNC__UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_IMPL_H
+#define NOSYNC__UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_IMPL_H
 
 #include <utility>
 
@@ -21,4 +21,4 @@ inline std::unique_ptr<activity_handle> full_fd_watching_event_loop_no_rvref_wra
 
 }
 
-#endif /* NOSYNC_UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_IMPL_H */
+#endif /* NOSYNC__UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_IMPL_H */

@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__IO_UTILS_H
-#define NOSYNC_UX__IO_UTILS_H
+#ifndef NOSYNC__UX__IO_UTILS_H
+#define NOSYNC__UX__IO_UTILS_H
 
 #include <array>
 #include <nosync/result.h>
@@ -17,4 +17,4 @@ result<std::array<owned_fd, 2>> open_pipe();
 
 }
 
-#endif /* NOSYNC_UX__IO_UTILS_H */
+#endif /* NOSYNC__UX__IO_UTILS_H */

@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__SHARED_FD_H
-#define NOSYNC_UX__SHARED_FD_H
+#ifndef NOSYNC__UX__SHARED_FD_H
+#define NOSYNC__UX__SHARED_FD_H
 
 #include <nosync/ux/owned-fd.h>
 #include <memory>
@@ -33,4 +33,4 @@ private:
 
 }
 
-#endif /* NOSYNC_UX__SHARED_FD_H */
+#endif /* NOSYNC__UX__SHARED_FD_H */

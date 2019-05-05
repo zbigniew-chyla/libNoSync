@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC_UX__SOCKET_CONNECTIONS_BYTES_IO_REQUESTER_H
-#define NOSYNC_UX__SOCKET_CONNECTIONS_BYTES_IO_REQUESTER_H
+#ifndef NOSYNC__UX__SOCKET_CONNECTIONS_BYTES_IO_REQUESTER_H
+#define NOSYNC__UX__SOCKET_CONNECTIONS_BYTES_IO_REQUESTER_H
 
 #include <chrono>
 #include <memory>
@@ -23,4 +23,4 @@ std::shared_ptr<request_handler<std::shared_ptr<socket_address>, std::shared_ptr
 
 }
 
-#endif /* NOSYNC_UX__SOCKET_CONNECTIONS_BYTES_IO_REQUESTER_H */
+#endif /* NOSYNC__UX__SOCKET_CONNECTIONS_BYTES_IO_REQUESTER_H */
