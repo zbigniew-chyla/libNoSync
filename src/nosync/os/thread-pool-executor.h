@@ -1,13 +1,13 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC__OS__UX__THREAD_POOL_EXECUTOR_H
-#define NOSYNC__OS__UX__THREAD_POOL_EXECUTOR_H
+#ifndef NOSYNC__OS__THREAD_POOL_EXECUTOR_H
+#define NOSYNC__OS__THREAD_POOL_EXECUTOR_H
 
 #include <exception>
 #include <functional>
 #include <nosync/noop-func.h>
 
 
-namespace nosync::os::ux
+namespace nosync::os
 {
 
 enum class thread_pool_executor_destroy_mode
@@ -23,4 +23,4 @@ std::function<void(std::function<void()>)> make_thread_pool_executor(
 
 }
 
-#endif /* NOSYNC__OS__UX__THREAD_POOL_EXECUTOR_H */
+#endif /* NOSYNC__OS__THREAD_POOL_EXECUTOR_H */
