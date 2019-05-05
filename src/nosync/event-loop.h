@@ -2,7 +2,6 @@
 #ifndef NOSYNC__EVENT_LOOP_H
 #define NOSYNC__EVENT_LOOP_H
 
-#include <chrono>
 #include <functional>
 #include <nosync/activity-handle.h>
 #include <nosync/eclock.h>

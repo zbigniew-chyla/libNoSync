@@ -10,7 +10,6 @@
 #include <nosync/string-utils.h>
 #include <nosync/time-utils.h>
 
-namespace ch = std::chrono;
 using namespace std::string_literals;
 using std::errc;
 using std::experimental::nullopt;
@@ -103,7 +102,7 @@ public:
     io_lines_request_handler(event_loop &evloop, const shared_ptr<bytes_io> &lines_io);
 
     void handle_request(
-        string &&data, ch::nanoseconds timeout,
+        string &&data, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -126,7 +125,7 @@ io_lines_request_handler::io_lines_request_handler(event_loop &evloop, const sha
 
 
 void io_lines_request_handler::handle_request(
-    string &&data, ch::nanoseconds timeout,
+    string &&data, eclock::duration timeout,
     result_handler<string> &&res_handler)
 {
     if (data.find('\n') != string::npos) {

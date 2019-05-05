@@ -6,7 +6,6 @@
 #include <nosync/ux/fd-watch-utils.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::make_shared;
 using std::move;
 
@@ -40,7 +39,7 @@ void timeouting_watch_context::handle_result(result<void> res)
 
 
 void watch_fd_with_timeout(
-    fd_watching_event_loop &evloop, int fd, fd_watch_mode mode, ch::nanoseconds timeout,
+    fd_watching_event_loop &evloop, int fd, fd_watch_mode mode, eclock::duration timeout,
     result_handler<void> &&res_handler)
 {
     auto ctx = make_shared<timeouting_watch_context>();

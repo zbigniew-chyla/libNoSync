@@ -21,7 +21,7 @@ class grouping_null_request_handler : public request_handler<std::nullptr_t, Res
 public:
     grouping_null_request_handler(event_loop &evloop, std::shared_ptr<request_handler<std::nullptr_t, Res>> &&base_req_handler);
 
-    void handle_request(std::nullptr_t &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler) override;
+    void handle_request(std::nullptr_t &&request, eclock::duration timeout, result_handler<Res> &&res_handler) override;
 
 private:
     event_loop &evloop;
@@ -39,7 +39,7 @@ grouping_null_request_handler<Res>::grouping_null_request_handler(event_loop &ev
 
 
 template<typename Res>
-void grouping_null_request_handler<Res>::handle_request(std::nullptr_t &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler)
+void grouping_null_request_handler<Res>::handle_request(std::nullptr_t &&request, eclock::duration timeout, result_handler<Res> &&res_handler)
 {
     if (request_ongoing) {
         pending_requests.push_request(std::move(request), timeout, std::move(res_handler));

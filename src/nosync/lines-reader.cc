@@ -13,7 +13,6 @@
 #include <tuple>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::deque;
 using std::enable_shared_from_this;
 using std::errc;
@@ -42,7 +41,7 @@ void read_line_impl(
 {
     reader->read_some_bytes(
         std::min(max_line_size + 1 - data.size(), input_chunk_size),
-        ch::nanoseconds::max(),
+        eclock::duration::max(),
         merge_result_handler<string>(
             move(res_handler),
             [reader, max_line_size, data = move(data)](auto new_data, auto res_handler) mutable {
@@ -78,7 +77,7 @@ public:
     lines_reader(event_loop &evloop, shared_ptr<bytes_reader> base_reader, size_t max_line_size);
 
     void handle_request(
-        nullptr_t &&, ch::nanoseconds timeout,
+        nullptr_t &&, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -97,7 +96,7 @@ lines_reader::lines_reader(
 
 
 void lines_reader::handle_request(
-    nullptr_t &&, ch::nanoseconds timeout,
+    nullptr_t &&, eclock::duration timeout,
     result_handler<string> &&res_handler)
 {
     auto eol_iter = std::find(buffer.begin(), buffer.end(), '\n');

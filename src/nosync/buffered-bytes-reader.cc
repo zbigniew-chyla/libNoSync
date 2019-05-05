@@ -8,8 +8,6 @@
 #include <string>
 #include <utility>
 
-namespace ch = std::chrono;
-using namespace std::chrono_literals;
 using std::deque;
 using std::enable_shared_from_this;
 using std::make_shared;
@@ -31,7 +29,7 @@ public:
     buffered_bytes_reader(size_t buffer_size, shared_ptr<bytes_reader> &&base_reader);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -49,7 +47,7 @@ buffered_bytes_reader::buffered_bytes_reader(
 
 
 void buffered_bytes_reader::read_some_bytes(
-    size_t max_size, ch::nanoseconds timeout,
+    size_t max_size, eclock::duration timeout,
     result_handler<string> &&res_handler)
 {
     if (!buffer.empty()) {

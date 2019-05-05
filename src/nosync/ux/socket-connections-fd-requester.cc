@@ -9,7 +9,6 @@
 #include <sys/types.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using nosync::result_handler;
 using std::error_code;
 using std::generic_category;
@@ -24,7 +23,7 @@ namespace
 {
 
 void handle_delayed_connect(
-    fd_watching_event_loop &evloop, shared_fd sock, ch::nanoseconds timeout,
+    fd_watching_event_loop &evloop, shared_fd sock, eclock::duration timeout,
     result_handler<shared_fd> &&res_handler)
 {
     int sock_fd_no = *sock;
@@ -47,7 +46,7 @@ void handle_delayed_connect(
 
 void request_socket_connection_fd(
     fd_watching_event_loop &evloop, const shared_ptr<socket_address> &addr,
-    ch::nanoseconds timeout, result_handler<shared_fd> &&res_handler)
+    eclock::duration timeout, result_handler<shared_fd> &&res_handler)
 {
     result<shared_fd> sock_res = open_stream_socket(addr->get_address_family());
     if (!sock_res.is_ok()) {

@@ -3,7 +3,6 @@
 #include <nosync/manual-event-loop.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::experimental::nullopt;
 using std::experimental::optional;
 using std::function;
@@ -78,7 +77,7 @@ optional<eclock::time_point> manual_event_loop::get_earliest_task_time() const
 }
 
 
-bool manual_event_loop::process_time_passage(ch::nanoseconds time_delta)
+bool manual_event_loop::process_time_passage(eclock::duration time_delta)
 {
     last_event_time += time_delta;
 

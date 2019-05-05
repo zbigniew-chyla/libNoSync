@@ -68,7 +68,7 @@ void requests_queue<Req, Res>::push_request(
 
 template<typename Req, typename Res>
 void requests_queue<Req, Res>::push_request(
-    Req &&request, std::chrono::nanoseconds timeout,
+    Req &&request, eclock::duration timeout,
     result_handler<Res> &&res_handler)
 {
     push_request(std::move(request), time_point_sat_add(evloop.get_etime(), timeout), std::move(res_handler));
@@ -97,7 +97,7 @@ bool requests_queue<Req, Res>::pull_next_request_to_consumer(const F &req_consum
 
     req_consumer(
         std::move(std::get<Req>(req)),
-        std::max(std::get<eclock::time_point>(req) - evloop.get_etime(), std::chrono::nanoseconds(0)),
+        std::max(std::get<eclock::time_point>(req) - evloop.get_etime(), eclock::duration(0)),
         std::move(std::get<result_handler<Res>>(req)));
 
     return true;
@@ -125,7 +125,7 @@ bool requests_queue<Req, Res>::pull_next_matching_request_to_consumer(
 
         req_consumer(
             std::move(std::get<Req>(req)),
-            std::max(std::get<eclock::time_point>(req) - evloop.get_etime(), std::chrono::nanoseconds(0)),
+            std::max(std::get<eclock::time_point>(req) - evloop.get_etime(), eclock::duration(0)),
             std::move(std::get<result_handler<Res>>(req)));
     }
 
@@ -143,7 +143,7 @@ void requests_queue<Req, Res>::for_each_request(const Func &func) const
         [&](const auto &req) {
             func(
                 std::get<Req>(req),
-                std::max(std::get<eclock::time_point>(req) - etime, std::chrono::nanoseconds(0)),
+                std::max(std::get<eclock::time_point>(req) - etime, eclock::duration(0)),
                 std::get<result_handler<Res>>(req));
         });
 }
@@ -152,8 +152,6 @@ void requests_queue<Req, Res>::for_each_request(const Func &func) const
 template<typename Req, typename Res>
 void requests_queue<Req, Res>::handle_pending_timeouts()
 {
-    namespace ch = std::chrono;
-
     std::deque<result_handler<Res>> timeouting_res_handlers;
 
     const auto now = evloop.get_etime();
@@ -192,8 +190,6 @@ void requests_queue<Req, Res>::disable_timeout_task_if_present()
 template<typename Req, typename Res>
 void requests_queue<Req, Res>::reschedule_timeout_task()
 {
-    namespace ch = std::chrono;
-
     if (requests.empty()) {
         disable_timeout_task_if_present();
         return;

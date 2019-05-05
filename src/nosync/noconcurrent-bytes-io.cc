@@ -5,7 +5,6 @@
 #include <system_error>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::enable_shared_from_this;
 using std::errc;
 using std::make_shared;
@@ -27,7 +26,7 @@ public:
     explicit noconcurrent_bytes_io(shared_ptr<bytes_io> &&base_bio);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
     void write_bytes(
         string &&data, result_handler<void> &&res_handler) override;
@@ -45,7 +44,7 @@ noconcurrent_bytes_io::noconcurrent_bytes_io(shared_ptr<bytes_io> &&base_bio)
 
 
 void noconcurrent_bytes_io::read_some_bytes(
-    size_t max_size, ch::nanoseconds timeout, result_handler<string> &&res_handler)
+    size_t max_size, eclock::duration timeout, result_handler<string> &&res_handler)
 {
     if (bio_active) {
         invoke_result_handler_later_via_bytes_reader(*base_bio, move(res_handler), raw_error_result(errc::not_supported));

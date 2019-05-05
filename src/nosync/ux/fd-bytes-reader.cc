@@ -8,7 +8,6 @@
 #include <nosync/ux/fd-utils.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;
@@ -42,7 +41,7 @@ public:
     fd_bytes_reader(fd_watching_event_loop &evloop, shared_fd &&fd);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -77,7 +76,7 @@ fd_bytes_reader::fd_bytes_reader(fd_watching_event_loop &evloop, shared_fd &&fd)
 
 
 void fd_bytes_reader::read_some_bytes(
-    size_t max_size, ch::nanoseconds timeout,
+    size_t max_size, eclock::duration timeout,
     result_handler<string> &&res_handler)
 {
     if (max_size == 0) {

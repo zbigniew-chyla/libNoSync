@@ -3,7 +3,6 @@
 #define NOSYNC__REQUEST_HANDLER_UTILS_IMPL_H
 
 #include <algorithm>
-#include <chrono>
 #include <nosync/result-handler-utils.h>
 #include <utility>
 
@@ -18,7 +17,7 @@ template<typename Req, typename Res>
 void handle_requests_sequentially_impl(
     event_loop &evloop, std::shared_ptr<request_handler<Req, Res>> &&req_handler,
     std::vector<Req> &&requests, std::size_t requests_start_index,
-    std::chrono::nanoseconds req_timeout, result_handler<std::vector<Res>> &&res_handler)
+    eclock::duration req_timeout, result_handler<std::vector<Res>> &&res_handler)
 {
     using std::move;
 
@@ -52,7 +51,7 @@ void handle_requests_sequentially_impl(
 template<typename Req, typename Res>
 void handle_requests_sequentially(
     event_loop &evloop, std::shared_ptr<request_handler<Req, Res>> &&req_handler,
-    std::vector<Req> &&requests, std::chrono::nanoseconds req_timeout,
+    std::vector<Req> &&requests, eclock::duration req_timeout,
     result_handler<std::vector<Res>> &&res_handler)
 {
     request_handler_utils_impl::handle_requests_sequentially_impl(

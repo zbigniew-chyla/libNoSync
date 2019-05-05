@@ -2,8 +2,8 @@
 #ifndef NOSYNC__REQUEST_HANDLER_H
 #define NOSYNC__REQUEST_HANDLER_H
 
-#include <chrono>
 #include <functional>
+#include <nosync/eclock.h>
 #include <nosync/result.h>
 #include <nosync/interface-type.h>
 #include <nosync/result-handler.h>
@@ -34,7 +34,7 @@ class request_handler : public interface_type
 {
 public:
     virtual void handle_request(
-        Req &&request, std::chrono::nanoseconds timeout,
+        Req &&request, eclock::duration timeout,
         result_handler<Res> &&response_handler) = 0;
 };
 

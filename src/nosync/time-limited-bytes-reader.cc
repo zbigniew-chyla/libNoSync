@@ -3,8 +3,6 @@
 #include <nosync/time-limited-bytes-reader.h>
 #include <utility>
 
-namespace ch = std::chrono;
-using namespace std::chrono_literals;
 using std::make_shared;
 using std::shared_ptr;
 using std::string;
@@ -24,7 +22,7 @@ public:
         shared_ptr<bytes_reader> &&base_reader);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -43,10 +41,10 @@ time_limited_bytes_reader::time_limited_bytes_reader(
 
 
 void time_limited_bytes_reader::read_some_bytes(
-    size_t max_size, ch::nanoseconds timeout,
+    size_t max_size, eclock::duration timeout,
     result_handler<string> &&res_handler)
 {
-    const auto time_left = std::max(timeout_end - evloop.get_etime(), 0ns);
+    const auto time_left = std::max(timeout_end - evloop.get_etime(), eclock::duration(0));
     base_reader->read_some_bytes(max_size, std::min(timeout, time_left), move(res_handler));
 }
 

@@ -21,7 +21,7 @@ class sequential_request_handler : public request_handler<Req, Res>, public std:
 public:
     sequential_request_handler(event_loop &evloop, std::shared_ptr<request_handler<Req, Res>> &&base_req_handler);
 
-    void handle_request(Req &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler) override;
+    void handle_request(Req &&request, eclock::duration timeout, result_handler<Res> &&res_handler) override;
 
 private:
     void handle_next_pending_request_if_needed();
@@ -41,7 +41,7 @@ sequential_request_handler<Req, Res>::sequential_request_handler(event_loop &evl
 
 
 template<typename Req, typename Res>
-void sequential_request_handler<Req, Res>::handle_request(Req &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler)
+void sequential_request_handler<Req, Res>::handle_request(Req &&request, eclock::duration timeout, result_handler<Res> &&res_handler)
 {
     if (!request_ongoing) {
         base_req_handler->handle_request(

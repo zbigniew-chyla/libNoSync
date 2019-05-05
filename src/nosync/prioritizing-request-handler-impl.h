@@ -31,7 +31,7 @@ private:
     using std::enable_shared_from_this<requests_prioritizer<Req, Res, N>>::shared_from_this;
 
     void handle_request(
-        unsigned queue_index, Req &&request, std::chrono::nanoseconds timeout,
+        unsigned queue_index, Req &&request, eclock::duration timeout,
         result_handler<Res> &&res_handler);
 
     requests_queue<Req, Res> *try_find_first_pending_request_queue();
@@ -72,7 +72,7 @@ std::array<std::shared_ptr<request_handler<Req, Res>>, N> requests_prioritizer<R
 
 template<typename Req, typename Res, std::size_t N>
 void requests_prioritizer<Req, Res, N>::handle_request(
-    unsigned queue_index, Req &&request, std::chrono::nanoseconds timeout,
+    unsigned queue_index, Req &&request, eclock::duration timeout,
     result_handler<Res> &&res_handler)
 {
     if (!request_handling_ongoing) {

@@ -2,7 +2,6 @@
 #include <nosync/sequential-chunks-writer.h>
 #include <nosync/sequential-request-handler.h>
 
-namespace ch = std::chrono;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;
@@ -20,7 +19,7 @@ class chunks_writer : public request_handler<string, void>
 public:
     explicit chunks_writer(shared_ptr<bytes_writer> &&base_writer);
 
-    void handle_request(string &&data, ch::nanoseconds timeout, result_handler<void> &&res_handler) override;
+    void handle_request(string &&data, eclock::duration timeout, result_handler<void> &&res_handler) override;
 
 private:
     shared_ptr<bytes_writer> base_writer;
@@ -33,7 +32,7 @@ chunks_writer::chunks_writer(shared_ptr<bytes_writer> &&base_writer)
 }
 
 
-void chunks_writer::handle_request(string &&data, ch::nanoseconds, result_handler<void> &&res_handler)
+void chunks_writer::handle_request(string &&data, eclock::duration, result_handler<void> &&res_handler)
 {
     base_writer->write_bytes(move(data), move(res_handler));
 }
