@@ -1,13 +1,13 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC__OS__UX__SYNCHRONIZED_QUEUE_H
-#define NOSYNC__OS__UX__SYNCHRONIZED_QUEUE_H
+#ifndef NOSYNC__OS__SYNCHRONIZED_QUEUE_H
+#define NOSYNC__OS__SYNCHRONIZED_QUEUE_H
 
 #include <condition_variable>
 #include <mutex>
 #include <queue>
 
 
-namespace nosync::os::ux
+namespace nosync::os
 {
 
 template<typename T>
@@ -27,6 +27,6 @@ private:
 
 }
 
-#include <nosync/os/ux/synchronized-queue-impl.h>
+#include <nosync/os/synchronized-queue-impl.h>
 
-#endif /* NOSYNC__OS__UX__SYNCHRONIZED_QUEUE_H */
+#endif /* NOSYNC__OS__SYNCHRONIZED_QUEUE_H */
