@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#ifndef NOSYNC__SEQUENTIAL_REQUEST_IMPL_HANDLER_IMPL_H
-#define NOSYNC__SEQUENTIAL_REQUEST_IMPL_HANDLER_IMPL_H
+#ifndef NOSYNC__SEQUENTIAL_REQUEST_HANDLER_IMPL_H
+#define NOSYNC__SEQUENTIAL_REQUEST_HANDLER_IMPL_H
 
 #include <nosync/memory-utils.h>
 #include <nosync/requests-queue.h>
@@ -89,4 +89,4 @@ std::shared_ptr<request_handler<Req, Res>> make_sequential_request_handler(
 
 }
 
-#endif /* NOSYNC__SEQUENTIAL_REQUEST_IMPL_HANDLER_IMPL_H */
+#endif /* NOSYNC__SEQUENTIAL_REQUEST_HANDLER_IMPL_H */
