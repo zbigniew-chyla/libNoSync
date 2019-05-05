@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <nosync/type-utils.h>
-#include <nosync/ux/ppoll-based-event-loop.h>
+#include <nosync/os/ux/ppoll-based-event-loop.h>
 #include <system_error>
 #include <vector>
 
@@ -15,9 +15,9 @@ using namespace std::chrono_literals;
 using namespace std::string_literals;
 using nosync::activity_handle;
 using nosync::eclock;
-using nosync::ux::fd_watch_mode;
+using nosync::os::ux::fd_watch_mode;
 using nosync::make_copy;
-using nosync::ux::make_ppoll_based_event_loop;
+using nosync::os::ux::make_ppoll_based_event_loop;
 using std::errc;
 using std::function;
 using std::make_error_code;

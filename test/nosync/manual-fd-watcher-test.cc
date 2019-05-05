@@ -3,15 +3,15 @@
 #include <functional>
 #include <gtest/gtest.h>
 #include <memory>
-#include <nosync/ux/manual-fd-watcher.h>
+#include <nosync/os/ux/manual-fd-watcher.h>
 #include <set>
 #include <tuple>
 #include <utility>
 #include <vector>
 
-using nosync::ux::fd_watch_mode;
+using nosync::os::ux::fd_watch_mode;
 using nosync::activity_handle;
-using nosync::ux::manual_fd_watcher;
+using nosync::os::ux::manual_fd_watcher;
 using std::array;
 using std::function;
 using std::get;
