@@ -2,7 +2,6 @@
 #include <nosync/reader-writer-bytes-io.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;
@@ -21,7 +20,7 @@ public:
     reader_writer_bytes_io(shared_ptr<bytes_reader> reader, shared_ptr<bytes_writer> writer);
 
     void read_some_bytes(
-        size_t max_size, ch::nanoseconds timeout,
+        size_t max_size, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
     void write_bytes(
         string &&data, result_handler<void> &&res_handler) override;
@@ -40,7 +39,7 @@ reader_writer_bytes_io::reader_writer_bytes_io(
 
 
 void reader_writer_bytes_io::read_some_bytes(
-    size_t max_size, ch::nanoseconds timeout, result_handler<string> &&res_handler)
+    size_t max_size, eclock::duration timeout, result_handler<string> &&res_handler)
 {
     reader->read_some_bytes(max_size, timeout, move(res_handler));
 }

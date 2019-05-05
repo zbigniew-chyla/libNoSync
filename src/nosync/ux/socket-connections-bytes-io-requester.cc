@@ -4,7 +4,6 @@
 #include <nosync/ux/socket-connections-fd-requester.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::move;
 using std::shared_ptr;
 
@@ -14,7 +13,7 @@ namespace nosync::ux
 
 void request_socket_connection_bytes_io(
     fd_watching_event_loop &evloop, const shared_ptr<socket_address> &addr,
-    ch::nanoseconds timeout, result_handler<shared_ptr<bytes_io>> &&res_handler)
+    eclock::duration timeout, result_handler<shared_ptr<bytes_io>> &&res_handler)
 {
     request_socket_connection_fd(
         evloop, addr, timeout,

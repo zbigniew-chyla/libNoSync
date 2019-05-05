@@ -2,7 +2,6 @@
 #ifndef NOSYNC__REQUESTS_QUEUE_H
 #define NOSYNC__REQUESTS_QUEUE_H
 
-#include <chrono>
 #include <cstddef>
 #include <deque>
 #include <functional>
@@ -49,7 +48,7 @@ public:
         result_handler<Res> &&res_handler);
 
     void push_request(
-        Req &&request, std::chrono::nanoseconds timeout,
+        Req &&request, eclock::duration timeout,
         result_handler<Res> &&res_handler);
 
     bool has_requests() const;

@@ -4,7 +4,6 @@
 #include <nosync/periodic-tick-generator.h>
 #include <utility>
 
-namespace ch = std::chrono;
 using std::function;
 using std::make_shared;
 using std::move;
@@ -17,20 +16,20 @@ namespace nosync
 class periodic_tick_generator : public interface_type
 {
 public:
-    periodic_tick_generator(event_loop &evloop, ch::nanoseconds interval, function<void()> &&tick_func);
+    periodic_tick_generator(event_loop &evloop, eclock::duration interval, function<void()> &&tick_func);
 
 private:
     void schedule_next_tick();
 
     event_loop &evloop;
-    ch::nanoseconds interval;
+    eclock::duration interval;
     function<void()> tick_func;
     eclock::time_point last_tick_time;
     activity_owner tick_task_owner;
 };
 
 
-periodic_tick_generator::periodic_tick_generator(event_loop &evloop, ch::nanoseconds interval, function<void()> &&tick_func)
+periodic_tick_generator::periodic_tick_generator(event_loop &evloop, eclock::duration interval, function<void()> &&tick_func)
     : evloop(evloop), interval(interval), tick_func(move(tick_func)), last_tick_time(evloop.get_etime())
 {
     schedule_next_tick();
@@ -50,7 +49,7 @@ void periodic_tick_generator::schedule_next_tick()
 
 
 shared_ptr<interface_type> make_periodic_tick_generator(
-    event_loop &evloop, ch::nanoseconds interval, function<void()> &&tick_func)
+    event_loop &evloop, eclock::duration interval, function<void()> &&tick_func)
 {
     return make_shared<periodic_tick_generator>(evloop, interval, move(tick_func));
 }

@@ -15,7 +15,7 @@ namespace nosync::ux
 
 void request_socket_connection_fd(
     fd_watching_event_loop &evloop, const std::shared_ptr<socket_address> &addr,
-    std::chrono::nanoseconds timeout, result_handler<shared_fd> &&res_handler);
+    eclock::duration timeout, result_handler<shared_fd> &&res_handler);
 
 std::shared_ptr<request_handler<std::shared_ptr<socket_address>, shared_fd>> make_socket_connections_fd_requester(
     fd_watching_event_loop &evloop);

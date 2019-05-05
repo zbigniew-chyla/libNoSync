@@ -2,7 +2,6 @@
 #ifndef NOSYNC__THROTTLING_REQUEST_HANDLER_IMPL_H
 #define NOSYNC__THROTTLING_REQUEST_HANDLER_IMPL_H
 
-#include <nosync/eclock.h>
 #include <nosync/result-handler.h>
 #include <utility>
 
@@ -17,18 +16,18 @@ class throttling_request_handler : public request_handler<Req, Res>, public std:
 {
 public:
     throttling_request_handler(
-        event_loop &evloop, std::chrono::nanoseconds min_req_time_distance,
+        event_loop &evloop, eclock::duration min_req_time_distance,
         std::shared_ptr<request_handler<Req, Res>> &&base_handler);
 
     void handle_request(
-        Req &&request, std::chrono::nanoseconds timeout,
+        Req &&request, eclock::duration timeout,
         result_handler<Res> &&response_handler) override;
 
 private:
     using std::enable_shared_from_this<throttling_request_handler<Req, Res>>::shared_from_this;
 
     event_loop &evloop;
-    std::chrono::nanoseconds min_req_time_distance;
+    eclock::duration min_req_time_distance;
     std::shared_ptr<request_handler<Req, Res>> base_handler;
     eclock::time_point min_allowed_req_time;
 };
@@ -36,7 +35,7 @@ private:
 
 template<typename Req, typename Res>
 throttling_request_handler<Req, Res>::throttling_request_handler(
-    event_loop &evloop, std::chrono::nanoseconds min_req_time_distance,
+    event_loop &evloop, eclock::duration min_req_time_distance,
     std::shared_ptr<request_handler<Req, Res>> &&base_handler)
     : evloop(evloop), min_req_time_distance(min_req_time_distance), base_handler(std::move(base_handler)),
     min_allowed_req_time(eclock::time_point::min())
@@ -46,7 +45,7 @@ throttling_request_handler<Req, Res>::throttling_request_handler(
 
 template<typename Req, typename Res>
 void throttling_request_handler<Req, Res>::handle_request(
-    Req &&request, std::chrono::nanoseconds timeout,
+    Req &&request, eclock::duration timeout,
     result_handler<Res> &&response_handler)
 {
     const auto now = evloop.get_etime();
@@ -67,7 +66,7 @@ void throttling_request_handler<Req, Res>::handle_request(
 
 template<typename Req, typename Res>
 std::shared_ptr<request_handler<Req, Res>> make_throttling_request_handler(
-    event_loop &evloop, std::chrono::nanoseconds min_req_time_distance,
+    event_loop &evloop, eclock::duration min_req_time_distance,
     std::shared_ptr<request_handler<Req, Res>> &&base_handler)
 {
     return std::make_shared<throttling_request_handler_impl::throttling_request_handler<Req, Res>>(

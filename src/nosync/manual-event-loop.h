@@ -2,7 +2,6 @@
 #ifndef NOSYNC__MANUAL_EVENT_LOOP_H
 #define NOSYNC__MANUAL_EVENT_LOOP_H
 
-#include <chrono>
 #include <cstdint>
 #include <functional>
 #include <nosync/eclock.h>
@@ -26,7 +25,7 @@ public:
     ~manual_event_loop() override;
 
     std::optional<eclock::time_point> get_earliest_task_time() const;
-    bool process_time_passage(std::chrono::nanoseconds time_delta);
+    bool process_time_passage(eclock::duration time_delta);
     void quit();
 
     bool is_enabled(const manual_event_loop_task_handle &task_handle) const;

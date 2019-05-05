@@ -24,7 +24,7 @@ public:
         std::function<K(const Req &)> &&sequence_key_func);
 
     void handle_request(
-        Req &&request, std::chrono::nanoseconds timeout,
+        Req &&request, eclock::duration timeout,
         result_handler<Res> &&res_handler) override;
 
 private:
@@ -47,7 +47,7 @@ multi_sequential_request_handler<Req, Res, K>::multi_sequential_request_handler(
 
 template<typename Req, typename Res, typename K>
 void multi_sequential_request_handler<Req, Res, K>::handle_request(
-    Req &&request, std::chrono::nanoseconds timeout, result_handler<Res> &&res_handler)
+    Req &&request, eclock::duration timeout, result_handler<Res> &&res_handler)
 {
     const auto sequence_key = sequence_key_func(request);
     auto sub_req_handler_iter = sub_req_handlers.find(sequence_key);

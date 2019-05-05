@@ -6,8 +6,6 @@
 #include <tuple>
 #include <utility>
 
-namespace ch = std::chrono;
-using namespace std::chrono_literals;
 using std::errc;
 using std::function;
 using std::make_shared;
@@ -83,7 +81,7 @@ void read_some_bytes(
     const shared_ptr<bytes_reader> &reader, size_t max_size,
     result_handler<string> &&res_handler)
 {
-    reader->read_some_bytes(max_size, ch::nanoseconds::max(), move(res_handler));
+    reader->read_some_bytes(max_size, eclock::duration::max(), move(res_handler));
 }
 
 
@@ -93,7 +91,7 @@ void read_all_pending_bytes(
 {
     auto reader_ptr = reader.get();
     reader_ptr->read_some_bytes(
-        default_read_size, 0ns,
+        default_read_size, eclock::duration(0),
         [reader = move(reader), data_consumer = move(data_consumer), after_func = move(after_func)](auto res) mutable {
             if (res.is_ok()) {
                 data_consumer(move(res.get_value()));

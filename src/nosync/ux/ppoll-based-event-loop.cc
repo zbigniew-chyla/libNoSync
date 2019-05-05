@@ -10,8 +10,6 @@
 #include <poll.h>
 #include <vector>
 
-namespace ch = std::chrono;
-using namespace std::chrono_literals;
 using std::errc;
 using std::error_code;
 using std::function;
@@ -40,7 +38,7 @@ int call_ppoll_with_abs_timeout(
     do {
         optional<timespec> ppoll_timeout;
         if (abs_timeout && *abs_timeout != eclock::time_point::max()) {
-            ppoll_timeout = make_timespec_from_duration(std::max<ch::nanoseconds>(*abs_timeout - clock.now(), 0ns));
+            ppoll_timeout = make_timespec_from_duration(std::max<eclock::duration>(*abs_timeout - clock.now(), eclock::duration(0)));
         }
 
         ppoll_retval = ::ppoll(fds, nfds, ppoll_timeout ? &*ppoll_timeout : nullptr, nullptr);
@@ -165,7 +163,7 @@ error_code ppoll_based_event_loop::run_iterations()
 
     while (!errc) {
         bool all_tasks_processed = sub_evloop->process_time_passage(
-            std::max<ch::nanoseconds>(etime - sub_evloop->get_etime(), 0ns));
+            std::max<eclock::duration>(etime - sub_evloop->get_etime(), eclock::duration(0)));
         if (!all_tasks_processed || quit_request_pending) {
             errc = make_error_code(errc::interrupted);
             break;

@@ -13,7 +13,7 @@ namespace nosync
 {
 
 std::shared_ptr<bytes_reader> make_func_bytes_reader(
-    std::function<void(std::size_t, std::chrono::nanoseconds, result_handler<std::string>)> &&reader_func);
+    std::function<void(std::size_t, eclock::duration, result_handler<std::string>)> &&reader_func);
 
 }
 

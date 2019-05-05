@@ -2,9 +2,9 @@
 #ifndef NOSYNC__BYTES_READER_H
 #define NOSYNC__BYTES_READER_H
 
-#include <chrono>
 #include <cstddef>
 #include <functional>
+#include <nosync/eclock.h>
 #include <nosync/interface-type.h>
 #include <nosync/result-handler.h>
 #include <string>
@@ -43,7 +43,7 @@ class bytes_reader : public interface_type
 {
 public:
     virtual void read_some_bytes(
-        std::size_t max_size, std::chrono::nanoseconds timeout,
+        std::size_t max_size, eclock::duration timeout,
         result_handler<std::string> &&res_handler) = 0;
 };
 

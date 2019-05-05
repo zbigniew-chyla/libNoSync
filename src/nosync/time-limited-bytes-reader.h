@@ -2,7 +2,6 @@
 #ifndef NOSYNC__TIME_LIMITED_BYTES_READER_H
 #define NOSYNC__TIME_LIMITED_BYTES_READER_H
 
-#include <chrono>
 #include <nosync/bytes-reader.h>
 #include <nosync/eclock.h>
 #include <nosync/event-loop.h>

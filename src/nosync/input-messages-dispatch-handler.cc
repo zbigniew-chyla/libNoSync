@@ -12,8 +12,6 @@
 #include <string_view>
 #include <system_error>
 
-namespace ch = std::chrono;
-using namespace std::chrono_literals;
 using std::enable_shared_from_this;
 using std::errc;
 using std::optional;
@@ -40,7 +38,7 @@ public:
         function<optional<string>(string_view)> &&message_id_decoder);
 
     void handle_request(
-        string &&msg_id, ch::nanoseconds timeout,
+        string &&msg_id, eclock::duration timeout,
         result_handler<string> &&res_handler) override;
 
 private:
@@ -64,7 +62,7 @@ input_messages_dispatch_handler::input_messages_dispatch_handler(
 
 
 void input_messages_dispatch_handler::handle_request(
-    string &&msg_id, ch::nanoseconds timeout, result_handler<string> &&res_handler)
+    string &&msg_id, eclock::duration timeout, result_handler<string> &&res_handler)
 {
     if (!read_ongoing) {
         pending_requests.push_request(move(msg_id), timeout, move(res_handler));
@@ -81,7 +79,7 @@ void input_messages_dispatch_handler::read_next_message_if_needed()
         return;
     }
 
-    auto min_timeout = ch::nanoseconds::max();
+    auto min_timeout = eclock::duration::max();
     pending_requests.for_each_request(
         [&](const auto &, auto timeout, const auto &) {
             min_timeout = std::min(min_timeout, timeout);
