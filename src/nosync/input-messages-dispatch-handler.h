@@ -2,9 +2,9 @@
 #ifndef NOSYNC__INPUT_MESSAGES_DISPATCH_HANDLER_H
 #define NOSYNC__INPUT_MESSAGES_DISPATCH_HANDLER_H
 
-#include <experimental/string_view>
 #include <nosync/bytes-reader.h>
 #include <nosync/compat/optional.h>
+#include <nosync/compat/string-view.h>
 #include <nosync/event-loop.h>
 #include <nosync/request-handler.h>
 #include <memory>
@@ -16,7 +16,7 @@ namespace nosync
 
 std::shared_ptr<request_handler<std::string, std::string>> make_input_messages_dispatch_handler(
     event_loop &evloop, std::shared_ptr<request_handler<std::nullptr_t, std::string>> &&messages_reader,
-    std::function<compat::optional<std::string>(std::experimental::string_view)> &&message_id_decoder);
+    std::function<compat::optional<std::string>(compat::string_view)> &&message_id_decoder);
 
 }
 

@@ -1,11 +1,11 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <array>
-#include <experimental/string_view>
 #include <fcntl.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <memory>
 #include <nosync/activity-handle-mock.h>
+#include <nosync/compat/string-view.h>
 #include <nosync/event-loop.h>
 #include <nosync/result-utils.h>
 #include <nosync/result.h>
@@ -22,6 +22,7 @@ namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using namespace std::string_literals;
 using nosync::activity_handle_mock;
+using nosync::compat::string_view;
 using nosync::eclock;
 using nosync::os::ux::fd_watch_mode;
 using nosync::os::ux::fd_watching_event_loop_mock;
@@ -32,7 +33,6 @@ using nosync::os::ux::make_ppoll_based_event_loop;
 using nosync::os::ux::owned_fd;
 using nosync::result;
 using std::array;
-using std::experimental::string_view;
 using std::function;
 using std::make_shared;
 using std::make_unique;

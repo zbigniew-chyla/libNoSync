@@ -3,7 +3,7 @@
 #define NOSYNC__OS__UX__FD_UTILS_H
 
 #include <cstddef>
-#include <experimental/string_view>
+#include <nosync/compat/string-view.h>
 #include <nosync/result.h>
 #include <string>
 
@@ -32,7 +32,7 @@ Wrapper around POSIX write() that returns status as result<>.
 
 The function automatically handles EINTR from system call (by retrying it).
 */
-result<std::size_t> write_some_bytes_to_fd(int fd, std::experimental::string_view data);
+result<std::size_t> write_some_bytes_to_fd(int fd, compat::string_view data);
 
 }
 

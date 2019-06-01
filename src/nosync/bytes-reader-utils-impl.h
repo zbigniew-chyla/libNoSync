@@ -2,7 +2,7 @@
 #ifndef NOSYNC__BYTES_READER_UTILS_IMPL_H
 #define NOSYNC__BYTES_READER_UTILS_IMPL_H
 
-#include <experimental/string_view>
+#include <nosync/compat/string-view.h>
 #include <nosync/int-range.h>
 #include <nosync/number-utils.h>
 #include <nosync/raw-error-result.h>
@@ -20,14 +20,14 @@ namespace bytes_reader_utils_impl
 {
 
 template<typename T1 = void>
-constexpr std::enable_if_t<std::is_void<T1>::value, std::tuple<>> decode_be_bytes_to_numbers_impl(std::experimental::string_view)
+constexpr std::enable_if_t<std::is_void<T1>::value, std::tuple<>> decode_be_bytes_to_numbers_impl(compat::string_view)
 {
     return {};
 }
 
 
 template<typename T1, typename ...TT>
-constexpr std::enable_if_t<!std::is_void<T1>::value, std::tuple<T1, TT...>> decode_be_bytes_to_numbers_impl(std::experimental::string_view input)
+constexpr std::enable_if_t<!std::is_void<T1>::value, std::tuple<T1, TT...>> decode_be_bytes_to_numbers_impl(compat::string_view input)
 {
     return std::tuple_cat(
         std::make_tuple(decode_leading_be_bytes_to_number<T1>(input)),
@@ -36,7 +36,7 @@ constexpr std::enable_if_t<!std::is_void<T1>::value, std::tuple<T1, TT...>> deco
 
 
 template<typename ...T>
-constexpr std::tuple<T...> decode_be_bytes_to_numbers(std::experimental::string_view input)
+constexpr std::tuple<T...> decode_be_bytes_to_numbers(compat::string_view input)
 {
     return decode_be_bytes_to_numbers_impl<T...>(input);
 }
@@ -68,7 +68,7 @@ void read_be_numbers_fully(
         transform_result_handler<std::string>(
             std::move(res_handler),
             [count](auto read_data) {
-                std::experimental::string_view bytes_view(read_data);
+                compat::string_view bytes_view(read_data);
                 std::vector<T> res_numbers;
                 res_numbers.reserve(count);
                 for (auto i : make_int_range(count)) {

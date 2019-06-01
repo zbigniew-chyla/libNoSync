@@ -6,8 +6,8 @@
 #include <nosync/os/ux/fd-utils.h>
 #include <utility>
 
+using nosync::compat::string_view;
 using std::enable_shared_from_this;
-using std::experimental::string_view;
 using std::make_shared;
 using std::move;
 using std::shared_ptr;

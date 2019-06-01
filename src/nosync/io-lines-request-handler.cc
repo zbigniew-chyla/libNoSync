@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <experimental/string_view>
 #include <nosync/compat/optional.h>
+#include <nosync/compat/string-view.h>
 #include <nosync/input-messages-dispatch-handler.h>
 #include <nosync/io-lines-request-handler.h>
 #include <nosync/lines-reader.h>
@@ -13,8 +13,8 @@
 using namespace std::string_literals;
 using nosync::compat::nullopt;
 using nosync::compat::optional;
+using nosync::compat::string_view;
 using std::errc;
-using std::experimental::string_view;
 using std::make_shared;
 using std::move;
 using std::nullptr_t;

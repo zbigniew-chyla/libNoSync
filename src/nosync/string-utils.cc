@@ -11,7 +11,7 @@ namespace nosync
 using nosync::compat::make_optional;
 using nosync::compat::nullopt;
 using nosync::compat::optional;
-using std::experimental::string_view;
+using nosync::compat::string_view;
 using std::isprint;
 using std::locale;
 using std::size_t;

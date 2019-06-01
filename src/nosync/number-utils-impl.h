@@ -182,7 +182,7 @@ constexpr T decode_le_bytes_to_number(const std::array<char, N> &bytes) noexcept
 
 
 template<typename T>
-constexpr T decode_leading_be_bytes_to_number(std::experimental::string_view bytes)
+constexpr T decode_leading_be_bytes_to_number(compat::string_view bytes)
 {
     const auto used_bytes_count = std::min(sizeof(T), bytes.size());
 
@@ -196,7 +196,7 @@ constexpr T decode_leading_be_bytes_to_number(std::experimental::string_view byt
 
 
 template<typename T>
-constexpr T decode_leading_le_bytes_to_number(std::experimental::string_view bytes)
+constexpr T decode_leading_le_bytes_to_number(compat::string_view bytes)
 {
     const auto used_bytes_count = std::min(sizeof(T), bytes.size());
 

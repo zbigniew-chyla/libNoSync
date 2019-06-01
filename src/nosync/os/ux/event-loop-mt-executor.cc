@@ -10,8 +10,8 @@
 #include <queue>
 #include <utility>
 
+using nosync::compat::string_view;
 using std::enable_shared_from_this;
-using std::experimental::string_view;
 using std::function;
 using std::lock_guard;
 using std::make_shared;

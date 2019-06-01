@@ -7,8 +7,8 @@
 #include <nosync/os/ux/fd-utils.h>
 #include <unistd.h>
 
+using nosync::compat::string_view;
 using std::array;
-using std::experimental::string_view;
 using std::make_unique;
 using std::size_t;
 using std::string;
