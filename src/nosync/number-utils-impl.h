@@ -3,9 +3,9 @@
 #define NOSYNC__NUMBER_UTILS_IMPL_H
 
 #include <algorithm>
-#include <experimental/type_traits>
 #include <nosync/int-range.h>
 #include <nosync/type-utils.h>
+#include <type_traits>
 #include <utility>
 #include <string>
 
@@ -70,7 +70,7 @@ is_number_less(TL lhs, TR rhs) noexcept
 template<typename T>
 constexpr auto cast_to_unsigned(T value) noexcept
 {
-    static_assert(std::experimental::is_integral_v<T>, "value must have integral type");
+    static_assert(std::is_integral<T>::value, "value must have integral type");
 
     return static_cast<std::make_unsigned_t<T>>(value);
 }
@@ -86,7 +86,7 @@ constexpr auto cast_to_unsigned(bool value) noexcept
 template<typename T>
 constexpr bool is_nth_bit_set(T value, unsigned n) noexcept
 {
-    static_assert(std::experimental::is_integral_v<T>, "value must have integer type");
+    static_assert(std::is_integral<T>::value, "value must have integer type");
 
     return n < sizeof_in_bits<T> && (value & (static_cast<T>(1) << n)) != 0;
 }
@@ -95,7 +95,7 @@ constexpr bool is_nth_bit_set(T value, unsigned n) noexcept
 template<typename T>
 constexpr bool is_power_of_two(T value) noexcept
 {
-    static_assert(std::experimental::is_integral_v<T>, "only integer types are supported");
+    static_assert(std::is_integral<T>::value, "only integer types are supported");
 
     const auto unsigned_value = cast_to_unsigned(value);
 
@@ -106,7 +106,7 @@ constexpr bool is_power_of_two(T value) noexcept
 template<typename Atom, typename T>
 constexpr std::array<Atom, sizeof_in_atoms<Atom, T>> encode_to_be_atoms(T value) noexcept
 {
-    static_assert(std::experimental::is_integral_v<T>, "only integer types are supported");
+    static_assert(std::is_integral<T>::value, "only integer types are supported");
 
     return number_utils_impl::encode_to_be_atoms_impl<Atom>(
         value, std::make_index_sequence<sizeof_in_atoms<Atom, T>>());
@@ -116,7 +116,7 @@ constexpr std::array<Atom, sizeof_in_atoms<Atom, T>> encode_to_be_atoms(T value)
 template<typename Atom, typename T>
 constexpr std::array<Atom, sizeof_in_atoms<Atom, T>> encode_to_le_atoms(T value) noexcept
 {
-    static_assert(std::experimental::is_integral_v<T>, "only integer types are supported");
+    static_assert(std::is_integral<T>::value, "only integer types are supported");
 
     return number_utils_impl::encode_to_le_atoms_impl<Atom>(
         value, std::make_index_sequence<sizeof_in_atoms<Atom, T>>());
@@ -210,7 +210,7 @@ constexpr T decode_leading_le_bytes_to_number(compat::string_view bytes)
 template<typename TL, typename TR>
 constexpr bool is_number_less(TL lhs, TR rhs) noexcept
 {
-    static_assert(std::experimental::is_integral_v<TL> && std::experimental::is_integral_v<TR>, "need integral parameters");
+    static_assert(std::is_integral<TL>::value && std::is_integral<TR>::value, "need integral parameters");
     return number_utils_impl::is_number_less(lhs, rhs);
 }
 
@@ -218,7 +218,7 @@ constexpr bool is_number_less(TL lhs, TR rhs) noexcept
 template<typename T, typename TV>
 constexpr bool number_fits_in_type(TV number) noexcept
 {
-    static_assert(std::experimental::is_integral_v<T> && std::experimental::is_integral_v<TV>, "need integral parameters");
+    static_assert(std::is_integral<T>::value && std::is_integral<TV>::value, "need integral parameters");
     constexpr auto min_for_type = std::numeric_limits<T>::min();
     constexpr auto max_for_type = std::numeric_limits<T>::max();
     return !(is_number_less(number, min_for_type) || is_number_less(max_for_type, number));
