@@ -1,6 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#include <algorithm>
+#include <array>
 #include <ctime>
-#include <experimental/array>
 #include <gtest/gtest.h>
 #include <nosync/time-utils.h>
 #include <sys/time.h>
@@ -18,7 +19,20 @@ using nosync::make_timespec_from_duration;
 using nosync::make_timeval_from_duration;
 using nosync::time_point_sat_add;
 using nosync::to_float_seconds;
-using std::experimental::to_array;
+
+
+namespace
+{
+
+template<typename T, std::size_t N>
+std::array<T, N> to_array(const T (&arr)[N])
+{
+    std::array<T, N> result;
+    std::copy(std::begin(arr), std::end(arr), result.begin());
+    return result;
+}
+
+}
 
 
 TEST(NosyncTimeUtils, MakeTimespecFromDuration)
