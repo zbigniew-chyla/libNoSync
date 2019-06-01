@@ -4,7 +4,6 @@
 
 #include <array>
 #include <cstddef>
-#include <experimental/array>
 #include <nosync/number-utils.h>
 #include <nosync/type-utils.h>
 #include <utility>
@@ -30,8 +29,7 @@ constexpr std::array<char, sizeof(T) * 2> number_to_hex_digits_array_impl(T valu
     constexpr auto nibbles_count = sizeof...(I);
     constexpr auto nibble_size_in_bits = 4;
 
-    return std::experimental::make_array(
-        to_hex_digit(cast_to_unsigned(value) >> ((nibbles_count - 1 - I) * nibble_size_in_bits))...);
+    return {to_hex_digit(cast_to_unsigned(value) >> ((nibbles_count - 1 - I) * nibble_size_in_bits))...};
 }
 
 }

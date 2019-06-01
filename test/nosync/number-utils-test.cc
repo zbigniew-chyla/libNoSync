@@ -1,7 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <array>
 #include <cstdint>
-#include <experimental/array>
 #include <gtest/gtest.h>
 #include <nosync/number-utils.h>
 
@@ -21,7 +20,7 @@ using nosync::is_nth_bit_set;
 using nosync::is_number_less;
 using nosync::is_power_of_two;
 using nosync::number_fits_in_type;
-using std::experimental::make_array;
+using std::array;
 using std::int16_t;
 using std::int32_t;
 using std::int8_t;
@@ -85,116 +84,116 @@ TEST(NosyncNumberUtils, IsPowerOfTwo) {
 
 
 TEST(NosyncNumberUtils, EncodeToBeAtoms8Bit) {
-    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint8_t>(0x12)), make_array<uint8_t>(0x12));
-    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint16_t>(0x1234)), make_array<uint8_t>(0x12, 0x34));
-    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint32_t>(0x12345678)), make_array<uint8_t>(0x12, 0x34, 0x56, 0x78));
-    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), make_array<uint8_t>(0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0));
+    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint8_t>(0x12)), (array<uint8_t, 1>{0x12}));
+    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint16_t>(0x1234)), (array<uint8_t, 2>{0x12, 0x34}));
+    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint32_t>(0x12345678)), (array<uint8_t, 4>{0x12, 0x34, 0x56, 0x78}));
+    ASSERT_EQ(encode_to_be_atoms<uint8_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), (array<uint8_t, 8>{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0}));
 }
 
 
 TEST(NosyncNumberUtils, EncodeToLeAtoms8Bit) {
-    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint8_t>(0x12)), make_array<uint8_t>(0x12));
-    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint16_t>(0x1234)), make_array<uint8_t>(0x34, 0x12));
-    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint32_t>(0x12345678)), make_array<uint8_t>(0x78, 0x56, 0x34, 0x12));
-    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), make_array<uint8_t>(0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12));
+    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint8_t>(0x12)), (array<uint8_t, 1>{0x12}));
+    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint16_t>(0x1234)), (array<uint8_t, 2>{0x34, 0x12}));
+    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint32_t>(0x12345678)), (array<uint8_t, 4>{0x78, 0x56, 0x34, 0x12}));
+    ASSERT_EQ(encode_to_le_atoms<uint8_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), (array<uint8_t, 8>{0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12}));
 }
 
 
 TEST(NosyncNumberUtils, EncodeToBeAtoms16Bit) {
-    ASSERT_EQ(encode_to_be_atoms<uint16_t>(static_cast<uint16_t>(0x1234)), make_array<uint16_t>(0x1234));
-    ASSERT_EQ(encode_to_be_atoms<uint16_t>(static_cast<uint32_t>(0x12345678)), make_array<uint16_t>(0x1234, 0x5678));
-    ASSERT_EQ(encode_to_be_atoms<uint16_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), make_array<uint16_t>(0x1234, 0x5678, 0x9ABC, 0xDEF0));
+    ASSERT_EQ(encode_to_be_atoms<uint16_t>(static_cast<uint16_t>(0x1234)), (array<uint16_t, 1>{0x1234}));
+    ASSERT_EQ(encode_to_be_atoms<uint16_t>(static_cast<uint32_t>(0x12345678)), (array<uint16_t, 2>{0x1234, 0x5678}));
+    ASSERT_EQ(encode_to_be_atoms<uint16_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), (array<uint16_t, 4>{0x1234, 0x5678, 0x9ABC, 0xDEF0}));
 }
 
 
 TEST(NosyncNumberUtils, EncodeToLeAtoms16Bit) {
-    ASSERT_EQ(encode_to_le_atoms<uint16_t>(static_cast<uint16_t>(0x1234)), make_array<uint16_t>(0x1234));
-    ASSERT_EQ(encode_to_le_atoms<uint16_t>(static_cast<uint32_t>(0x12345678)), make_array<uint16_t>(0x5678, 0x1234));
-    ASSERT_EQ(encode_to_le_atoms<uint16_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), make_array<uint16_t>(0xDEF0, 0x9ABC, 0x5678, 0x1234));
+    ASSERT_EQ(encode_to_le_atoms<uint16_t>(static_cast<uint16_t>(0x1234)), (array<uint16_t, 1>{0x1234}));
+    ASSERT_EQ(encode_to_le_atoms<uint16_t>(static_cast<uint32_t>(0x12345678)), (array<uint16_t, 2>{0x5678, 0x1234}));
+    ASSERT_EQ(encode_to_le_atoms<uint16_t>(static_cast<uint64_t>(0x123456789ABCDEF0)), (array<uint16_t, 4>{0xDEF0, 0x9ABC, 0x5678, 0x1234}));
 }
 
 
 TEST(NosyncNumberUtils, EncodeToBeBytes) {
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint8_t>(0xF1)), make_array<char>('\xF1'));
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint16_t>(0xF1)), make_array<char>('\x00', '\xF1'));
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint32_t>(0xF1)), make_array<char>('\x00', '\x00', '\x00', '\xF1'));
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint64_t>(0xF1)), make_array<char>('\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\xF1'));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint8_t>(0xF1)), (array<char, 1>{'\xF1'}));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint16_t>(0xF1)), (array<char, 2>{'\x00', '\xF1'}));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint32_t>(0xF1)), (array<char, 4>{'\x00', '\x00', '\x00', '\xF1'}));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint64_t>(0xF1)), (array<char, 8>{'\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\xF1'}));
 
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint8_t>(0x12)), make_array<char>('\x12'));
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint16_t>(0x1234)), make_array<char>('\x12', '\x34'));
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint32_t>(0x12345678)), make_array<char>('\x12', '\x34', '\x56', '\x78'));
-    ASSERT_EQ(encode_to_be_bytes(static_cast<uint64_t>(0x123456789ABCDEF0)), make_array<char>('\x12', '\x34', '\x56', '\x78', '\x9A', '\xBC', '\xDE', '\xF0'));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint8_t>(0x12)), (array<char, 1>{'\x12'}));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint16_t>(0x1234)), (array<char, 2>{'\x12', '\x34'}));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint32_t>(0x12345678)), (array<char, 4>{'\x12', '\x34', '\x56', '\x78'}));
+    ASSERT_EQ(encode_to_be_bytes(static_cast<uint64_t>(0x123456789ABCDEF0)), (array<char, 8>{'\x12', '\x34', '\x56', '\x78', '\x9A', '\xBC', '\xDE', '\xF0'}));
 }
 
 
 TEST(NosyncNumberUtils, EncodeToLeBytes) {
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint8_t>(0xF1)), make_array<char>('\xF1'));
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint16_t>(0xF1)), make_array<char>('\xF1', '\x00'));
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint32_t>(0xF1)), make_array<char>('\xF1', '\x00', '\x00', '\x00'));
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint64_t>(0xF1)), make_array<char>('\xF1', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00'));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint8_t>(0xF1)), (array<char, 1>{'\xF1'}));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint16_t>(0xF1)), (array<char, 2>{'\xF1', '\x00'}));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint32_t>(0xF1)), (array<char, 4>{'\xF1', '\x00', '\x00', '\x00'}));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint64_t>(0xF1)), (array<char, 8>{'\xF1', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00', '\x00'}));
 
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint8_t>(0x12)), make_array<char>('\x12'));
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint16_t>(0x1234)), make_array<char>('\x34', '\x12'));
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint32_t>(0x12345678)), make_array<char>('\x78', '\x56', '\x34', '\x12'));
-    ASSERT_EQ(encode_to_le_bytes(static_cast<uint64_t>(0x123456789ABCDEF0)), make_array<char>('\xF0', '\xDE', '\xBC', '\x9A', '\x78', '\x56', '\x34', '\x12'));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint8_t>(0x12)), (array<char, 1>{'\x12'}));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint16_t>(0x1234)), (array<char, 2>{'\x34', '\x12'}));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint32_t>(0x12345678)), (array<char, 4>{'\x78', '\x56', '\x34', '\x12'}));
+    ASSERT_EQ(encode_to_le_bytes(static_cast<uint64_t>(0x123456789ABCDEF0)), (array<char, 8>{'\xF0', '\xDE', '\xBC', '\x9A', '\x78', '\x56', '\x34', '\x12'}));
 }
 
 
 TEST(NosyncNumberUtils, DecodeBeAtoms8BitToNumber) {
-    ASSERT_EQ((decode_be_atoms_to_number<uint8_t, uint8_t>(make_array<uint8_t>(0xFB))), 0xFBU);
-    ASSERT_EQ((decode_be_atoms_to_number<uint8_t, uint16_t>(make_array<uint8_t>(0x39, 0xFB))), 0x39FBU);
-    ASSERT_EQ((decode_be_atoms_to_number<uint8_t, uint32_t>(make_array<uint8_t>(0xBA, 0x49, 0x39, 0xFB))), 0xBA4939FBU);
+    ASSERT_EQ((decode_be_atoms_to_number<uint8_t, uint8_t>(array<uint8_t, 1>{0xFB})), 0xFBU);
+    ASSERT_EQ((decode_be_atoms_to_number<uint8_t, uint16_t>(array<uint8_t, 2>{0x39, 0xFB})), 0x39FBU);
+    ASSERT_EQ((decode_be_atoms_to_number<uint8_t, uint32_t>(array<uint8_t, 4>{0xBA, 0x49, 0x39, 0xFB})), 0xBA4939FBU);
 }
 
 
 TEST(NosyncNumberUtils, DecodeBeAtoms16BitToNumber) {
-    ASSERT_EQ((decode_be_atoms_to_number<uint16_t, uint16_t>(make_array<uint16_t>(0x39FB))), 0x39FBU);
-    ASSERT_EQ((decode_be_atoms_to_number<uint16_t, uint32_t>(make_array<uint16_t>(0xBA49, 0x39FB))), 0xBA4939FBU);
+    ASSERT_EQ((decode_be_atoms_to_number<uint16_t, uint16_t>(array<uint16_t, 1>{0x39FB})), 0x39FBU);
+    ASSERT_EQ((decode_be_atoms_to_number<uint16_t, uint32_t>(array<uint16_t, 2>{0xBA49, 0x39FB})), 0xBA4939FBU);
 }
 
 
 TEST(NosyncNumberUtils, DecodeLeAtoms8BitToNumber) {
-    ASSERT_EQ((decode_le_atoms_to_number<uint8_t, uint8_t>(make_array<uint8_t>(0xFB))), 0xFBU);
-    ASSERT_EQ((decode_le_atoms_to_number<uint8_t, uint16_t>(make_array<uint8_t>(0x39, 0xFB))), 0xFB39U);
-    ASSERT_EQ((decode_le_atoms_to_number<uint8_t, uint32_t>(make_array<uint8_t>(0xBA, 0x49, 0x39, 0xFB))), 0xFB3949BAU);
+    ASSERT_EQ((decode_le_atoms_to_number<uint8_t, uint8_t>(array<uint8_t, 1>{0xFB})), 0xFBU);
+    ASSERT_EQ((decode_le_atoms_to_number<uint8_t, uint16_t>(array<uint8_t, 2>{0x39, 0xFB})), 0xFB39U);
+    ASSERT_EQ((decode_le_atoms_to_number<uint8_t, uint32_t>(array<uint8_t, 4>{0xBA, 0x49, 0x39, 0xFB})), 0xFB3949BAU);
 }
 
 
 TEST(NosyncNumberUtils, DecodeLeAtoms16BitToNumber) {
-    ASSERT_EQ((decode_le_atoms_to_number<uint16_t, uint16_t>(make_array<uint16_t>(0x39FB))), 0x39FBU);
-    ASSERT_EQ((decode_le_atoms_to_number<uint16_t, uint32_t>(make_array<uint16_t>(0xBA49, 0x39FB))), 0x39FBBA49U);
+    ASSERT_EQ((decode_le_atoms_to_number<uint16_t, uint16_t>(array<uint16_t, 1>{0x39FB})), 0x39FBU);
+    ASSERT_EQ((decode_le_atoms_to_number<uint16_t, uint32_t>(array<uint16_t, 2>{0xBA49, 0x39FB})), 0x39FBBA49U);
 }
 
 
 TEST(NosyncNumberUtils, DecodeBeBytesToNumberFromArray) {
-    ASSERT_EQ(decode_be_bytes_to_number<uint8_t>(make_array('\xFB')), 0xFBU);
-    ASSERT_EQ(decode_be_bytes_to_number<int8_t>(make_array('\xFB')), static_cast<int8_t>(0xFBU));
+    ASSERT_EQ(decode_be_bytes_to_number<uint8_t>(array<char, 1>{'\xFB'}), 0xFBU);
+    ASSERT_EQ(decode_be_bytes_to_number<int8_t>(array<char, 1>{'\xFB'}), static_cast<int8_t>(0xFBU));
 
-    ASSERT_EQ(decode_be_bytes_to_number<uint16_t>(make_array('\x39', '\xFB')), 0x39FBU);
-    ASSERT_EQ(decode_be_bytes_to_number<uint16_t>(make_array('\xFB')), 0xFBU);
-    ASSERT_EQ(decode_be_bytes_to_number<int16_t>(make_array('\x39', '\xFB')), static_cast<int16_t>(0x39FBU));
-    ASSERT_EQ(decode_be_bytes_to_number<int16_t>(make_array('\xFB')), static_cast<int16_t>(0xFBU));
+    ASSERT_EQ(decode_be_bytes_to_number<uint16_t>(array<char, 2>{'\x39', '\xFB'}), 0x39FBU);
+    ASSERT_EQ(decode_be_bytes_to_number<uint16_t>(array<char, 1>{'\xFB'}), 0xFBU);
+    ASSERT_EQ(decode_be_bytes_to_number<int16_t>(array<char, 2>{'\x39', '\xFB'}), static_cast<int16_t>(0x39FBU));
+    ASSERT_EQ(decode_be_bytes_to_number<int16_t>(array<char, 1>{'\xFB'}), static_cast<int16_t>(0xFBU));
 
-    ASSERT_EQ(decode_be_bytes_to_number<uint32_t>(make_array('\xBA', '\x49', '\x39', '\xFB')), 0xBA4939FBU);
-    ASSERT_EQ(decode_be_bytes_to_number<uint32_t>(make_array('\x39', '\xFB')), 0x39FBU);
-    ASSERT_EQ(decode_be_bytes_to_number<int32_t>(make_array('\xBA', '\x49', '\x39', '\xFB')), static_cast<int32_t>(0xBA4939FBU));
-    ASSERT_EQ(decode_be_bytes_to_number<int32_t>(make_array('\x39', '\xFB')), static_cast<int32_t>(0x39FBU));
+    ASSERT_EQ(decode_be_bytes_to_number<uint32_t>(array<char, 4>{'\xBA', '\x49', '\x39', '\xFB'}), 0xBA4939FBU);
+    ASSERT_EQ(decode_be_bytes_to_number<uint32_t>(array<char, 2>{'\x39', '\xFB'}), 0x39FBU);
+    ASSERT_EQ(decode_be_bytes_to_number<int32_t>(array<char, 4>{'\xBA', '\x49', '\x39', '\xFB'}), static_cast<int32_t>(0xBA4939FBU));
+    ASSERT_EQ(decode_be_bytes_to_number<int32_t>(array<char, 2>{'\x39', '\xFB'}), static_cast<int32_t>(0x39FBU));
 }
 
 
 TEST(NosyncNumberUtils, DecodeLeBytesToNumberFromArray) {
-    ASSERT_EQ(decode_le_bytes_to_number<uint8_t>(make_array('\xFB')), 0xFBU);
-    ASSERT_EQ(decode_le_bytes_to_number<int8_t>(make_array('\xFB')), static_cast<int8_t>(0xFBU));
+    ASSERT_EQ(decode_le_bytes_to_number<uint8_t>(array<char, 1>{'\xFB'}), 0xFBU);
+    ASSERT_EQ(decode_le_bytes_to_number<int8_t>(array<char, 1>{'\xFB'}), static_cast<int8_t>(0xFBU));
 
-    ASSERT_EQ(decode_le_bytes_to_number<uint16_t>(make_array('\x39', '\xFB')), 0xFB39U);
-    ASSERT_EQ(decode_le_bytes_to_number<uint16_t>(make_array('\xFB')), 0xFBU);
-    ASSERT_EQ(decode_le_bytes_to_number<int16_t>(make_array('\x39', '\xFB')), static_cast<int16_t>(0xFB39U));
-    ASSERT_EQ(decode_le_bytes_to_number<int16_t>(make_array('\xFB')), static_cast<int16_t>(0xFBU));
+    ASSERT_EQ(decode_le_bytes_to_number<uint16_t>(array<char, 2>{'\x39', '\xFB'}), 0xFB39U);
+    ASSERT_EQ(decode_le_bytes_to_number<uint16_t>(array<char, 1>{'\xFB'}), 0xFBU);
+    ASSERT_EQ(decode_le_bytes_to_number<int16_t>(array<char, 2>{'\x39', '\xFB'}), static_cast<int16_t>(0xFB39U));
+    ASSERT_EQ(decode_le_bytes_to_number<int16_t>(array<char, 1>{'\xFB'}), static_cast<int16_t>(0xFBU));
 
-    ASSERT_EQ(decode_le_bytes_to_number<uint32_t>(make_array('\xBA', '\x49', '\x39', '\xFB')), 0xFB3949BAU);
-    ASSERT_EQ(decode_le_bytes_to_number<uint32_t>(make_array('\x39', '\xFB')), 0xFB39U);
-    ASSERT_EQ(decode_le_bytes_to_number<int32_t>(make_array('\xBA', '\x49', '\x39', '\xFB')), static_cast<int32_t>(0xFB3949BAU));
-    ASSERT_EQ(decode_le_bytes_to_number<int32_t>(make_array('\x39', '\xFB')), static_cast<int32_t>(0xFB39U));
+    ASSERT_EQ(decode_le_bytes_to_number<uint32_t>(array<char, 4>{'\xBA', '\x49', '\x39', '\xFB'}), 0xFB3949BAU);
+    ASSERT_EQ(decode_le_bytes_to_number<uint32_t>(array<char, 2>{'\x39', '\xFB'}), 0xFB39U);
+    ASSERT_EQ(decode_le_bytes_to_number<int32_t>(array<char, 4>{'\xBA', '\x49', '\x39', '\xFB'}), static_cast<int32_t>(0xFB3949BAU));
+    ASSERT_EQ(decode_le_bytes_to_number<int32_t>(array<char, 2>{'\x39', '\xFB'}), static_cast<int32_t>(0xFB39U));
 }
 
 

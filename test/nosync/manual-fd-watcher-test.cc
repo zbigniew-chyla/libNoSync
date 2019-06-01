@@ -1,6 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
-#include <experimental/array>
 #include <functional>
 #include <gtest/gtest.h>
 #include <memory>
@@ -13,7 +12,7 @@
 using nosync::os::ux::fd_watch_mode;
 using nosync::activity_handle;
 using nosync::os::ux::manual_fd_watcher;
-using std::experimental::make_array;
+using std::array;
 using std::function;
 using std::get;
 using std::make_shared;
@@ -187,11 +186,11 @@ TEST(NosyncManualFdWatcher, TestMultipleWatchesSingleCond)
 
 TEST(NosyncManualFdWatcher, TestMultipleWatchesMultipleCond)
 {
-    const auto watch_keys = make_array(
+    const auto watch_keys = array<std::tuple<int, fd_watch_mode>, 4>{
         make_tuple(123, fd_watch_mode::input),
         make_tuple(456, fd_watch_mode::input),
         make_tuple(123, fd_watch_mode::output),
-        make_tuple(789, fd_watch_mode::input));
+        make_tuple(789, fd_watch_mode::input)};
 
     auto watcher = make_shared<manual_fd_watcher>();
 
