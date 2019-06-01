@@ -1,11 +1,11 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <experimental/optional>
 #include <functional>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <memory>
 #include <nosync/bytes-reader-mock.h>
 #include <nosync/bytes-reader-utils.h>
+#include <nosync/compat/optional.h>
 #include <nosync/event-loop-utils.h>
 #include <nosync/manual-event-loop.h>
 #include <nosync/result.h>
@@ -18,6 +18,7 @@ namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using namespace std::string_literals;
 using nosync::bytes_reader_mock;
+using nosync::compat::optional;
 using nosync::read_all_pending_bytes;
 using nosync::result;
 using nosync::event_loop;
@@ -27,7 +28,6 @@ using nosync::manual_event_loop;
 using nosync::process_read_bytes_with_timeout;
 using std::errc;
 using std::error_code;
-using std::experimental::optional;
 using std::function;
 using std::make_error_code;
 using std::make_shared;

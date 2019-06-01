@@ -1,6 +1,6 @@
 // This file is part of libnosync library. See LICENSE file for license details.
-#include <experimental/optional>
 #include <experimental/string_view>
+#include <nosync/compat/optional.h>
 #include <nosync/input-messages-dispatch-handler.h>
 #include <nosync/io-lines-request-handler.h>
 #include <nosync/lines-reader.h>
@@ -11,9 +11,9 @@
 #include <nosync/time-utils.h>
 
 using namespace std::string_literals;
+using nosync::compat::nullopt;
+using nosync::compat::optional;
 using std::errc;
-using std::experimental::nullopt;
-using std::experimental::optional;
 using std::experimental::string_view;
 using std::make_shared;
 using std::move;
@@ -84,7 +84,7 @@ optional<string> try_decode_response_line_id(string_view resp_line)
 {
     auto sep_pos = resp_line.find(req_id_separator);
     return sep_pos != string_view::npos
-        ? std::experimental::make_optional(resp_line.substr(0, sep_pos).to_string())
+        ? compat::make_optional(resp_line.substr(0, sep_pos).to_string())
         : nullopt;
 }
 

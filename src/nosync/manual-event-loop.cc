@@ -3,8 +3,8 @@
 #include <nosync/manual-event-loop.h>
 #include <utility>
 
-using std::experimental::nullopt;
-using std::experimental::optional;
+using nosync::compat::nullopt;
+using nosync::compat::optional;
 using std::function;
 using std::get;
 using std::make_tuple;

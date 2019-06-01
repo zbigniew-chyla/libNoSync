@@ -3,18 +3,18 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <experimental/optional>
 #include <fcntl.h>
 #include <limits>
+#include <nosync/compat/optional.h>
 #include <nosync/int-range.h>
 #include <nosync/result-utils.h>
 #include <nosync/os/ux/socket-activation.h>
 #include <sys/types.h>
 #include <unistd.h>
 
-using std::experimental::make_optional;
-using std::experimental::nullopt;
-using std::experimental::optional;
+using nosync::compat::make_optional;
+using nosync::compat::nullopt;
+using nosync::compat::optional;
 using std::getenv;
 using std::numeric_limits;
 using std::strlen;

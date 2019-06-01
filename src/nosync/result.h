@@ -2,7 +2,7 @@
 #ifndef NOSYNC__RESULT_H
 #define NOSYNC__RESULT_H
 
-#include <experimental/optional>
+#include <nosync/compat/optional.h>
 #include <system_error>
 #include <tuple>
 #include <type_traits>
@@ -47,11 +47,11 @@ public:
     operator result<U>() &&;
 
 private:
-    result(std::tuple<std::experimental::optional<T>, std::error_code> res_err);
+    result(std::tuple<compat::optional<T>, std::error_code> res_err);
 
     void check_is_ok() const;
 
-    std::tuple<std::experimental::optional<T>, std::error_code> res_err;
+    std::tuple<compat::optional<T>, std::error_code> res_err;
 };
 
 

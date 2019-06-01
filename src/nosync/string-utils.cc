@@ -8,9 +8,9 @@
 namespace nosync
 {
 
-using std::experimental::make_optional;
-using std::experimental::nullopt;
-using std::experimental::optional;
+using nosync::compat::make_optional;
+using nosync::compat::nullopt;
+using nosync::compat::optional;
 using std::experimental::string_view;
 using std::isprint;
 using std::locale;

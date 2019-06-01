@@ -1,7 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
-#include <experimental/optional>
 #include <experimental/string_view>
+#include <nosync/compat/optional.h>
 #include <nosync/eclock.h>
 #include <nosync/input-messages-dispatch-handler.h>
 #include <nosync/memory-utils.h>
@@ -12,9 +12,9 @@
 #include <nosync/utils.h>
 #include <system_error>
 
+using nosync::compat::optional;
 using std::enable_shared_from_this;
 using std::errc;
-using std::experimental::optional;
 using std::experimental::string_view;
 using std::function;
 using std::make_shared;

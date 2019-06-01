@@ -2,9 +2,9 @@
 #ifndef NOSYNC__BYTES_READER_UTILS_H
 #define NOSYNC__BYTES_READER_UTILS_H
 
-#include <experimental/optional>
 #include <functional>
 #include <nosync/bytes-reader.h>
+#include <nosync/compat/optional.h>
 #include <nosync/eclock.h>
 #include <nosync/event-loop.h>
 #include <nosync/result-handler.h>
@@ -47,7 +47,7 @@ template<typename Res>
 void process_read_bytes_with_timeout(
     event_loop &evloop, std::shared_ptr<bytes_reader> &&reader,
     eclock::duration timeout,
-    std::function<std::experimental::optional<Res>(char)> &&bytes_processor,
+    std::function<compat::optional<Res>(char)> &&bytes_processor,
     result_handler<Res> &&res_handler);
 
 template<typename F>

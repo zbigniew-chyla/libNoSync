@@ -16,6 +16,7 @@
 namespace ch = std::chrono;
 using namespace std::chrono_literals;
 using namespace std::string_literals;
+using nosync::compat::nullopt;
 using nosync::manual_event_loop;
 using nosync::make_func_request_handler;
 using nosync::make_input_messages_dispatch_handler;
@@ -24,7 +25,6 @@ using nosync::make_timeout_raw_error_result;
 using nosync::request_handler;
 using nosync::result;
 using std::deque;
-using std::experimental::nullopt;
 using std::function;
 using std::make_shared;
 using std::make_tuple;
@@ -99,7 +99,7 @@ TEST(NosyncInputMessagesDispatchHandler, MultipleRequests)
     auto messages_dispatcher = make_input_messages_dispatch_handler(
         *evloop, move(msgs_reader),
         [](auto msg) {
-            return !msg.empty() ? std::experimental::make_optional(msg.substr(0, 1).to_string()) : nullopt;
+            return !msg.empty() ? nosync::compat::make_optional(msg.substr(0, 1).to_string()) : nullopt;
         });
 
     vector<tuple<unsigned, result<string>>> saved_results;
@@ -114,7 +114,7 @@ TEST(NosyncInputMessagesDispatchHandler, MultipleRequests)
     evloop->process_time_passage(0ns);
     for (unsigned i = 0; i < 10; ++i) {
         evloop->process_time_passage(1ns);
-        while (evloop->get_earliest_task_time() == std::experimental::make_optional(evloop->get_etime())) {
+        while (evloop->get_earliest_task_time() == nosync::compat::make_optional(evloop->get_etime())) {
             evloop->process_time_passage(0ns);
         }
     }

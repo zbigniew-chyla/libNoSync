@@ -4,9 +4,9 @@
 
 #include <cstddef>
 #include <deque>
-#include <experimental/optional>
 #include <functional>
 #include <nosync/activity-owner.h>
+#include <nosync/compat/optional.h>
 #include <nosync/eclock.h>
 #include <nosync/event-loop.h>
 #include <nosync/result-handler.h>
@@ -70,7 +70,7 @@ private:
 
     event_loop &evloop;
     std::deque<std::tuple<Req, eclock::time_point, result_handler<Res>>> requests;
-    std::experimental::optional<std::tuple<eclock::time_point, activity_owner>> scheduled_timeout_task;
+    compat::optional<std::tuple<eclock::time_point, activity_owner>> scheduled_timeout_task;
 };
 
 }

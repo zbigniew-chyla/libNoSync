@@ -1,4 +1,4 @@
-#include <experimental/optional>
+#include <nosync/compat/optional.h>
 #include <nosync/const-bytes-reader.h>
 #include <nosync/event-loop.h>
 #include <nosync/func-bytes-writer.h>
@@ -12,10 +12,10 @@
 #include <system_error>
 #include <utility>
 
+using nosync::compat::nullopt;
+using nosync::compat::optional;
 using std::errc;
 using std::error_code;
-using std::experimental::nullopt;
-using std::experimental::optional;
 using std::function;
 using std::get;
 using std::make_error_code;

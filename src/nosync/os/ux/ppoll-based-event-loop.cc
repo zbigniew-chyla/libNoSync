@@ -1,7 +1,7 @@
 // This file is part of libnosync library. See LICENSE file for license details.
 #include <algorithm>
 #include <cerrno>
-#include <experimental/optional>
+#include <nosync/compat/optional.h>
 #include <nosync/eclock.h>
 #include <nosync/manual-event-loop.h>
 #include <nosync/time-utils.h>
@@ -10,9 +10,9 @@
 #include <poll.h>
 #include <vector>
 
+using nosync::compat::optional;
 using std::errc;
 using std::error_code;
-using std::experimental::optional;
 using std::function;
 using std::get;
 using std::make_error_code;

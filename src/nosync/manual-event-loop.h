@@ -3,8 +3,8 @@
 #define NOSYNC__MANUAL_EVENT_LOOP_H
 
 #include <cstdint>
-#include <experimental/optional>
 #include <functional>
+#include <nosync/compat/optional.h>
 #include <nosync/eclock.h>
 #include <nosync/event-loop.h>
 #include <map>
@@ -24,7 +24,7 @@ public:
     manual_event_loop(eclock::time_point init_time);
     ~manual_event_loop() override;
 
-    std::experimental::optional<eclock::time_point> get_earliest_task_time() const;
+    compat::optional<eclock::time_point> get_earliest_task_time() const;
     bool process_time_passage(eclock::duration time_delta);
     void quit();
 

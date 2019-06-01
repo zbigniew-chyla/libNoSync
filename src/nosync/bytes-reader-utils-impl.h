@@ -97,7 +97,7 @@ template<typename Res>
 void process_read_bytes_with_timeout(
     event_loop &evloop, std::shared_ptr<bytes_reader> &&reader,
     eclock::duration timeout,
-    std::function<std::experimental::optional<Res>(char)> &&bytes_processor,
+    std::function<compat::optional<Res>(char)> &&bytes_processor,
     result_handler<Res> &&res_handler)
 {
     const auto end_time = time_point_sat_add(evloop.get_etime(), timeout);
@@ -107,7 +107,7 @@ void process_read_bytes_with_timeout(
             if (!read_res.is_ok()) {
                 res_handler(std::move(read_res));
             } else {
-                std::experimental::optional<Res> res;
+                compat::optional<Res> res;
                 const auto &read_bytes = read_res.get_value();
                 if (!read_bytes.empty()) {
                     res = bytes_processor(read_bytes.front());

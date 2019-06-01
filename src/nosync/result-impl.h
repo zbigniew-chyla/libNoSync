@@ -26,14 +26,14 @@ result<T> result<T>::create_with_value(T &&value)
 template<typename T>
 result<T> result<T>::create_with_error(std::error_code ec)
 {
-    return {{std::experimental::nullopt, ec}};
+    return {{compat::nullopt, ec}};
 }
 
 
 template<typename T>
 bool result<T>::is_ok() const
 {
-    return std::get<std::experimental::optional<T>>(res_err) != std::experimental::nullopt;
+    return std::get<compat::optional<T>>(res_err) != compat::nullopt;
 }
 
 
@@ -41,7 +41,7 @@ template<typename T>
 T &result<T>::get_value() &
 {
     check_is_ok();
-    return std::get<std::experimental::optional<T>>(res_err).value();
+    return std::get<compat::optional<T>>(res_err).value();
 }
 
 
@@ -49,7 +49,7 @@ template<typename T>
 const T &result<T>::get_value() const &
 {
     check_is_ok();
-    return std::get<std::experimental::optional<T>>(res_err).value();
+    return std::get<compat::optional<T>>(res_err).value();
 }
 
 
@@ -57,7 +57,7 @@ template<typename T>
 T &&result<T>::get_value() &&
 {
     check_is_ok();
-    return std::move(std::get<std::experimental::optional<T>>(res_err).value());
+    return std::move(std::get<compat::optional<T>>(res_err).value());
 }
 
 
@@ -93,7 +93,7 @@ result<T>::operator result<U>() &&
 
 
 template<typename T>
-result<T>::result(std::tuple<std::experimental::optional<T>, std::error_code> res_err)
+result<T>::result(std::tuple<compat::optional<T>, std::error_code> res_err)
     : res_err(std::move(res_err))
 {
 }
