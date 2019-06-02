@@ -17,4 +17,4 @@ Author: Zbigniew Chyla (zbigniew.chyla@gmail.com)
 
 Copyright (C) Nokia 2017,2018
 
-Copyright (C) Zbigniew Chyla 2018
+Copyright (C) Zbigniew Chyla 2018,2019
