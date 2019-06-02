@@ -12,11 +12,8 @@ include_directories("src")
 file(GLOB_RECURSE nosync_SRC FOLLOW_SYMLINKS "src/*.cc")
 
 add_library(nosync-static STATIC ${nosync_SRC})
-target_compile_options(nosync-static PRIVATE -O2 -flto -ffat-lto-objects)
 
 add_library(nosync SHARED ${nosync_SRC})
-target_compile_options(nosync PRIVATE -O2 -flto)
-set_target_properties(nosync PROPERTIES LINK_FLAGS "-flto")
 set_target_properties(nosync PROPERTIES VERSION 0.0.1 SOVERSION 0)
 
 install(TARGETS nosync-static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
