@@ -14,7 +14,7 @@ synchronized_queue<T>::synchronized_queue()
 
 
 template<typename T>
-void synchronized_queue<T>::push(T element)
+void synchronized_queue<T>::push(T &&element)
 {
     std::scoped_lock lock(elements_mutex);
     bool was_empty = elements.empty();

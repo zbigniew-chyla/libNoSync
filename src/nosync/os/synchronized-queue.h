@@ -16,7 +16,7 @@ class synchronized_queue
 public:
     synchronized_queue();
 
-    void push(T element);
+    void push(T &&element);
     T pop();
     void enqueue(T element);
     T dequeue();
