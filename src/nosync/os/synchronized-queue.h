@@ -6,6 +6,7 @@
 #include <condition_variable>
 #include <deque>
 #include <limits>
+#include <memory>
 #include <mutex>
 
 
@@ -35,6 +36,10 @@ private:
     std::mutex elements_mutex;
     std::condition_variable elements_present_cv;
 };
+
+
+template<typename T>
+std::shared_ptr<synchronized_queue<T>> make_synchronized_queue();
 
 }
 

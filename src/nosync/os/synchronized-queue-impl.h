@@ -104,6 +104,13 @@ std::deque<T> synchronized_queue<T>::pop_group_unlocked(std::size_t max_group_si
     return group;
 }
 
+
+template<typename T>
+std::shared_ptr<synchronized_queue<T>> make_synchronized_queue()
+{
+    return std::make_shared<synchronized_queue<T>>();
+}
+
 }
 
 #endif /* NOSYNC__OS__SYNCHRONIZED_QUEUE_IMPL_H */
