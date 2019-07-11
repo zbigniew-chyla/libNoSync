@@ -18,7 +18,7 @@ void synchronized_queue<T>::enqueue(T element)
 {
     std::scoped_lock lock(elements_mutex);
     bool was_empty = elements.empty();
-    elements.push(std::move(element));
+    elements.push_back(std::move(element));
     if (was_empty) {
         elements_present_cv.notify_all();
     }
@@ -36,7 +36,7 @@ T synchronized_queue<T>::dequeue()
         });
 
     auto element = std::move(elements.front());
-    elements.pop();
+    elements.pop_front();
 
     return element;
 }

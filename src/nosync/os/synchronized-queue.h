@@ -3,8 +3,8 @@
 #define NOSYNC__OS__SYNCHRONIZED_QUEUE_H
 
 #include <condition_variable>
+#include <deque>
 #include <mutex>
-#include <queue>
 
 
 namespace nosync::os
@@ -20,7 +20,7 @@ public:
     T dequeue();
 
 private:
-    std::queue<T> elements;
+    std::deque<T> elements;
     std::mutex elements_mutex;
     std::condition_variable elements_present_cv;
 };
