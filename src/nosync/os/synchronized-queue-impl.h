@@ -14,7 +14,7 @@ synchronized_queue<T>::synchronized_queue()
 
 
 template<typename T>
-void synchronized_queue<T>::enqueue(T element)
+void synchronized_queue<T>::push(T element)
 {
     std::scoped_lock lock(elements_mutex);
     bool was_empty = elements.empty();
@@ -26,7 +26,7 @@ void synchronized_queue<T>::enqueue(T element)
 
 
 template<typename T>
-T synchronized_queue<T>::dequeue()
+T synchronized_queue<T>::pop()
 {
     std::unique_lock<std::mutex> lock(elements_mutex);
     elements_present_cv.wait(
@@ -39,6 +39,20 @@ T synchronized_queue<T>::dequeue()
     elements.pop_front();
 
     return element;
+}
+
+
+template<typename T>
+void synchronized_queue<T>::enqueue(T element)
+{
+    push(std::move(element));
+}
+
+
+template<typename T>
+T synchronized_queue<T>::dequeue()
+{
+    return pop();
 }
 
 }
