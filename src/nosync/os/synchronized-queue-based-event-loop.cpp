@@ -29,18 +29,10 @@ deque<function<void()>> acquire_ext_tasks_with_abs_timeout(
     const shared_ptr<synchronized_queue<function<void()>>> &ext_tasks_queue,
     const eclock &clock, optional<eclock::time_point> abs_timeout)
 {
-    deque<function<void()>> tasks;
-    while (true) {
-        auto new_tasks = abs_timeout.has_value()
-            ? ext_tasks_queue->try_pop_group(
-                std::max<eclock::duration>(*abs_timeout - clock.now(), eclock::duration(0)))
-            : ext_tasks_queue->pop_group();
-        if (new_tasks.empty()) {
-            break;
-        }
-
-        tasks.insert(tasks.end(), move_iterator(new_tasks.begin()), move_iterator(new_tasks.end()));
-    }
+    auto tasks = abs_timeout.has_value()
+        ? ext_tasks_queue->try_pop_group(
+            std::max<eclock::duration>(*abs_timeout - clock.now(), eclock::duration(0)))
+        : ext_tasks_queue->pop_group();
 
     return tasks;
 }
