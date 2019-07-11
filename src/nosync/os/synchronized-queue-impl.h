@@ -2,6 +2,8 @@
 #ifndef NOSYNC__OS__SYNCHRONIZED_QUEUE_IMPL_H
 #define NOSYNC__OS__SYNCHRONIZED_QUEUE_IMPL_H
 
+#include <iterator>
+
 
 namespace nosync::os
 {
@@ -53,6 +55,53 @@ template<typename T>
 T synchronized_queue<T>::dequeue()
 {
     return pop();
+}
+
+
+template<typename T>
+std::deque<T> synchronized_queue<T>::pop_group(std::size_t max_group_size)
+{
+    std::unique_lock<std::mutex> lock(elements_mutex);
+    elements_present_cv.wait(
+        lock,
+        [&]() {
+            return !elements.empty();
+        });
+
+    return pop_group_unlocked(max_group_size);
+}
+
+
+template<typename T>
+std::deque<T> synchronized_queue<T>::try_pop_group(
+    std::chrono::nanoseconds timeout, std::size_t max_group_size)
+{
+    std::unique_lock<std::mutex> lock(elements_mutex);
+    elements_present_cv.wait_for(
+        lock, timeout,
+        [&]() {
+            return !elements.empty();
+        });
+
+    return pop_group_unlocked(max_group_size);
+}
+
+
+template<typename T>
+std::deque<T> synchronized_queue<T>::pop_group_unlocked(std::size_t max_group_size)
+{
+    std::deque<T> group;
+    if (elements.size() <= max_group_size) {
+        swap(group, elements);
+    } else {
+        group.insert(
+            group.end(),
+            std::move_iterator(elements.begin()),
+            std::move_iterator(elements.begin() + max_group_size));
+        elements.erase(elements.begin(), elements.begin() + max_group_size);
+    }
+
+    return group;
 }
 
 }
