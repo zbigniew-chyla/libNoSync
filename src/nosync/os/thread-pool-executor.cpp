@@ -66,7 +66,7 @@ thread_pool_executor::thread_pool_executor(
 thread_pool_executor::~thread_pool_executor()
 {
     for (auto i = worker_threads.size(); i != 0; --i) {
-        tasks_queue->enqueue(nullptr);
+        tasks_queue->push(nullptr);
     }
 
     for (auto &t : worker_threads) {
@@ -94,7 +94,7 @@ void thread_pool_executor::add_worker_threads(unsigned thread_count)
 void thread_pool_executor::enqueue_task(function<void()> &&task)
 {
     if (task) {
-        tasks_queue->enqueue(move(task));
+        tasks_queue->push(move(task));
     }
 }
 
@@ -104,7 +104,7 @@ void thread_pool_executor::run_worker_thread(
     function<void(exception_ptr)> &&exception_handler)
 {
     while (true) {
-        function<void()> task = tasks_queue.dequeue();
+        function<void()> task = tasks_queue.pop();
         if (!task) {
             break;
         }

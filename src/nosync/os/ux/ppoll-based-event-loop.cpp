@@ -162,9 +162,10 @@ error_code ppoll_based_event_loop::run_iterations()
     error_code errc;
 
     while (!errc) {
-        bool all_tasks_processed = sub_evloop->process_time_passage(
+        sub_evloop->process_time_passage(
             std::max<eclock::duration>(etime - sub_evloop->get_etime(), eclock::duration(0)));
-        if (!all_tasks_processed || quit_request_pending) {
+        if (quit_request_pending) {
+            quit_request_pending = false;
             errc = make_error_code(errc::interrupted);
             break;
         }
@@ -192,6 +193,7 @@ error_code ppoll_based_event_loop::run_iterations()
         }
 
         if (quit_request_pending) {
+            quit_request_pending = false;
             errc = make_error_code(errc::interrupted);
             break;
         }
