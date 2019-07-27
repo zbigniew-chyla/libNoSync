@@ -15,4 +15,4 @@ T make_connector_proxy(std::string_view, T &&base_obj)
 
 }
 
-#endif /* NOSYNC__CONNECTOR_PROXY_IMPL_H */
+#endif

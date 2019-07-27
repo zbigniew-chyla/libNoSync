@@ -22,4 +22,4 @@ auto min_transformed_value(InputIt first, InputIt last, UnaryOperation unary_op)
 
 }
 
-#endif /* NOSYNC__UTILS_IMPL_H */
+#endif

@@ -41,4 +41,4 @@ public:
 
 }
 
-#endif /* NOSYNC__OS__UX__FD_WATCHER_H */
+#endif

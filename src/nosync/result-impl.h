@@ -146,4 +146,4 @@ result<T> make_error_result(std::errc e)
 
 }
 
-#endif /* NOSYNC__RESULT_IMPL_H */
+#endif

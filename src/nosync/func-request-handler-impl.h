@@ -55,4 +55,4 @@ std::shared_ptr<request_handler<Req, Res>> make_func_request_handler(
 
 }
 
-#endif /* NOSYNC__FUNC_REQUEST_HANDLER_IMPL_H */
+#endif

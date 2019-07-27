@@ -27,4 +27,4 @@ void get_result_value_or_throw(result<void> &&res, const std::string &throw_msg)
 
 #include <nosync/result-utils-impl.h>
 
-#endif /* NOSYNC__RESULT_UTILS_H */
+#endif

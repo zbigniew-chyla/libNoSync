@@ -69,4 +69,4 @@ std::chrono::time_point<Clock> time_point_sat_add(std::chrono::time_point<Clock>
 
 }
 
-#endif /* NOSYNC__TIME_UTILS_IMPL_H */
+#endif

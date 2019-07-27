@@ -39,4 +39,4 @@ auto make_weak_this_func_proxy(T *self, F func)
 
 }
 
-#endif /* NOSYNC__MEMORY_UTILS_IMPL_H */
+#endif

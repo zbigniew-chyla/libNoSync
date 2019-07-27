@@ -17,4 +17,4 @@ std::shared_ptr<request_handler<std::string, std::string>> make_io_lines_request
 
 }
 
-#endif /* NOSYNC__IO_LINES_REQUEST_HANDLER_H */
+#endif

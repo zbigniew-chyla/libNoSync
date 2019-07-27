@@ -18,4 +18,4 @@ std::shared_ptr<bytes_writer> make_threaded_bytes_writer(
 
 }
 
-#endif /* NOSYNC__OS__THREADED_BYTES_WRITER_H */
+#endif

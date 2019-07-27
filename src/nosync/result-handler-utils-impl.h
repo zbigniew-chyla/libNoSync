@@ -49,4 +49,4 @@ void invoke_result_handler_later(event_loop &evloop, result_handler<T> &&res_han
 
 }
 
-#endif /* NOSYNC__RESULT_HANDLER_UTILS_IMPL_H */
+#endif

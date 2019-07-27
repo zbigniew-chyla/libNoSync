@@ -28,4 +28,4 @@ std::shared_ptr<bytes_reader> make_size_limited_bytes_reader(
 
 }
 
-#endif /* NOSYNC__SIZE_LIMITED_BYTES_READER_H */
+#endif

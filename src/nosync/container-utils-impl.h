@@ -29,4 +29,4 @@ constexpr std::array<T, N> generate_array(const F &elem_generator)
 
 }
 
-#endif /* NOSYNC__CONTAINER_UTILS_IMPL_H */
+#endif

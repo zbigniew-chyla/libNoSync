@@ -21,4 +21,4 @@ auto make_weak_this_func_proxy(T *self, F func);
 
 #include <nosync/memory-utils-impl.h>
 
-#endif /* NOSYNC__MEMORY_UTILS_H */
+#endif

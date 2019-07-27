@@ -45,4 +45,4 @@ std::shared_ptr<synchronized_queue<T>> make_synchronized_queue();
 
 #include <nosync/os/synchronized-queue-impl.h>
 
-#endif /* NOSYNC__OS__SYNCHRONIZED_QUEUE_H */
+#endif

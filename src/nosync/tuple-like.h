@@ -34,4 +34,4 @@ constexpr auto get_tuple_like_class_members(const T &value);
 
 #include <nosync/tuple-like-impl.h>
 
-#endif /* NOSYNC__TUPLE_LIKE_H */
+#endif

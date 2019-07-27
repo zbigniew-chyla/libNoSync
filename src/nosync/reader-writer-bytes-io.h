@@ -20,4 +20,4 @@ std::shared_ptr<bytes_io> make_reader_writer_bytes_io(
 
 }
 
-#endif /* NOSYNC__READER_WRITER_BYTES_IO_H */
+#endif

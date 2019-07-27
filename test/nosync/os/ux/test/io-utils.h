@@ -16,4 +16,4 @@ long write_nointr(int fd, const void *buf, std::size_t count);
 }
 }
 
-#endif /* NOSYNC_TEST__IO_UTILS_H */
+#endif

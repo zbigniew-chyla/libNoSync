@@ -32,4 +32,4 @@ public:
 
 #include <nosync/bytes-writer-mock-impl.h>
 
-#endif /* NOSYNC__BYTES_WRITER_MOCK_H */
+#endif

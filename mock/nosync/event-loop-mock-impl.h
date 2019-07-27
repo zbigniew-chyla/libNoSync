@@ -15,4 +15,4 @@ inline std::unique_ptr<activity_handle> event_loop_no_rvref_wrapper::invoke_at(s
 
 }
 
-#endif /* NOSYNC__EVENT_LOOP_MOCK_IMPL_H */
+#endif

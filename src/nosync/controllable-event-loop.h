@@ -18,4 +18,4 @@ class controllable_event_loop : public event_loop, public event_loop_control
 
 }
 
-#endif /* NOSYNC__CONTROLLABLE_EVENT_LOOP_H */
+#endif

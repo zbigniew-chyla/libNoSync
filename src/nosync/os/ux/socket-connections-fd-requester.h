@@ -22,4 +22,4 @@ std::shared_ptr<request_handler<std::shared_ptr<socket_address>, shared_fd>> mak
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_CONNECTIONS_FD_REQUESTER_H */
+#endif

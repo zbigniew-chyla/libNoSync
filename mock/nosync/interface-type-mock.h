@@ -17,4 +17,4 @@ public:
 
 }
 
-#endif /* NOSYNC__INTERFACE_TYPE_MOCK_H */
+#endif

@@ -91,4 +91,4 @@ std::shared_ptr<request_handler<std::nullptr_t, Res>> make_grouping_null_request
 
 }
 
-#endif /* NOSYNC__GROUPING_NULL_REQUEST_HANDLER_IMPL_H */
+#endif

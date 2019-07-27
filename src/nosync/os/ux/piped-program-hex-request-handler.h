@@ -19,4 +19,4 @@ std::shared_ptr<request_handler<std::string, std::string>> start_piped_program_h
 
 }
 
-#endif /* NOSYNC__OS__UX__PIPED_PROGRAM_HEX_REQUEST_HANDLER_H */
+#endif

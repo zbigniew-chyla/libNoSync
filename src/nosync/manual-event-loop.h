@@ -43,4 +43,4 @@ private:
 
 }
 
-#endif /* NOSYNC__MANUAL_EVENT_LOOP_H */
+#endif

@@ -31,4 +31,4 @@ protected:
 
 }
 
-#endif /* NOSYNC__INTERFACE_TYPE_H */
+#endif

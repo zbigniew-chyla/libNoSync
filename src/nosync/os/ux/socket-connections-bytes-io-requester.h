@@ -23,4 +23,4 @@ std::shared_ptr<request_handler<std::shared_ptr<socket_address>, std::shared_ptr
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_CONNECTIONS_BYTES_IO_REQUESTER_H */
+#endif

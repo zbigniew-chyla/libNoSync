@@ -21,4 +21,4 @@ void try_with_catch_all(const Try &try_func, const Catch &catch_func);
 
 #include <nosync/exceptions-impl.h>
 
-#endif /* NOSYNC__EXCEPTIONS_H */
+#endif

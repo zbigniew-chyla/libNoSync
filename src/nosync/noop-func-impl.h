@@ -13,4 +13,4 @@ void noop_func::operator()(Types &&...) const noexcept
 
 }
 
-#endif /* NOSYNC__NOOP_FUNC_IMPL_H */
+#endif

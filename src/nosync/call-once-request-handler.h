@@ -21,4 +21,4 @@ std::shared_ptr<request_handler<Req, Res>> make_call_once_request_handler(
 
 #include <nosync/call-once-request-handler-impl.h>
 
-#endif /* NOSYNC__CALL_ONCE_REQUEST_HANDLER_H */
+#endif

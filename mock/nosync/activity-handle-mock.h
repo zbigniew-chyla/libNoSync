@@ -20,4 +20,4 @@ public:
 
 }
 
-#endif /* NOSYNC__ACTIVITY_HANDLE_MOCK_H */
+#endif

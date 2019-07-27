@@ -16,4 +16,4 @@ std::unique_ptr<activity_handle> invoke_with_etime_delay(
 
 }
 
-#endif /* NOSYNC__EVENT_LOOP_UTILS_H */
+#endif

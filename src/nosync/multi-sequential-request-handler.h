@@ -20,4 +20,4 @@ std::shared_ptr<request_handler<Req, Res>> make_multi_sequential_request_handler
 
 #include <nosync/multi-sequential-request-handler-impl.h>
 
-#endif /* NOSYNC__MULTI_SEQUENTIAL_REQUEST_HANDLER_H */
+#endif

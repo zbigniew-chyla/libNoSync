@@ -12,4 +12,4 @@
 
 #endif
 
-#endif /* NOSYNC_TEST__MACROS_H */
+#endif

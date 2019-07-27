@@ -22,4 +22,4 @@ std::shared_ptr<request_handler<std::nullptr_t, Res>> make_grouping_null_request
 
 #include <nosync/grouping-null-request-handler-impl.h>
 
-#endif /* NOSYNC__GROUPING_NULL_REQUEST_HANDLER_H */
+#endif

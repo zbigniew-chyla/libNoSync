@@ -17,4 +17,4 @@ result<std::array<owned_fd, 2>> open_pipe();
 
 }
 
-#endif /* NOSYNC__OS__UX__IO_UTILS_H */
+#endif

@@ -34,4 +34,4 @@ protected:
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_ADDRESS_H */
+#endif

@@ -20,4 +20,4 @@ std::shared_ptr<interface_type> make_socket_connections_bytes_io_acceptor(
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_CONNECTIONS_BYTES_IO_ACCEPTOR_H */
+#endif

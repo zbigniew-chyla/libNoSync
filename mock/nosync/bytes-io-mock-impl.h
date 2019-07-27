@@ -23,4 +23,4 @@ inline void bytes_io_no_rvref_wrapper::write_bytes(std::string &&data, result_ha
 
 }
 
-#endif /* NOSYNC__BYTES_IO_MOCK_IMPL_H */
+#endif

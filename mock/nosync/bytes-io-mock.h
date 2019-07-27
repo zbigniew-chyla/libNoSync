@@ -40,4 +40,4 @@ public:
 
 #include <nosync/bytes-io-mock-impl.h>
 
-#endif /* NOSYNC__BYTES_IO_MOCK_H */
+#endif

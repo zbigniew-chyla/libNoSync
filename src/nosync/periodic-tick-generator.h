@@ -17,4 +17,4 @@ std::shared_ptr<interface_type> make_periodic_tick_generator(
 
 }
 
-#endif /* NOSYNC__PERIODIC_TICK_GENERATOR_H */
+#endif

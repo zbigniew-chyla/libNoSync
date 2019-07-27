@@ -44,4 +44,4 @@ std::shared_ptr<interface_type> make_socket_connections_fd_acceptor(
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_CONNECTIONS_FD_ACCEPTOR_H */
+#endif

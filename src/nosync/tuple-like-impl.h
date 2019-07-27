@@ -51,4 +51,4 @@ constexpr auto get_tuple_like_class_members(const T &value)
 
 }
 
-#endif /* NOSYNC__TUPLE_LIKE_IMPL_H */
+#endif

@@ -102,4 +102,4 @@ std::shared_ptr<request_handler<Req, Res>> make_threaded_request_handler(
 
 }
 
-#endif /* NOSYNC__OS__THREADED_REQUEST_HANDLER_IMPL_H */
+#endif

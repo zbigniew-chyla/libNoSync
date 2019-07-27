@@ -40,4 +40,4 @@ raw_error_result::operator result<T>() const
 
 }
 
-#endif /* NOSYNC__RAW_ERROR_RESULT_IMPL_H */
+#endif

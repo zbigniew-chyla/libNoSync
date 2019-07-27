@@ -15,4 +15,4 @@ std::shared_ptr<bytes_writer> make_fd_bytes_writer(fd_watcher &watcher, shared_f
 
 }
 
-#endif /* NOSYNC__OS__UX__FD_BYTES_WRITER_H */
+#endif

@@ -217,4 +217,4 @@ void requests_queue<Req, Res>::reschedule_timeout_task()
 
 }
 
-#endif /* NOSYNC__REQUESTS_QUEUE_IMPL_H */
+#endif

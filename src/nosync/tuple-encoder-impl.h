@@ -246,4 +246,4 @@ constexpr std::size_t calc_encoded_tuple_size(const T &value, const SizeCalculat
 
 }
 
-#endif /* NOSYNC__TUPLE_ENCODER_IMPL_H */
+#endif

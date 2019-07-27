@@ -51,4 +51,4 @@ std::chrono::time_point<Clock> time_point_sat_add(std::chrono::time_point<Clock>
 
 #include <nosync/time-utils-impl.h>
 
-#endif /* NOSYNC__TIME_UTILS_H */
+#endif

@@ -20,4 +20,4 @@ std::shared_ptr<request_handler<Req, Res>> make_throttling_request_handler(
 
 #include <nosync/throttling-request-handler-impl.h>
 
-#endif /* NOSYNC__THROTTLING_REQUEST_HANDLER_H */
+#endif

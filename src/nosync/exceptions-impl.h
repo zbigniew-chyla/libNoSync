@@ -30,4 +30,4 @@ void try_with_catch_all(const Try &try_func, const Catch &)
 
 }
 
-#endif /* NOSYNC__EXCEPTIONS_IMPL_H */
+#endif
