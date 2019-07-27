@@ -9,7 +9,7 @@ namespace nosync
 {
 
 template<typename T>
-std::weak_ptr<T> weak_from_shared(std::shared_ptr<T> ptr);
+std::weak_ptr<T> weak_from_shared(const std::shared_ptr<T> &ptr);
 
 template<typename T>
 [[deprecated("use std::enable_shared_from_this::weak_from this instead")]] std::weak_ptr<T> weak_from_that(T *obj);

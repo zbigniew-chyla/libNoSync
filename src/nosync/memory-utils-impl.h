@@ -10,9 +10,9 @@ namespace nosync
 {
 
 template<typename T>
-std::weak_ptr<T> weak_from_shared(std::shared_ptr<T> ptr)
+std::weak_ptr<T> weak_from_shared(const std::shared_ptr<T> &ptr)
 {
-    return std::move(ptr);
+    return ptr;
 }
 
 
