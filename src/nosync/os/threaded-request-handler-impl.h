@@ -3,6 +3,7 @@
 #define NOSYNC__OS__THREADED_REQUEST_HANDLER_IMPL_H
 
 #include <nosync/exceptions.h>
+#include <nosync/memory-utils.h>
 #include <nosync/raw-error-result.h>
 #include <nosync/result-handler.h>
 #include <system_error>
@@ -71,7 +72,7 @@ void threaded_request_handler<Req, Res>::handle_request(
     Req &&request, eclock::duration timeout, result_handler<Res> &&response_handler)
 {
     thread_executor(
-        [exec_ctx = exec_ctx, request = std::make_shared<Req>(std::move(request)), timeout, response_handler = std::move(response_handler)]() mutable {
+        [exec_ctx = exec_ctx, request = move_to_shared(std::move(request)), timeout, response_handler = std::move(response_handler)]() mutable {
             std::shared_ptr<result<Res>> response;
             try_with_catch_all(
                 [&]() {

@@ -3,10 +3,20 @@
 #define NOSYNC__MEMORY_UTILS_H
 
 #include <memory>
+#include <type_traits>
 
 
 namespace nosync
 {
+
+/*!
+Create std::shared_ptr<T> by move-constructing T object on heap from an argument.
+
+To avoid silent unintended copying, the function supports only move-constructible types.
+*/
+template<typename T>
+std::enable_if_t<!std::is_reference<T>::value && std::is_move_constructible<T>::value, std::shared_ptr<T>> move_to_shared(T &&obj);
+
 
 template<typename T>
 std::weak_ptr<T> weak_from_shared(const std::shared_ptr<T> &ptr);
