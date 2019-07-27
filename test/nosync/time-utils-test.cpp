@@ -3,6 +3,7 @@
 #include <array>
 #include <ctime>
 #include <gtest/gtest.h>
+#include <nosync/os/ux/time-utils.h>
 #include <nosync/time-utils.h>
 #include <sys/time.h>
 
@@ -13,10 +14,10 @@ using nosync::format_time_to_gmtime_microseconds;
 using nosync::format_time_to_gmtime_microseconds_array;
 using nosync::format_time_to_gmtime_seconds;
 using nosync::format_time_to_gmtime_seconds_array;
-using nosync::make_duration_from_timespec;
-using nosync::make_duration_from_timeval;
-using nosync::make_timespec_from_duration;
-using nosync::make_timeval_from_duration;
+using nosync::os::ux::make_duration_from_timespec;
+using nosync::os::ux::make_duration_from_timeval;
+using nosync::os::ux::make_timespec_from_duration;
+using nosync::os::ux::make_timeval_from_duration;
 using nosync::time_point_sat_add;
 using nosync::to_float_seconds;
 
