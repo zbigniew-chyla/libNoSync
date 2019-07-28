@@ -1,9 +1,11 @@
 #include <algorithm>
 #include <iterator>
+#include <nosync/exceptions.h>
 #include <nosync/manual-event-loop.h>
 #include <nosync/os/synchronized-queue-based-event-loop.h>
 #include <optional>
 #include <system_error>
+#include <thread>
 #include <utility>
 
 using std::deque;
@@ -16,6 +18,7 @@ using std::move;
 using std::move_iterator;
 using std::optional;
 using std::shared_ptr;
+using std::this_thread::sleep_for;
 using std::unique_ptr;
 
 
@@ -91,10 +94,24 @@ error_code synchronized_queue_based_event_loop::run_iterations()
             break;
         }
 
-        auto ext_tasks = acquire_ext_tasks_with_abs_timeout(
-            ext_tasks_queue, clock, sub_evloop->get_earliest_task_time());
-        for (auto &task : ext_tasks) {
-            invoke_at(etime, move(task));
+        auto next_task_time = sub_evloop->get_earliest_task_time();
+        if (ext_tasks_queue) {
+            auto ext_tasks = acquire_ext_tasks_with_abs_timeout(ext_tasks_queue, clock, next_task_time);
+            for (auto task_iter = ext_tasks.begin(); task_iter != ext_tasks.end(); ++task_iter) {
+                if (*task_iter) {
+                    invoke_at(etime, move(*task_iter));
+                } else {
+                    if (std::next(task_iter) != ext_tasks.end()) {
+                        throw_logic_error(
+                            "Event loop found a task in its input queue after 'queue shutdown' request.");
+                    }
+                    ext_tasks_queue.reset();
+                }
+            }
+        } else if (next_task_time) {
+            sleep_for(std::max(*next_task_time - clock.now(), eclock::duration(0)));
+        } else {
+            break;
         }
 
         etime = clock.now();
