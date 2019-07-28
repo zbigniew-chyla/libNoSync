@@ -22,4 +22,4 @@ std::shared_ptr<request_handler<Req, Res>> make_func_request_handler(
 
 #include <nosync/func-request-handler-impl.h>
 
-#endif /* NOSYNC__FUNC_REQUEST_HANDLER_H */
+#endif

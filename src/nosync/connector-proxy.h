@@ -25,4 +25,4 @@ T make_connector_proxy(std::string_view name, T &&base_obj);
 
 #include <nosync/connector-proxy-impl.h>
 
-#endif /* NOSYNC__CONNECTOR_PROXY_H */
+#endif

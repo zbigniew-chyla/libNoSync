@@ -23,4 +23,4 @@ std::function<void(std::function<void()>)> make_thread_pool_executor(
 
 }
 
-#endif /* NOSYNC__OS__THREAD_POOL_EXECUTOR_H */
+#endif

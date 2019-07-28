@@ -34,4 +34,4 @@ result<std::shared_ptr<request_handler<pid_t, int>>> make_subprocesses_reaper(fd
 
 }
 
-#endif /* NOSYNC__OS__UX__SUBPROCESSES_REAPER_H */
+#endif

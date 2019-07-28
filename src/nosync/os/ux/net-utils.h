@@ -50,4 +50,4 @@ result<owned_fd> open_local_abstract_listening_stream_socket(const std::string &
 
 }
 
-#endif /* NOSYNC__OS__UX__NET_UTILS_H */
+#endif

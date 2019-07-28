@@ -62,4 +62,4 @@ constexpr T reduce(T init_value, Op op, TT ...values)
 
 }
 
-#endif /* NOSYNC__FUNCTION_UTILS_IMPL_H */
+#endif

@@ -15,4 +15,4 @@ std::shared_ptr<bytes_reader> make_fd_bytes_reader(fd_watching_event_loop &evloo
 
 }
 
-#endif /* NOSYNC__OS__UX__FD_BYTES_READER_H */
+#endif

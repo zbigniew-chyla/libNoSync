@@ -64,4 +64,4 @@ constexpr int_range_iterator<T> &int_range_iterator<T>::operator++()
 
 }
 
-#endif /* NOSYNC__INT_RANGE_IMPL_H */
+#endif

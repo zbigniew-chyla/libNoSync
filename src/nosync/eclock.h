@@ -30,4 +30,4 @@ public:
 
 }
 
-#endif /* NOSYNC__ECLOCK_H */
+#endif

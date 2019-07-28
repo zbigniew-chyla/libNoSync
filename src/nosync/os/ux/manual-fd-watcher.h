@@ -35,4 +35,4 @@ protected:
 
 }
 
-#endif /* NOSYNC__OS__UX__MANUAL_FD_WATCHER_H */
+#endif

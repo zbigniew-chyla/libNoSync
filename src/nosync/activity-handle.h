@@ -29,4 +29,4 @@ public:
 
 }
 
-#endif /* NOSYNC__ACTIVITY_HANDLE_H */
+#endif

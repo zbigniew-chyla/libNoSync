@@ -113,4 +113,4 @@ std::shared_ptr<synchronized_queue<T>> make_synchronized_queue()
 
 }
 
-#endif /* NOSYNC__OS__SYNCHRONIZED_QUEUE_IMPL_H */
+#endif

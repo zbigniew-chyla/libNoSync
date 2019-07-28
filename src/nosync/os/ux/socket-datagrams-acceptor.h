@@ -45,4 +45,4 @@ std::shared_ptr<interface_type> make_socket_datagrams_acceptor(
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_DATAGRAMS_ACCEPTOR_H */
+#endif

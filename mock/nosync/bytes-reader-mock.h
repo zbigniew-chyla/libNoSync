@@ -36,4 +36,4 @@ public:
 
 #include <nosync/bytes-reader-mock-impl.h>
 
-#endif /* NOSYNC__BYTES_READER_MOCK_H */
+#endif

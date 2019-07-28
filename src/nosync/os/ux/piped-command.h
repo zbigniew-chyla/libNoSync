@@ -27,4 +27,4 @@ std::tuple<::pid_t, std::shared_ptr<bytes_io>> start_piped_shell_command(
 
 }
 
-#endif /* NOSYNC__OS__UX__PIPED_COMMAND_H */
+#endif

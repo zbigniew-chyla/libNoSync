@@ -15,4 +15,4 @@ result<owned_fd> open_file_for_write(const std::string &path);
 
 }
 
-#endif /* NOSYNC__OS__UX__FILE_UTILS_H */
+#endif

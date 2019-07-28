@@ -15,4 +15,4 @@ inline std::unique_ptr<activity_handle> fd_watcher_no_rvref_wrapper::add_watch(i
 
 }
 
-#endif /* NOSYNC__OS__UX__FD_WATCHER_MOCK_IMPL_H */
+#endif

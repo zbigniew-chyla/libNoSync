@@ -33,4 +33,4 @@ private:
 
 }
 
-#endif /* NOSYNC__OS__UX__SHARED_FD_H */
+#endif

@@ -22,4 +22,4 @@ class full_fd_watching_event_loop : public fd_watching_event_loop, public event_
 
 }
 
-#endif /* NOSYNC__OS__UX__FULL_FD_WATCHING_EVENT_LOOP_H */
+#endif

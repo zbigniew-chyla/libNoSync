@@ -13,4 +13,4 @@ result<void> ignore_signal_for_process(int signal_num);
 
 }
 
-#endif /* NOSYNC__OS__UX__SIGNAL_UTILS_H */
+#endif

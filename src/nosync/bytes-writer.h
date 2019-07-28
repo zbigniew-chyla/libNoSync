@@ -26,4 +26,4 @@ public:
 
 }
 
-#endif /* NOSYNC__BYTES_WRITER_H */
+#endif

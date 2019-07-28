@@ -16,4 +16,4 @@ constexpr std::array<T, N> generate_array(const F &elem_generator);
 
 #include <nosync/container-utils-impl.h>
 
-#endif /* NOSYNC__CONTAINER_UTILS_H */
+#endif

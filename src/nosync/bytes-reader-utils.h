@@ -65,4 +65,4 @@ void invoke_result_handler_later_via_bytes_reader(
 
 #include <nosync/bytes-reader-utils-impl.h>
 
-#endif /* NOSYNC__BYTES_READER_UTILS_H */
+#endif

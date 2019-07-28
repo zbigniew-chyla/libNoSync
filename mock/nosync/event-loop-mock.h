@@ -33,4 +33,4 @@ public:
 
 #include <nosync/event-loop-mock-impl.h>
 
-#endif /* NOSYNC__EVENT_LOOP_MOCK_H */
+#endif

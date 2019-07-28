@@ -17,4 +17,4 @@ std::shared_ptr<bytes_reader> make_func_bytes_reader(
 
 }
 
-#endif /* NOSYNC__FUNC_BYTES_READER_H */
+#endif

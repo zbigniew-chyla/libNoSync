@@ -13,4 +13,4 @@ std::vector<owned_fd> takeover_socket_activated_fds();
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_ACTIVATION_H */
+#endif

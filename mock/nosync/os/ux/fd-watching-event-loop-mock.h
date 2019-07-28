@@ -37,4 +37,4 @@ public:
 
 #include <nosync/os/ux/fd-watching-event-loop-mock-impl.h>
 
-#endif /* NOSYNC__OS__UX__FD_WATCHING_EVENT_LOOP_MOCK_H */
+#endif

@@ -33,4 +33,4 @@ private:
 
 }
 
-#endif /* NOSYNC__ACTIVITY_OWNER_H */
+#endif

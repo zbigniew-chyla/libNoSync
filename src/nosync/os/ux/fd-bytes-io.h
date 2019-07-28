@@ -17,4 +17,4 @@ std::shared_ptr<bytes_io> make_fd_bytes_io(
 
 }
 
-#endif /* NOSYNC__OS__UX__FD_BYTES_IO_H */
+#endif

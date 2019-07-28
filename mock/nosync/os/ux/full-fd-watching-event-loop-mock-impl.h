@@ -21,4 +21,4 @@ inline std::unique_ptr<activity_handle> full_fd_watching_event_loop_no_rvref_wra
 
 }
 
-#endif /* NOSYNC__OS__UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_IMPL_H */
+#endif

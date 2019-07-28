@@ -17,4 +17,4 @@ result<std::shared_ptr<interface_type>> make_signal_watcher(
 
 }
 
-#endif /* NOSYNC__OS__UX__SIGNAL_WATCHER_H */
+#endif

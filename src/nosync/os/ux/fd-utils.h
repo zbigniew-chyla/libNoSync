@@ -36,4 +36,4 @@ result<std::size_t> write_some_bytes_to_fd(int fd, std::string_view data);
 
 }
 
-#endif /* NOSYNC__OS__UX__FD_UTILS_H */
+#endif

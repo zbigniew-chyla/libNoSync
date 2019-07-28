@@ -30,4 +30,4 @@ std::shared_ptr<bytes_reader> make_time_limited_bytes_reader(
 
 }
 
-#endif /* NOSYNC__TIME_LIMITED_BYTES_READER_H */
+#endif

@@ -32,4 +32,4 @@ private:
 
 }
 
-#endif /* NOSYNC__OS__UX__OWNED_FD_H */
+#endif

@@ -66,4 +66,4 @@ void handle_requests_sequentially(
 
 }
 
-#endif /* NOSYNC__REQUEST_HANDLER_UTILS_IMPL_H */
+#endif

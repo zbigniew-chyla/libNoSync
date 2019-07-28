@@ -32,4 +32,4 @@ public:
 
 #include <nosync/os/ux/fd-watcher-mock-impl.h>
 
-#endif /* NOSYNC__OS__UX__FD_WATCHER_MOCK_H */
+#endif

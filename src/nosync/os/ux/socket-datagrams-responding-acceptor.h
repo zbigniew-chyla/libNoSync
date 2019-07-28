@@ -21,4 +21,4 @@ std::shared_ptr<interface_type> make_socket_datagrams_responding_acceptor(
 
 }
 
-#endif /* NOSYNC__OS__UX__SOCKET_DATAGRAMS_RESPONDING_ACCEPTOR_H */
+#endif

@@ -14,4 +14,4 @@ result<std::function<void(std::function<void()>)>> make_event_loop_mt_executor(f
 
 }
 
-#endif /* NOSYNC__OS__UX__EVENT_LOOP_MT_EXECUTOR_H */
+#endif

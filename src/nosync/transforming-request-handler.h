@@ -44,4 +44,4 @@ std::shared_ptr<request_handler<InReq, OutRes>> make_full_transforming_request_h
 
 #include <nosync/transforming-request-handler-impl.h>
 
-#endif /* NOSYNC__TRANSFORMING_REQUEST_HANDLER_H */
+#endif

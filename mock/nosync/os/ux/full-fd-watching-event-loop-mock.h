@@ -40,4 +40,4 @@ public:
 
 #include <nosync/os/ux/full-fd-watching-event-loop-mock-impl.h>
 
-#endif /* NOSYNC__OS__UX__FULL_FD_WATCHING_EVENT_LOOP_MOCK_H */
+#endif

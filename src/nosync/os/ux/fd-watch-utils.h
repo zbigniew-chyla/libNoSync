@@ -16,4 +16,4 @@ void watch_fd_with_timeout(
 
 }
 
-#endif /* NOSYNC__OS__UX__FD_WATCH_UTILS_H */
+#endif

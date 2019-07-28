@@ -17,4 +17,4 @@ inline void bytes_reader_no_rvref_wrapper::read_some_bytes(
 
 }
 
-#endif /* NOSYNC__BYTES_READER_MOCK_IMPL_H */
+#endif

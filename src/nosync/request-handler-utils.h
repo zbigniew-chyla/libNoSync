@@ -23,4 +23,4 @@ void handle_requests_sequentially(
 
 #include <nosync/request-handler-utils-impl.h>
 
-#endif /* NOSYNC__REQUEST_HANDLER_UTILS_H */
+#endif

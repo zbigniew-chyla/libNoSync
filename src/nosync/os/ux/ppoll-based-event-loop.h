@@ -13,4 +13,4 @@ std::shared_ptr<full_fd_watching_event_loop> make_ppoll_based_event_loop();
 
 }
 
-#endif /* NOSYNC__OS__UX__PPOLL_BASED_EVENT_LOOP_H */
+#endif

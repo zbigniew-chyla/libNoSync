@@ -32,4 +32,4 @@ std::shared_ptr<interface_type> make_shared_destroy_notifier(std::function<void(
 
 }
 
-#endif /* NOSYNC__DESTROY_NOTIFIER_H */
+#endif

@@ -42,4 +42,4 @@ T make_copy(const T &value)
 
 }
 
-#endif /* NOSYNC__TYPE_UTILS_IMPL_H */
+#endif

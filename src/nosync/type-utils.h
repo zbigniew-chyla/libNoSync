@@ -33,4 +33,4 @@ T make_copy(const T &value);
 
 #include <nosync/type-utils-impl.h>
 
-#endif /* NOSYNC__TYPE_UTILS_H */
+#endif
