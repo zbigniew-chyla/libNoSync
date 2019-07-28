@@ -112,18 +112,6 @@ constexpr auto concat_array_str_buf_arrays(const A ...str_buf)
 }
 
 
-ch::nanoseconds make_duration_from_timespec(const ::timespec &ts) noexcept
-{
-    return ch::seconds(ts.tv_sec) + ch::nanoseconds(ts.tv_nsec);
-}
-
-
-ch::microseconds make_duration_from_timeval(const ::timeval &tv) noexcept
-{
-    return ch::seconds(tv.tv_sec) + ch::microseconds(tv.tv_usec);
-}
-
-
 array<char, sizeof("YYYY-MM-DDTHH:MM:SS+HHMM")> format_time_to_localtime_seconds_tz_array(
     ch::time_point<ch::system_clock> time) noexcept
 {

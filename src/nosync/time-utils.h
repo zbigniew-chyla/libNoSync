@@ -16,16 +16,6 @@ constexpr std::chrono::seconds day_secs = std::chrono::hours(24);
 constexpr std::chrono::seconds week_secs = day_secs * 7;
 
 template<typename Rep, typename Period>
-constexpr ::timespec make_timespec_from_duration(const std::chrono::duration<Rep, Period> &duration) noexcept;
-
-std::chrono::nanoseconds make_duration_from_timespec(const ::timespec &ts) noexcept;
-
-template<typename Rep, typename Period>
-constexpr ::timeval make_timeval_from_duration(const std::chrono::duration<Rep, Period> &duration) noexcept;
-
-std::chrono::microseconds make_duration_from_timeval(const ::timeval &tv) noexcept;
-
-template<typename Rep, typename Period>
 constexpr double to_float_seconds(const std::chrono::duration<Rep, Period> &duration) noexcept;
 
 std::array<char, sizeof("YYYY-MM-DDTHH:MM:SS+HHMM")> format_time_to_localtime_seconds_tz_array(

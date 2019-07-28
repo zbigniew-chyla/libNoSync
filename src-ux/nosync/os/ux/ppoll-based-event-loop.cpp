@@ -6,6 +6,7 @@
 #include <nosync/time-utils.h>
 #include <nosync/os/ux/manual-fd-watcher.h>
 #include <nosync/os/ux/ppoll-based-event-loop.h>
+#include <nosync/os/ux/time-utils.h>
 #include <optional>
 #include <poll.h>
 #include <vector>
