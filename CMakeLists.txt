@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories("src")
-file(GLOB_RECURSE nosync_SRC FOLLOW_SYMLINKS "src/*.cpp")
+file(GLOB_RECURSE nosync_SRC FOLLOW_SYMLINKS CONFIGURE_DEPENDS "src/*.cpp")
 
 add_library(nosync-static STATIC ${nosync_SRC})
 
@@ -30,7 +30,7 @@ if(ENABLE_TESTS)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googletest-build")
 
-    file(GLOB_RECURSE nosync-test_SRC FOLLOW_SYMLINKS "test/*.cpp")
+    file(GLOB_RECURSE nosync-test_SRC FOLLOW_SYMLINKS CONFIGURE_DEPENDS "test/*.cpp")
     add_executable(nosync-test ${nosync-test_SRC})
     target_compile_options(nosync-test PRIVATE --coverage -O0 -Wno-deprecated-declarations)
     set_target_properties(nosync-test PROPERTIES LINK_FLAGS "--coverage")
