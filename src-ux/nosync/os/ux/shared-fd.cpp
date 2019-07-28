@@ -1,4 +1,5 @@
 // This file is part of libnosync library. See LICENSE file for license details.
+#include <nosync/memory-utils.h>
 #include <nosync/os/ux/shared-fd.h>
 #include <utility>
 
@@ -21,7 +22,7 @@ shared_fd::shared_fd(int fd)
 
 
 shared_fd::shared_fd(owned_fd &&ofd)
-    : ofd(make_shared<owned_fd>(move(ofd)))
+    : ofd(move_to_shared(move(ofd)))
 { }
 
 
