@@ -15,4 +15,4 @@ std::shared_ptr<bytes_reader> make_const_bytes_reader(event_loop &evloop, std::s
 
 }
 
-#endif /* NOSYNC__CONST_BYTES_READER_H */
+#endif

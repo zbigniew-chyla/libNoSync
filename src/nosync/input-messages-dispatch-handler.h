@@ -20,4 +20,4 @@ std::shared_ptr<request_handler<std::string, std::string>> make_input_messages_d
 
 }
 
-#endif /* NOSYNC__INPUT_MESSAGES_DISPATCH_HANDLER_H */
+#endif

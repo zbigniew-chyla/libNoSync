@@ -17,4 +17,4 @@ public:
 
 #include <nosync/noop-func-impl.h>
 
-#endif /* NOSYNC__NOOP_FUNC_H */
+#endif

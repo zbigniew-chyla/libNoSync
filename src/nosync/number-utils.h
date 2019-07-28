@@ -60,4 +60,4 @@ constexpr bool number_fits_in_type(TV number) noexcept;
 
 #include <nosync/number-utils-impl.h>
 
-#endif /* NOSYNC__NUMBER_UTILS_H */
+#endif

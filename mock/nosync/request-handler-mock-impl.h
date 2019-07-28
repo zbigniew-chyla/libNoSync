@@ -18,4 +18,4 @@ void request_handler_no_rvref_wrapper<Req, Res>::handle_request(
 
 }
 
-#endif /* NOSYNC__REQUEST_IMPL_HANDLER_MOCK_IMPL_H */
+#endif

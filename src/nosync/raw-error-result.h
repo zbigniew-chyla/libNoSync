@@ -48,4 +48,4 @@ private:
 
 #include <nosync/raw-error-result-impl.h>
 
-#endif /* NOSYNC__RAW_ERROR_RESULT_H */
+#endif

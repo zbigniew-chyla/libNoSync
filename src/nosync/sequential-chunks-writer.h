@@ -17,4 +17,4 @@ std::shared_ptr<request_handler<std::string, void>> make_sequential_chunks_write
 
 }
 
-#endif /* NOSYNC__SEQUENTIAL_CHUNKS_WRITER_H */
+#endif

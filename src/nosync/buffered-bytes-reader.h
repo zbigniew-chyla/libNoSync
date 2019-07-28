@@ -32,4 +32,4 @@ std::shared_ptr<bytes_reader> make_buffered_bytes_reader(
 
 }
 
-#endif /* NOSYNC__BUFFERED_BYTES_READER_H */
+#endif

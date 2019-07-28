@@ -21,4 +21,4 @@ std::shared_ptr<request_handler<Req, Res>> make_threaded_request_handler(
 
 #include <nosync/os/threaded-request-handler-impl.h>
 
-#endif /* NOSYNC__OS__THREADED_REQUEST_HANDLER_H */
+#endif

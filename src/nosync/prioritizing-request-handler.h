@@ -37,4 +37,4 @@ std::array<std::shared_ptr<request_handler<Req, Res>>, N> make_prioritizing_requ
 
 #include <nosync/prioritizing-request-handler-impl.h>
 
-#endif /* NOSYNC__PRIORITIZING_REQUEST_HANDLER_H */
+#endif

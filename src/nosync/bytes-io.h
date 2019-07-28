@@ -22,4 +22,4 @@ class bytes_io : public bytes_reader, public bytes_writer
 
 }
 
-#endif /* NOSYNC__BYTES_IO_H */
+#endif

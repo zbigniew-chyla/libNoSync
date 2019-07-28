@@ -31,4 +31,4 @@ T get_result_value_or_throw(result<T> &&res, const std::string &throw_msg)
 
 }
 
-#endif /* NOSYNC__RESULT_UTILS_IMPL_H */
+#endif

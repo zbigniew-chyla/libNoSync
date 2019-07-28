@@ -16,4 +16,4 @@ std::shared_ptr<request_handler<std::string, std::string>> make_hex_encoded_mess
 
 }
 
-#endif /* NOSYNC__HEX_ENCODED_MESSAGES_REQUEST_HANDLER_H */
+#endif

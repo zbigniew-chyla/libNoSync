@@ -57,4 +57,4 @@ constexpr std::string_view make_string_view(const std::array<char, N> &bytes) no
 
 }
 
-#endif /* NOSYNC__STRING_UTILS_IMPL_H */
+#endif

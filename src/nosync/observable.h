@@ -25,4 +25,4 @@ public:
 
 }
 
-#endif /* NOSYNC__OBSERVABLE_H */
+#endif

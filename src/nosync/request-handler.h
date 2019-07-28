@@ -40,4 +40,4 @@ public:
 
 }
 
-#endif /* NOSYNC__REQUEST_HANDLER_H */
+#endif

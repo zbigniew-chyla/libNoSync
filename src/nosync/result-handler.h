@@ -45,4 +45,4 @@ result_handler<InType> merge_result_handler(
 
 #include <nosync/result-handler-impl.h>
 
-#endif /* NOSYNC__RESULT_HANDLER_H */
+#endif

@@ -29,4 +29,4 @@ std::string to_hex_escaped_printable_string(std::string_view input);
 
 #include <nosync/string-utils-impl.h>
 
-#endif /* NOSYNC__STRING_UTILS_H */
+#endif

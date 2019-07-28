@@ -18,4 +18,4 @@ std::shared_ptr<request_handler<std::nullptr_t, std::string>> make_lines_reader(
 
 }
 
-#endif /* NOSYNC__LINES_READER_H */
+#endif

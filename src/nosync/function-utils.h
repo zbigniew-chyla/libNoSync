@@ -24,4 +24,4 @@ constexpr T reduce(T init_value, Op op, TT ...values);
 
 #include <nosync/function-utils-impl.h>
 
-#endif /* NOSYNC__FUNCTION_UTILS_H */
+#endif

@@ -100,4 +100,4 @@ result<void> make_ok_result();
 
 #include <nosync/result-impl.h>
 
-#endif /* NOSYNC__RESULT_H */
+#endif

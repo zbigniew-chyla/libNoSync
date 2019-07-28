@@ -2,6 +2,7 @@
 #include <exception>
 #include <memory>
 #include <nosync/exceptions.h>
+#include <nosync/memory-utils.h>
 #include <nosync/os/synchronized-queue.h>
 #include <nosync/os/thread-pool-executor.h>
 #include <thread>
@@ -57,7 +58,7 @@ thread_pool_executor::thread_pool_executor(
     thread_pool_executor_destroy_mode destroy_mode,
     function<void(exception_ptr)> &&exception_handler)
     : destroy_mode(destroy_mode),
-    exception_handler(make_shared<function<void(exception_ptr)>>(move(exception_handler))),
+    exception_handler(move_to_shared(move(exception_handler))),
     tasks_queue(make_shared<synchronized_queue<function<void()>>>()), worker_threads()
 {
 }

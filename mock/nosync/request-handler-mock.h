@@ -38,4 +38,4 @@ public:
 
 #include <nosync/request-handler-mock-impl.h>
 
-#endif /* NOSYNC__REQUEST_HANDLER_MOCK_H */
+#endif

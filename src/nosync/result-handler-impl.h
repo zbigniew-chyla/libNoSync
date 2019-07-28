@@ -115,4 +115,4 @@ result_handler<InType> merge_result_handler(result_handler<OutType> &&base_res_h
 
 }
 
-#endif /* NOSYNC__RESULT_HANDLER_IMPL_H */
+#endif

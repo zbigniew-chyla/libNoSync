@@ -47,4 +47,4 @@ public:
 
 }
 
-#endif /* NOSYNC__EVENT_LOOP_H */
+#endif

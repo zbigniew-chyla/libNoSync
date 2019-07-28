@@ -18,4 +18,4 @@ std::function<void(T)> make_synchronized_queue_pushing_consumer(
 
 #include <nosync/os/synchronized-queue-pushing-consumer-impl.h>
 
-#endif /* NOSYNC__OS__SYNCHRONIZED_QUEUE_PUSHING_CONSUMER_H */
+#endif

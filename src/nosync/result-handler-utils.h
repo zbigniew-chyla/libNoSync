@@ -30,4 +30,4 @@ void invoke_result_handler_later(event_loop &evloop, result_handler<T> &&res_han
 
 #include <nosync/result-handler-utils-impl.h>
 
-#endif /* NOSYNC__RESULT_HANDLER_UTILS_H */
+#endif

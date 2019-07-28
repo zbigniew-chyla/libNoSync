@@ -2,7 +2,6 @@
 #ifndef NOSYNC__MEMORY_UTILS_IMPL_H
 #define NOSYNC__MEMORY_UTILS_IMPL_H
 
-#include <type_traits>
 #include <utility>
 
 
@@ -10,9 +9,16 @@ namespace nosync
 {
 
 template<typename T>
-std::weak_ptr<T> weak_from_shared(std::shared_ptr<T> ptr)
+std::enable_if_t<!std::is_reference<T>::value && std::is_move_constructible<T>::value, std::shared_ptr<T>> move_to_shared(T &&obj)
 {
-    return std::move(ptr);
+    return std::make_shared<T>(std::move(obj));
+}
+
+
+template<typename T>
+std::weak_ptr<T> weak_from_shared(const std::shared_ptr<T> &ptr)
+{
+    return ptr;
 }
 
 
@@ -39,4 +45,4 @@ auto make_weak_this_func_proxy(T *self, F func)
 
 }
 
-#endif /* NOSYNC__MEMORY_UTILS_IMPL_H */
+#endif

@@ -16,4 +16,4 @@ std::shared_ptr<bytes_writer> make_func_bytes_writer(
 
 }
 
-#endif /* NOSYNC__FUNC_BYTES_WRITER_H */
+#endif

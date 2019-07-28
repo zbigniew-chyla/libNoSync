@@ -15,4 +15,4 @@ inline void bytes_writer_no_rvref_wrapper::write_bytes(std::string &&data, resul
 
 }
 
-#endif /* NOSYNC__BYTES_WRITER_MOCK_IMPL_H */
+#endif

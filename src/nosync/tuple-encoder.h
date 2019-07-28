@@ -52,4 +52,4 @@ constexpr std::size_t calc_encoded_tuple_size(const T &value, const SizeCalc &si
 
 #include <nosync/tuple-encoder-impl.h>
 
-#endif /* NOSYNC__TUPLE_ENCODER_H */
+#endif

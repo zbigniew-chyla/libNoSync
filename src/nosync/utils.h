@@ -15,4 +15,4 @@ auto min_transformed_value(InputIt first, InputIt last, UnaryOperation unary_op)
 
 #include <nosync/utils-impl.h>
 
-#endif /* NOSYNC__UTILS_H */
+#endif

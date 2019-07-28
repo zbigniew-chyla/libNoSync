@@ -15,4 +15,4 @@ std::unique_ptr<activity_handle> observable_no_rvref_wrapper::add_listener(std::
 
 }
 
-#endif /* NOSYNC__OBSERVABLE_MOCK_IMPL_H */
+#endif

@@ -211,4 +211,4 @@ constexpr bool number_fits_in_type(TV number) noexcept
 
 }
 
-#endif /* NOSYNC__NUMBER_UTILS_IMPL_H */
+#endif

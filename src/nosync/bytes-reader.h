@@ -49,4 +49,4 @@ public:
 
 }
 
-#endif /* NOSYNC__BYTES_READER_H */
+#endif

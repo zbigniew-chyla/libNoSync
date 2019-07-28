@@ -54,4 +54,4 @@ private:
 
 #include <nosync/int-range-impl.h>
 
-#endif /* NOSYNC__INT_RANGE_H */
+#endif

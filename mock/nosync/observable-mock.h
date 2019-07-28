@@ -32,4 +32,4 @@ public:
 
 #include <nosync/observable-mock-impl.h>
 
-#endif /* NOSYNC__OBSERVABLE_MOCK_H */
+#endif

@@ -20,4 +20,4 @@ public:
 
 }
 
-#endif /* NOSYNC__EVENT_LOOP_CONTROL_MOCK_H */
+#endif

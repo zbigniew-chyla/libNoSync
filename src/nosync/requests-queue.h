@@ -77,4 +77,4 @@ private:
 
 #include <nosync/requests-queue-impl.h>
 
-#endif /* NOSYNC__REQUESTS_QUEUE_H */
+#endif

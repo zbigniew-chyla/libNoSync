@@ -19,4 +19,4 @@ std::shared_ptr<controllable_event_loop> make_synchronized_queue_based_event_loo
 
 }
 
-#endif /* NOSYNC__OS__SYNCHRONIZED_QUEUE_BASED_EVENT_LOOP_H */
+#endif

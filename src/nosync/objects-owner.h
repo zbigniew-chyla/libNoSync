@@ -27,4 +27,4 @@ std::unique_ptr<objects_owner> make_objects_owner(std::vector<std::shared_ptr<in
 
 }
 
-#endif /* NOSYNC__OBJECTS_OWNER_H */
+#endif
