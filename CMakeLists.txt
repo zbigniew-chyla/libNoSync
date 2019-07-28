@@ -8,8 +8,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wextra -Werror")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories("src")
-file(GLOB_RECURSE nosync_SRC FOLLOW_SYMLINKS CONFIGURE_DEPENDS "src/*.cpp")
+include_directories("src" "src-ux")
+file(GLOB_RECURSE nosync_SRC FOLLOW_SYMLINKS CONFIGURE_DEPENDS "src/*.cpp" "src-ux/*.cpp")
 
 add_library(nosync-static STATIC ${nosync_SRC})
 
@@ -18,7 +18,7 @@ set_target_properties(nosync PROPERTIES VERSION 0.0.1 SOVERSION 0)
 
 install(TARGETS nosync-static ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(TARGETS nosync DESTINATION ${CMAKE_INSTALL_LIBDIR}/)
-install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY src/ src-ux/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} FILES_MATCHING PATTERN "*.h")
 
 if(ENABLE_TESTS)
     add_library(nosync-static-for-test STATIC ${nosync_SRC})
@@ -30,10 +30,10 @@ if(ENABLE_TESTS)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googletest-build")
 
-    file(GLOB_RECURSE nosync-test_SRC FOLLOW_SYMLINKS CONFIGURE_DEPENDS "test/*.cpp")
+    file(GLOB_RECURSE nosync-test_SRC FOLLOW_SYMLINKS CONFIGURE_DEPENDS "test/*.cpp" "test-ux/*.cpp")
     add_executable(nosync-test ${nosync-test_SRC})
     target_compile_options(nosync-test PRIVATE --coverage -O0 -Wno-deprecated-declarations)
     set_target_properties(nosync-test PROPERTIES LINK_FLAGS "--coverage")
-    target_include_directories(nosync-test PUBLIC mock test)
+    target_include_directories(nosync-test PUBLIC mock mock-ux test test-ux)
     target_link_libraries(nosync-test nosync-static-for-test gtest gmock gtest_main)
 endif(ENABLE_TESTS)
