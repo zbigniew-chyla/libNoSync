@@ -32,10 +32,14 @@ deque<function<void()>> acquire_ext_tasks_with_abs_timeout(
     const shared_ptr<synchronized_queue<function<void()>>> &ext_tasks_queue,
     const eclock &clock, optional<eclock::time_point> abs_timeout)
 {
-    auto tasks = abs_timeout.has_value()
-        ? ext_tasks_queue->try_pop_group(
-            std::max<eclock::duration>(*abs_timeout - clock.now(), eclock::duration(0)))
-        : ext_tasks_queue->pop_group();
+    deque<function<void()>> tasks;
+    if (abs_timeout.has_value()) {
+        auto now = clock.now();
+        auto pop_timeout = *abs_timeout > now ? *abs_timeout - now : eclock::duration(0);
+        tasks = ext_tasks_queue->try_pop_group(pop_timeout);
+    } else {
+        tasks = ext_tasks_queue->pop_group();
+    }
 
     return tasks;
 }
@@ -109,7 +113,8 @@ error_code synchronized_queue_based_event_loop::run_iterations()
                 }
             }
         } else if (next_task_time) {
-            sleep_for(std::max(*next_task_time - clock.now(), eclock::duration(0)));
+            auto now = clock.now();
+            sleep_for(*next_task_time > now ? *next_task_time - now : eclock::duration(0));
         } else {
             break;
         }
