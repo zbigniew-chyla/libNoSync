@@ -4,6 +4,8 @@
 
 #include <nosync/func-request-handler.h>
 #include <nosync/raw-error-result.h>
+#include <nosync/result-handler-utils.h>
+#include <utility>
 
 
 namespace nosync

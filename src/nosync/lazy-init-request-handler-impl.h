@@ -2,6 +2,7 @@
 #ifndef NOSYNC__LAZY_INIT_REQUEST_HANDLER_IMPL_H
 #define NOSYNC__LAZY_INIT_REQUEST_HANDLER_IMPL_H
 
+#include <nosync/const-response-request-handler.h>
 #include <nosync/raw-error-result.h>
 #include <nosync/requests-queue.h>
 #include <system_error>
