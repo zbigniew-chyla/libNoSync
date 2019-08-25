@@ -4,7 +4,6 @@
 
 #include <nosync/event-loop.h>
 #include <nosync/request-handler.h>
-#include <nosync/result.h>
 #include <memory>
 #include <system_error>
 
