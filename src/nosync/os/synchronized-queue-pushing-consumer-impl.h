@@ -10,10 +10,10 @@ namespace nosync::os
 
 template<typename T>
 std::function<void(T)> make_synchronized_queue_pushing_consumer(
-    std::shared_ptr<synchronized_queue<T>> out_tasks_queue)
+    std::shared_ptr<synchronized_queue<T>> output_queue)
 {
-    return [out_tasks_queue = std::move(out_tasks_queue)](T element) {
-        out_tasks_queue->push(std::move(element));
+    return [output_queue = std::move(output_queue)](T element) {
+        output_queue->push(std::move(element));
     };
 }
 

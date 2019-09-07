@@ -2,6 +2,7 @@
 #include <iterator>
 #include <nosync/exceptions.h>
 #include <nosync/manual-event-loop.h>
+#include <nosync/os/synchronized-queue.h>
 #include <nosync/os/synchronized-queue-based-event-loop.h>
 #include <optional>
 #include <system_error>
@@ -20,6 +21,7 @@ using std::optional;
 using std::shared_ptr;
 using std::this_thread::sleep_for;
 using std::unique_ptr;
+using std::weak_ptr;
 
 
 namespace nosync::os
@@ -32,19 +34,37 @@ deque<function<void()>> acquire_ext_tasks_with_abs_timeout(
     const shared_ptr<synchronized_queue<function<void()>>> &ext_tasks_queue,
     const eclock &clock, optional<eclock::time_point> abs_timeout)
 {
-    auto tasks = abs_timeout.has_value()
-        ? ext_tasks_queue->try_pop_group(
-            std::max<eclock::duration>(*abs_timeout - clock.now(), eclock::duration(0)))
-        : ext_tasks_queue->pop_group();
+    deque<function<void()>> tasks;
+    if (abs_timeout.has_value()) {
+        auto now = clock.now();
+        auto pop_timeout = *abs_timeout > now ? *abs_timeout - now : eclock::duration(0);
+        tasks = ext_tasks_queue->try_pop_group(pop_timeout);
+    } else {
+        tasks = ext_tasks_queue->pop_group();
+    }
 
     return tasks;
 }
 
 
-class synchronized_queue_based_event_loop : public controllable_event_loop
+class queue_pushing_mt_executor
 {
 public:
-    synchronized_queue_based_event_loop(shared_ptr<synchronized_queue<function<void()>>> ext_tasks_queue);
+    explicit queue_pushing_mt_executor(
+        shared_ptr<synchronized_queue<function<void()>>> out_tasks_queue);
+    ~queue_pushing_mt_executor();
+
+    void operator()(function<void()> task);
+
+private:
+    shared_ptr<synchronized_queue<function<void()>>> out_tasks_queue;
+};
+
+
+class synchronized_queue_based_event_loop : public controllable_mt_event_loop
+{
+public:
+    synchronized_queue_based_event_loop();
 
     unique_ptr<activity_handle> invoke_at(eclock::time_point time, function<void()> &&task) override;
     eclock::time_point get_etime() const override;
@@ -52,8 +72,11 @@ public:
     error_code run_iterations() override;
     void quit() override;
 
+    function<void(function<void()>)> make_mt_executor() override;
+
 private:
     shared_ptr<synchronized_queue<function<void()>>> ext_tasks_queue;
+    weak_ptr<queue_pushing_mt_executor> mt_executor_wptr;
     eclock clock;
     unique_ptr<manual_event_loop> sub_evloop;
     eclock::time_point etime;
@@ -61,9 +84,30 @@ private:
 };
 
 
-synchronized_queue_based_event_loop::synchronized_queue_based_event_loop(
-    shared_ptr<synchronized_queue<function<void()>>> ext_tasks_queue)
-    : ext_tasks_queue(move(ext_tasks_queue)), clock(),
+queue_pushing_mt_executor::queue_pushing_mt_executor(
+    shared_ptr<synchronized_queue<function<void()>>> out_tasks_queue)
+    : out_tasks_queue(move(out_tasks_queue))
+{
+}
+
+
+queue_pushing_mt_executor::~queue_pushing_mt_executor()
+{
+    out_tasks_queue->push(nullptr);
+}
+
+
+void queue_pushing_mt_executor::operator()(function<void()> task)
+{
+    if (!task) {
+        throw_logic_error("Executor got null task");
+    }
+    out_tasks_queue->push(move(task));
+}
+
+
+synchronized_queue_based_event_loop::synchronized_queue_based_event_loop()
+    : ext_tasks_queue(), mt_executor_wptr(), clock(),
     sub_evloop(make_unique<manual_event_loop>(clock.now())),
     etime(sub_evloop->get_etime()), quit_request_pending(false)
 {
@@ -101,15 +145,13 @@ error_code synchronized_queue_based_event_loop::run_iterations()
                 if (*task_iter) {
                     invoke_at(etime, move(*task_iter));
                 } else {
-                    if (std::next(task_iter) != ext_tasks.end()) {
-                        throw_logic_error(
-                            "Event loop found a task in its input queue after 'queue shutdown' request.");
-                    }
                     ext_tasks_queue.reset();
+                    mt_executor_wptr.reset();
                 }
             }
         } else if (next_task_time) {
-            sleep_for(std::max(*next_task_time - clock.now(), eclock::duration(0)));
+            auto now = clock.now();
+            sleep_for(*next_task_time > now ? *next_task_time - now : eclock::duration(0));
         } else {
             break;
         }
@@ -127,13 +169,30 @@ void synchronized_queue_based_event_loop::quit()
     quit_request_pending = true;
 }
 
+
+function<void(function<void()>)> synchronized_queue_based_event_loop::make_mt_executor()
+{
+    if (!ext_tasks_queue) {
+        ext_tasks_queue = make_shared<synchronized_queue<function<void()>>>();
+    }
+
+    auto mt_executor = mt_executor_wptr.lock();
+    if (!mt_executor) {
+        mt_executor = make_shared<queue_pushing_mt_executor>(ext_tasks_queue);
+        mt_executor_wptr = mt_executor;
+    }
+
+    return [mt_executor = move(mt_executor)](function<void()> task) {
+        (*mt_executor)(move(task));
+    };
+}
+
 }
 
 
-shared_ptr<controllable_event_loop> make_synchronized_queue_based_event_loop(
-    shared_ptr<synchronized_queue<function<void()>>> ext_tasks_queue)
+shared_ptr<controllable_mt_event_loop> make_synchronized_queue_based_event_loop()
 {
-    return make_shared<synchronized_queue_based_event_loop>(move(ext_tasks_queue));
+    return make_shared<synchronized_queue_based_event_loop>();
 }
 
 }

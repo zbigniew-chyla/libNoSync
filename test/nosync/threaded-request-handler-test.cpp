@@ -10,8 +10,6 @@
 #include <nosync/test/macros.h>
 #include <nosync/type-utils.h>
 #include <nosync/os/synchronized-queue-based-event-loop.h>
-#include <nosync/os/synchronized-queue-pushing-executor.h>
-#include <nosync/os/synchronized-queue.h>
 #include <nosync/os/thread-pool-executor.h>
 #include <nosync/os/threaded-request-handler.h>
 #include <stdexcept>
@@ -28,9 +26,7 @@ using nosync::make_timeout_raw_error_result;
 using nosync::make_ok_result;
 using nosync::os::make_thread_pool_executor;
 using nosync::os::make_threaded_request_handler;
-using nosync::os::make_synchronized_queue;
 using nosync::os::make_synchronized_queue_based_event_loop;
-using nosync::os::make_synchronized_queue_pushing_executor;
 using std::errc;
 using std::move;
 using std::runtime_error;
@@ -42,9 +38,8 @@ using std::vector;
 
 TEST(NosyncThreadedRequestHandler, CheckThreadIds)
 {
-    auto evloop_tasks_queue = make_synchronized_queue<std::function<void()>>();
-    auto evloop = make_synchronized_queue_based_event_loop(evloop_tasks_queue);
-    auto evloop_mt_executor = make_synchronized_queue_pushing_executor(evloop_tasks_queue);
+    auto evloop = make_synchronized_queue_based_event_loop();
+    auto evloop_mt_executor = evloop->make_mt_executor();
 
     auto req_handler = make_threaded_request_handler<string, thread::id>(
         make_copy(evloop_mt_executor), nosync::os::make_thread_pool_executor(1),
@@ -88,9 +83,8 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerResults)
     constexpr auto calculation_time = tick_time * 5;
     const auto test_string = "test string"s;
 
-    auto evloop_tasks_queue = make_synchronized_queue<std::function<void()>>();
-    auto evloop = make_synchronized_queue_based_event_loop(evloop_tasks_queue);
-    auto evloop_mt_executor = make_synchronized_queue_pushing_executor(evloop_tasks_queue);
+    auto evloop = make_synchronized_queue_based_event_loop();
+    auto evloop_mt_executor = evloop->make_mt_executor();
 
     auto strsize_calculator = make_threaded_request_handler<string, size_t>(
         make_copy(evloop_mt_executor), make_thread_pool_executor(1),
@@ -135,9 +129,8 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerResults)
 TEST(NosyncThreadedRequestHandler, CheckHandlerException)
 {
 #if NOSYNC_TEST_EXCEPTIONS_ENABLED
-    auto evloop_tasks_queue = make_synchronized_queue<std::function<void()>>();
-    auto evloop = make_synchronized_queue_based_event_loop(evloop_tasks_queue);
-    auto evloop_mt_executor = make_synchronized_queue_pushing_executor(evloop_tasks_queue);
+    auto evloop = make_synchronized_queue_based_event_loop();
+    auto evloop_mt_executor = evloop->make_mt_executor();
 
     auto req_handler = make_threaded_request_handler<string, string>(
         make_copy(evloop_mt_executor), make_thread_pool_executor(1),
