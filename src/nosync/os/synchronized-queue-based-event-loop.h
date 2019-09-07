@@ -4,8 +4,7 @@
 
 #include <functional>
 #include <memory>
-#include <nosync/controllable-event-loop.h>
-#include <nosync/os/synchronized-queue.h>
+#include <nosync/os/controllable-mt-event-loop.h>
 
 
 namespace nosync::os
@@ -14,8 +13,7 @@ namespace nosync::os
 /*!
 Create event_loop object that can accept tasks from other threads via a queue.
 */
-std::shared_ptr<controllable_event_loop> make_synchronized_queue_based_event_loop(
-    std::shared_ptr<synchronized_queue<std::function<void()>>> ext_tasks_queue);
+std::shared_ptr<controllable_mt_event_loop> make_synchronized_queue_based_event_loop();
 
 }
 
