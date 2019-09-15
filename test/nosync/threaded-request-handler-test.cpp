@@ -39,7 +39,7 @@ using std::vector;
 TEST(NosyncThreadedRequestHandler, CheckThreadIds)
 {
     auto evloop = make_synchronized_queue_based_event_loop();
-    auto evloop_mt_executor = evloop->make_mt_executor();
+    auto evloop_mt_executor = evloop->get_mt_executor();
 
     auto req_handler = make_threaded_request_handler<string, thread::id>(
         make_copy(evloop_mt_executor), nosync::os::make_thread_pool_executor(1),
@@ -84,7 +84,7 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerResults)
     const auto test_string = "test string"s;
 
     auto evloop = make_synchronized_queue_based_event_loop();
-    auto evloop_mt_executor = evloop->make_mt_executor();
+    auto evloop_mt_executor = evloop->get_mt_executor();
 
     auto strsize_calculator = make_threaded_request_handler<string, size_t>(
         make_copy(evloop_mt_executor), make_thread_pool_executor(1),
@@ -130,7 +130,7 @@ TEST(NosyncThreadedRequestHandler, CheckHandlerException)
 {
 #if NOSYNC_TEST_EXCEPTIONS_ENABLED
     auto evloop = make_synchronized_queue_based_event_loop();
-    auto evloop_mt_executor = evloop->make_mt_executor();
+    auto evloop_mt_executor = evloop->get_mt_executor();
 
     auto req_handler = make_threaded_request_handler<string, string>(
         make_copy(evloop_mt_executor), make_thread_pool_executor(1),
