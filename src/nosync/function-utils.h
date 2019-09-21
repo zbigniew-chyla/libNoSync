@@ -2,6 +2,7 @@
 #ifndef NOSYNC__FUNCTION_UTILS_H
 #define NOSYNC__FUNCTION_UTILS_H
 
+#include <cstddef>
 #include <functional>
 #include <string>
 
@@ -19,6 +20,9 @@ void copy_from_supplier_to_consumer(const ST &supplier, const CT &consumer);
 
 template<typename T, typename Op, typename ...TT>
 constexpr T reduce(T init_value, Op op, TT ...values);
+
+template<typename Index = std::size_t, typename F>
+auto make_enumerating_func(F &&base_func);
 
 }
 
