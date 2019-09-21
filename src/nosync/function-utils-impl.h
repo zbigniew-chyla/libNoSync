@@ -3,6 +3,7 @@
 #define NOSYNC__FUNCTION_UTILS_IMPL_H
 
 #include <type_traits>
+#include <utility>
 
 
 namespace nosync
@@ -58,6 +59,16 @@ template<typename T, typename Op, typename ...TT>
 constexpr T reduce(T init_value, Op op, TT ...values)
 {
    return function_utils_impl::reduce_impl<T, Op>(init_value, op, values...);
+}
+
+
+template<typename Index, typename F>
+auto make_enumerating_func(F &&base_func)
+{
+    return [i = Index(), base_func = std::forward<F>(base_func)](auto &&...args) mutable {
+        base_func(i, std::forward<decltype(args)>(args)...);
+        ++i;
+    };
 }
 
 }

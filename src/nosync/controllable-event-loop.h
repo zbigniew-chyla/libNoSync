@@ -12,7 +12,7 @@ namespace nosync
 /*!
 Interface "aggregating" event_loop and event_loop_control.
 */
-class controllable_event_loop : public event_loop, public event_loop_control
+class controllable_event_loop : public virtual event_loop, public event_loop_control
 {
 };
 

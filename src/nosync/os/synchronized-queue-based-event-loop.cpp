@@ -72,7 +72,7 @@ public:
     error_code run_iterations() override;
     void quit() override;
 
-    function<void(function<void()>)> make_mt_executor() override;
+    function<void(function<void()>)> get_mt_executor() override;
 
 private:
     shared_ptr<synchronized_queue<function<void()>>> ext_tasks_queue;
@@ -170,7 +170,7 @@ void synchronized_queue_based_event_loop::quit()
 }
 
 
-function<void(function<void()>)> synchronized_queue_based_event_loop::make_mt_executor()
+function<void(function<void()>)> synchronized_queue_based_event_loop::get_mt_executor()
 {
     if (!ext_tasks_queue) {
         ext_tasks_queue = make_shared<synchronized_queue<function<void()>>>();
